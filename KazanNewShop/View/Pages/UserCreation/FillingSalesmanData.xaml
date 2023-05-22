@@ -1,0 +1,94 @@
+﻿<ui:UiPage x:Class="KazanNewShop.View.Pages.UserCreation.FillingSalesmanData"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KazanNewShop.View.Pages.UserCreation"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FillingSalesmanData">
+
+    <Page.Resources>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55*"/>
+            <RowDefinition Height="344*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Заполнение профиля продавца"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="22"
+                   Grid.ColumnSpan="2"/>
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Grid.Row="1">
+
+            <TextBlock Text="Имя"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="Name"
+                     Text="{Binding Name,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Фамилие"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="UserName"
+                     Text="{Binding UserName,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Отчество"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="Patronymic"
+                     Text="{Binding Patronymic,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Grid.Column="1"
+                    Grid.Row="1">
+
+            <TextBlock Text="Дата регистрации в Marketplace"
+                       Margin="0 0 0 5"/>
+
+            <DatePicker x:Name="DateOnMarketplace"
+                        Text="{Binding DateOnMarketplace,
+                               UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0 0 0 20"/>
+
+            <TextBlock Text="Описание магазина "
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="Description"
+                     TextWrapping="Wrap"
+                     Height="60"
+                     Text="{Binding Description,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+        </StackPanel>
+
+
+        <Button Content="Записать"
+                Margin="359,343,0,0"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Command="{Binding FilledCommand}" />
+    </Grid>
+</ui:UiPage>

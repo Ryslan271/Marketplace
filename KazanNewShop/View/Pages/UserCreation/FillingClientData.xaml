@@ -1,0 +1,60 @@
+﻿<ui:UiPage x:Class="KazanNewShop.View.Pages.UserCreation.FillingClientData"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KazanNewShop.View.Pages.UserCreation"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800">
+
+    <Page.Resources>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="401*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Заполнение профиля клиента"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="22"/>
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center" 
+                    Grid.Row="1">
+
+            <TextBlock Text="Имя"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="Name"
+                     Text="{Binding Name,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Фамилие"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="UserName"
+                     Text="{Binding UserName,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Отчество"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="Patronymic"
+                     Text="{Binding Patronymic,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <Button Content="Записать"
+                    HorizontalAlignment="Center"
+                    Margin="0 20 0 0"
+                    Command="{Binding FilledCommand}"/>
+        </StackPanel>
+    </Grid>
+</ui:UiPage>

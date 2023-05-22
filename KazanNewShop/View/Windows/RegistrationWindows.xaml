@@ -1,0 +1,75 @@
+﻿<ui:UiWindow x:Class="KazanNewShop.View.Windows.RegistrationWindows"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:KazanNewShop.ViewModel"
+             mc:Ignorable="d"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:role="clr-namespace:KazanNewShop.DataTypes.Enums"
+             ExtendsContentIntoTitleBar="True"
+             WindowCornerPreference="RoundSmall"
+             WindowStartupLocation="CenterScreen"
+             Height="450"
+             Width="300">
+
+    <Window.DataContext>
+        <local:RegVM/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Title="Регистрация"/>
+
+
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+            <TextBlock Text="Логин"
+                       Margin="0 0 0 5"/>
+            
+            <TextBox x:Name="Login"
+                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Пароль"
+                       Margin="0 0 0 5"/>
+            
+            <TextBox x:Name="Password"
+                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <RadioButton Content="Клиент"
+                         IsChecked="True"
+                         CommandParameter="{x:Static role:UserRole.Client}"
+                         Command="{Binding SelectRoleCommand, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <RadioButton Content="Продавец"
+                         CommandParameter="{x:Static role:UserRole.Selesman}"
+                         Command="{Binding SelectRoleCommand, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Content="Зарегистриловаться"
+                    HorizontalAlignment="Center"
+                    Margin="0 20 0 0"
+                    Command="{Binding RegisterCommand}"/>
+                    
+            <Button Content="Авторизация"
+                    Command="{Binding OpenAuthoWindowCommand}"
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"/>
+        </StackPanel>
+
+
+    </Grid>
+</ui:UiWindow>
