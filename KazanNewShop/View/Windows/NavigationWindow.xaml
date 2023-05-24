@@ -9,7 +9,7 @@
              WindowCornerPreference="RoundSmall"
              ExtendsContentIntoTitleBar="True"
              mc:Ignorable="d"
-             Height="450"
+             Height="650"
              Width="800">
 
     <Grid>

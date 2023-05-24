@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KazanNewShop.Services;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KazanNewShop.Database.Models
 {
@@ -11,6 +7,13 @@ namespace KazanNewShop.Database.Models
     {
         private byte[]? _mainPhoto;
         [NotMapped]
-        public byte[]? MainPhoto { get; set; }
+        public byte[]? MainPhoto
+        {
+            get => _mainPhoto ??= CommonMethods.MainForProductNullPhoto;
+            set
+            {
+                _mainPhoto = value;
+            }
+        }
     }
 }

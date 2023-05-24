@@ -51,10 +51,9 @@ namespace KazanNewShop.View.Windows
         /// <summary>
         /// Создание в байтах картинки для продуктов без картинок
         /// </summary>
-        private void ConvernMainPhoto()
-        {
-           CommonMethods.MainForProductNullPhoto = CommonMethods.ConvertImage("..\\..\\Resources\\Images\\iconforNullValueProduct.png")!;
-        }
+        private void ConvernMainPhoto() =>
+           CommonMethods.MainForProductNullPhoto =
+            CommonMethods.ConvertImage(".\\Resources\\Images\\iconforNullValueProduct.png")!;
 
         /// <summary>
         /// Переход на нужный Page

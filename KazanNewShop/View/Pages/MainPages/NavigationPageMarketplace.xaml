@@ -12,8 +12,8 @@
     <Page.Resources>
         <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
     </Page.Resources>
-    
-    <Grid>
+
+    <Grid SnapsToDevicePixels="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -108,6 +108,7 @@
                                       Margin="0 0 0 10">
                                     <ListView ItemsSource="{Binding Category}"
                                               d:ItemsSource="{d:SampleData ItemCount=14}"
+                                              SnapsToDevicePixels="True"
                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                               HorizontalAlignment="Center"
                                               Margin="30 0">
@@ -121,9 +122,17 @@
                                                 <Border Padding="5 3"
                                                         Margin="5 0 5 0">
                                                     <TextBlock Text="{Binding Name}"
+                                                               SnapsToDevicePixels="True"
+                                                               TextOptions.TextRenderingMode="Auto"
                                                                VerticalAlignment="Center"
                                                                Foreground="White"
-                                                               FontSize="14"/>
+                                                               FontSize="14">
+                                                        <TextBlock.Effect>
+                                                            <DropShadowEffect ShadowDepth="1"
+                                                                              BlurRadius="0"
+                                                                              RenderingBias="Quality"/>
+                                                        </TextBlock.Effect>
+                                                    </TextBlock>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
