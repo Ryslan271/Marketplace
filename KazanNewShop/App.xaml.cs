@@ -1,5 +1,4 @@
 ﻿using KazanNewShop.Database.Models;
-using KazanNewShop.View.Windows;
 using System.Windows;
 
 namespace KazanNewShop
@@ -13,7 +12,7 @@ namespace KazanNewShop
 
         public App()
         {
-            Database.DatabaseContext.LoadEntities();
+            Database.DatabaseContext.LoadEntitesForAuthReg();
         }
     }
 }

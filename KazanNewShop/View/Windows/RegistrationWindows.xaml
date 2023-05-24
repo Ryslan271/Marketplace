@@ -57,7 +57,7 @@
                          CommandParameter="{x:Static role:UserRole.Selesman}"
                          Command="{Binding SelectRoleCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="Зарегистриловаться"
+            <Button Content="Зарегистрироваться"
                     HorizontalAlignment="Center"
                     Margin="0 20 0 0"
                     Command="{Binding RegisterCommand}"/>

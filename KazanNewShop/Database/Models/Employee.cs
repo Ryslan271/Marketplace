@@ -7,7 +7,7 @@ public partial class Employee
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public int IdUser { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual User IdUserNavigation { get; set; } = null!;
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
 using KazanNewShop.View.Base;
@@ -31,7 +32,17 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         private void Authorized()
         {
-            if (AuthRegService.AuthorizeUser(Login!, Password!)! != null) return;
+            ValidateAllProperties();
+
+            if (HasErrors)
+                return;
+
+            if (AuthRegService.AuthorizeUser(Login, Password) == null) return;
+
+            new NavigationWindow().Show();
+
+            NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
+
             CloseWindow();
         }
 

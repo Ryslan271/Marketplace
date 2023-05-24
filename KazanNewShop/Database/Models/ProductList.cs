@@ -7,11 +7,13 @@ public partial class ProductList
 {
     public int Id { get; set; }
 
-    public int ProductId { get; set; }
+    public int IdProduct { get; set; }
 
-    public int BasketId { get; set; }
+    public int IdBasket { get; set; }
 
-    public virtual Basket Basket { get; set; } = null!;
+    public int Count { get; set; }
 
-    public virtual Product Product { get; set; } = null!;
+    public virtual Basket IdBasketNavigation { get; set; } = null!;
+
+    public virtual Product IdProductNavigation { get; set; } = null!;
 }

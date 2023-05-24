@@ -1,16 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KazanNewShop.DataTypes.Enums;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
-using KazanNewShop.ViewModel.Base;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace KazanNewShop.ViewModel
 {
@@ -24,7 +16,7 @@ namespace KazanNewShop.ViewModel
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _username;
+        private string? _surname;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
@@ -34,7 +26,14 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         private void Filled()
         {
-            AuthRegService.FilledClientData(Name!, Username!, Patronymic!);
+            ValidateAllProperties();
+
+            if (HasErrors)
+                return;
+    
+            AuthRegService.FilledClientData(Name!, Surname!, Patronymic!);
+
+            NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
         }
     }
 }

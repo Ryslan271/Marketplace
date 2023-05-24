@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
+using KazanNewShop.View.Windows;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KazanNewShop.ViewModel
 {
@@ -15,37 +13,29 @@ namespace KazanNewShop.ViewModel
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _name;
+        private string _companyName = null!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _username;
-
-        [Required(ErrorMessage = "Заполните все поля")]
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        private string? _patronymic;
-
-        [Required(ErrorMessage = "Заполните все поля")]
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        private string? _description;
+        private string _description = null!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
         private DateTime _dateOnMarketplace;
 
-        [Required(ErrorMessage = "Заполните все поля")]
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        private string? _organizationName;
-
         [RelayCommand]
         private void Filled()
         {
-            AuthRegService.FilledSalesmanData(Name!, Username!, Patronymic!, Description!, DateOnMarketplace, OrganizationName!);
+            ValidateAllProperties();
+
+            if (HasErrors)
+                return;
+
+            AuthRegService.FilledSalesmanData(Description!, DateOnMarketplace, CompanyName!);
+
+            NavigationWindow.Navigate(typeof(ProductList));
         }
     }
 }

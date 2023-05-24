@@ -9,9 +9,18 @@
              WindowCornerPreference="RoundSmall"
              ExtendsContentIntoTitleBar="True"
              mc:Ignorable="d"
-             Title="MainWindow" Height="450" Width="800">
+             Height="450"
+             Width="800">
 
     <Grid>
-        <Frame x:Name="NavigationFrame"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar/>
+
+        <Frame Grid.Row="1" x:Name="NavigationFrame"
+               NavigationUIVisibility="Hidden"/>
     </Grid>
 </ui:UiWindow>

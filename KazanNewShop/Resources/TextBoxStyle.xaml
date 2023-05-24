@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="TextBox" x:Key="TextBoxCustomStyle">
-        <Setter Property="Background" Setter.Value="#ded8d7"/>
-        <Setter Property="Foreground" Setter.Value="#FF5A5050"/>
+        <Setter Property="Background" Setter.Value="#F7F7F7"/>
+        <Setter Property="Foreground" Setter.Value="#4C4848"/>
         <Setter Property="BorderThickness" Setter.Value="1"/>
         <Setter Property="Margin" Setter.Value="0 0 0 20"/>
         <Setter Property="Padding" Setter.Value="5 3"/>

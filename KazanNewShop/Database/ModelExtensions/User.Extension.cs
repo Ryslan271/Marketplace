@@ -20,12 +20,12 @@ namespace KazanNewShop.Database.Models
         }
 
         private Client? _client;
-        public Client? Client => _client ??= DatabaseContext.Entities.Clients.FirstOrDefault(c => c.User == this);
+        public Client? Client => _client ??= DatabaseContext.Entities.Clients.FirstOrDefault(c => c.IdUserNavigation == this);
 
         private Employee? _employee;
-        public Employee? Employee => _employee ??= DatabaseContext.Entities.Employees.FirstOrDefault(c => c.User == this);
+        public Employee? Employee => _employee ??= DatabaseContext.Entities.Employees.FirstOrDefault(c => c.IdUserNavigation == this);
 
         private Salesman? _selesman;
-        public Salesman? Selesman => _selesman ??= DatabaseContext.Entities.Salesmen.FirstOrDefault(c => c.User == this);
+        public Salesman? Selesman => _selesman ??= DatabaseContext.Entities.Salesmen.FirstOrDefault(c => c.IdUserNavigation == this);
     }
 }

@@ -12,17 +12,13 @@
     <Page.Resources>
         <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="55*"/>
             <RowDefinition Height="344*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
         <TextBlock Text="Заполнение профиля продавца"
                    HorizontalAlignment="Center"
@@ -32,43 +28,23 @@
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Grid.Row="1">
-
-            <TextBlock Text="Имя"
-                       Margin="0 0 0 5"/>
-
-            <TextBox x:Name="Name"
-                     Text="{Binding Name,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
-
-            <TextBlock Text="Фамилие"
-                       Margin="0 0 0 5"/>
-
-            <TextBox x:Name="UserName"
-                     Text="{Binding UserName,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
-
-            <TextBlock Text="Отчество"
-                       Margin="0 0 0 5"/>
-
-            <TextBox x:Name="Patronymic"
-                     Text="{Binding Patronymic,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
-
-        </StackPanel>
-
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
                     Grid.Column="1"
                     Grid.Row="1">
+            
+            <TextBlock Text="Название организации"
+                       Margin="0 0 0 5"/>
+
+            <TextBox x:Name="CompanyName"
+                     Text="{Binding CompanyName,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
 
             <TextBlock Text="Дата регистрации в Marketplace"
                        Margin="0 0 0 5"/>
 
             <DatePicker x:Name="DateOnMarketplace"
+                        DisplayDateStart="1/01/2000"
+                        Foreground="Black"
                         Text="{Binding DateOnMarketplace,
                                UpdateSourceTrigger=PropertyChanged}"
                         Margin="0 0 0 20"/>
@@ -77,8 +53,10 @@
                        Margin="0 0 0 5"/>
 
             <TextBox x:Name="Description"
+                     MaxWidth="400"
+                     MaxHeight="150"
+                     MinHeight="50"
                      TextWrapping="Wrap"
-                     Height="60"
                      Text="{Binding Description,
                             UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource TextBoxCustomStyle}"/>
@@ -86,8 +64,9 @@
 
 
         <Button Content="Записать"
-                Margin="359,343,0,0"
-                Grid.Row="1"
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Margin="0 0 0 10"
                 Grid.ColumnSpan="2"
                 Command="{Binding FilledCommand}" />
     </Grid>
