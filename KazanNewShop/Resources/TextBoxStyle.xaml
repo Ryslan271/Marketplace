@@ -7,6 +7,7 @@
         <Setter Property="BorderThickness" Setter.Value="1"/>
         <Setter Property="Margin" Setter.Value="0 0 0 20"/>
         <Setter Property="Padding" Setter.Value="5 3"/>
+        <Setter Property="FontSize" Setter.Value="15"/>
         <Setter Property="MinWidth" Setter.Value="200"/>
         <Setter Property="TextWrapping" Setter.Value="Wrap"/>
         <Setter Property="BorderBrush" Setter.Value="#FF8C8C8C"/>

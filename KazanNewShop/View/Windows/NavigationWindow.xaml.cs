@@ -4,7 +4,6 @@ using KazanNewShop.Services;
 using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Pages.UserCreation;
 using KazanNewShop.ViewModel;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +36,10 @@ namespace KazanNewShop.View.Windows
             // подгрузка основных сущностей
             DatabaseContext.LoadEntitesForMarketplace();
 
+            //
+            DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
+
+            // Создание дефолтной картинкой
             ConvernMainPhoto();
 
             // выдача первой картинки продукту для отображения картинки в списке продуктов

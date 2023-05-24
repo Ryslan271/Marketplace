@@ -2,21 +2,92 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
-using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 
 namespace KazanNewShop.ViewModel
 {
     public partial class NavigationPageMarketplaceVM : ObservableValidator
     {
+        public static Dictionary<string, SortDescription> SortContentTag { get; } = new()
+        {
+            { "От А до Я", new SortDescription { PropertyName = nameof(Product.Name), Direction = ListSortDirection.Ascending } },
+            { "От Я до А", new SortDescription { PropertyName = nameof(Product.Name), Direction = ListSortDirection.Descending } },
+            { "Цена по возрастанию", new SortDescription { PropertyName = nameof(Product.Cost), Direction = ListSortDirection.Ascending } },
+            { "Цена по убыванию", new SortDescription { PropertyName = nameof(Product.Cost), Direction = ListSortDirection.Descending } }
+        };
+
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
-        public ObservableCollection<Product> Products { get; } = DatabaseContext.Entities.Products.Local.ToObservableCollection();
+        public ICollectionView ViewProducts { get; } = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Products.Local.ToObservableCollection());
+
+        [ObservableProperty]
+        private int _countProdutsInBasket = 0;
 
         [ObservableProperty]
         private Product? _selectedItem;
+
+        /// <summary>
+        /// Свойство сортировки
+        /// </summary>
+        private KeyValuePair<string, SortDescription>? _sortSelectedItem = SortContentTag.First();
+        public KeyValuePair<string, SortDescription>? SortSelectedItem
+        {
+            get => _sortSelectedItem;
+            set
+            {
+                _sortSelectedItem = value;
+
+                ProductSorted();
+
+                ViewProducts.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Сортировка товаров
+        /// </summary>
+        public void ProductSorted()
+        {
+            ViewProducts.SortDescriptions.Clear();
+
+            ViewProducts.SortDescriptions.Add
+                (
+                    SortSelectedItem!.Value.Value
+                );
+        }
+
+        /// <summary>
+        /// Свйоства категорий
+        /// </summary>
+        private Category? _cetegorySelectedItem = DatabaseContext.Entities.Categories.Local.ToObservableCollection().First();
+        public Category? CetegorySelectedItem
+        {
+            get => _cetegorySelectedItem;
+            set
+            {
+                _cetegorySelectedItem = value;
+
+                ProductFiltration();
+            }
+        }
+
+        /// <summary>
+        /// Фильтрация товаров 
+        /// </summary>
+        public void ProductFiltration()
+        {
+            ViewProducts.Filter = (item) =>
+            {
+                Product product = (item as Product)!;
+
+                return _cetegorySelectedItem == DatabaseContext.Entities.Categories.Local.ToObservableCollection().First()
+                       || product!.IdCategoryNavigation == _cetegorySelectedItem;
+            };
+        }
 
         /// <summary>
         /// Открытие корзины
@@ -27,6 +98,9 @@ namespace KazanNewShop.ViewModel
 
         }
 
+        /// <summary>
+        /// Команда добавление товара в корзину
+        /// </summary>
         [RelayCommand]
         public void AddProductInBasket()
         {
@@ -39,7 +113,7 @@ namespace KazanNewShop.ViewModel
             Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
 
             if (basket.ProductLists.Any(p => p.IdProductNavigation == SelectedItem!))
-            {NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
+            {
                 basket.ProductLists.First(p => p.IdProductNavigation == SelectedItem!).Count += 1;
             }
             else
@@ -53,6 +127,9 @@ namespace KazanNewShop.ViewModel
             }
         }
 
+        /// <summary>
+        /// Создание новой корзины
+        /// </summary>
         private static void CreateBasket() =>
             DatabaseContext.Entities.Baskets.Local.Add(new Basket()
             {

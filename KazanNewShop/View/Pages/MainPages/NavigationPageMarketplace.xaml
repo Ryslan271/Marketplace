@@ -21,46 +21,38 @@
         </Grid.RowDefinitions>
 
         <Border Margin="6"
+                BorderThickness="0 0 0 1"
+                BorderBrush="#ded8d7"
                 CornerRadius="10">
             <Grid Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="34*"/>
-                    <RowDefinition Height="48*"/>
+                    <RowDefinition Height="40*"/>
                 </Grid.RowDefinitions>
                 <Border Background="#20242E"
                         Grid.RowSpan="2" Grid.Row="1"
                         CornerRadius="10">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="5*"/>
-                        </Grid.RowDefinitions>
-                        
                         <Border Background="#1D1E27" Grid.Row="0">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="8"
-                                                  Color="Black"
-                                                  Direction="270"
-                                                  ShadowDepth="3"
-                                                  Opacity="0.25"/>
-                            </Border.Effect>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="3.5*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Border VerticalAlignment="Center"
+                                        Grid.Row="0"
+                                        Grid.ColumnSpan="3"
+                                        Margin="5 10 80 0"
                                         Background="#272837"
                                         CornerRadius="10"
                                         Padding="10 3"
-                                        Grid.Column="1">
+                                        Grid.Column="0">
                                     <Grid>
                                         <TextBox Style="{StaticResource TextBoxCustomStyle}"
                                                  Margin="0 0 25 0"/>
@@ -75,17 +67,13 @@
                                 </Border>
 
                                 <Grid Grid.Column="2" 
-                                      HorizontalAlignment="Stretch"
+                                      Grid.RowSpan="2"
+                                      HorizontalAlignment="Center"
                                       VerticalAlignment="Center">
-                                    
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
 
                                     <Border Style="{StaticResource BorderShopBasket}"
                                             CornerRadius="10"
-                                            Padding="10"
+                                            Padding="0 10 0 10"
                                             HorizontalAlignment="Center"
                                             x:Name="ShopBasketBtn">
                                         <Border.InputBindings>
@@ -102,71 +90,35 @@
                                         </StackPanel>
                                     </Border>
                                 </Grid>
-                                
-                                <Grid Grid.Row="1"
-                                      Grid.ColumnSpan="3"
-                                      Margin="0 0 0 10">
-                                    <ListView ItemsSource="{Binding Category}"
-                                              d:ItemsSource="{d:SampleData ItemCount=14}"
-                                              SnapsToDevicePixels="True"
-                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                              HorizontalAlignment="Center"
-                                              Margin="30 0">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
+
+                                <Grid Grid.Column="1"
+                                      Grid.Row="1"
+                                      Margin="0 5 0 10">
+                                    <ComboBox ItemsSource="{Binding SortContentTag}"
+                                              Margin="10 0 5 0"
+                                              SelectedItem="{Binding SortSelectedItem,
+                                                             UpdateSourceTrigger=PropertyChanged}">
+                                        <ComboBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Padding="5 3"
-                                                        Margin="5 0 5 0">
-                                                    <TextBlock Text="{Binding Name}"
-                                                               SnapsToDevicePixels="True"
-                                                               TextOptions.TextRenderingMode="Auto"
-                                                               VerticalAlignment="Center"
-                                                               Foreground="White"
-                                                               FontSize="14">
-                                                        <TextBlock.Effect>
-                                                            <DropShadowEffect ShadowDepth="1"
-                                                                              BlurRadius="0"
-                                                                              RenderingBias="Quality"/>
-                                                        </TextBlock.Effect>
-                                                    </TextBlock>
-                                                </Border>
+                                                <TextBlock Text="{Binding Key}"/>
                                             </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ListView.ItemContainerStyle>
-                                            <Style TargetType="ListViewItem">
-                                                <Setter Property="SnapsToDevicePixels" Value="true"/>
-                                                <Setter Property="OverridesDefaultStyle" Value="true"/>
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="ListViewItem">
-                                                            <Border Name="Border" 
-                                                                    CornerRadius="5" 
-                                                                    SnapsToDevicePixels="True"
-                                                                    Background="{TemplateBinding Background}">
-                                                                <ContentPresenter/>
-                                                            </Border>
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter TargetName="Border"
-                                                                            Property="Background"
-                                                                            Value="#30FFFFFF"/>
-                                                                </Trigger>
-                                                                <Trigger Property="IsSelected" Value="true">
-                                                                    <Setter TargetName="Border"
-                                                                            Property="Background"
-                                                                            Value="#19FFFFFF"/>
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListView.ItemContainerStyle>
-                                    </ListView>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Grid.Column="0"
+                                      Grid.Row="1"
+                                      Margin="0 5 0 10">
+                                    <ComboBox ItemsSource="{Binding Category}"
+                                              Margin="15 0 25 0"
+                                              SelectedItem="{Binding CetegorySelectedItem,
+                                                             UpdateSourceTrigger=PropertyChanged}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -176,7 +128,7 @@
         </Border>
         <Border Grid.Row="2"
                 HorizontalAlignment="Center">
-            <ListView ItemsSource="{Binding Products,
+            <ListView ItemsSource="{Binding ViewProducts,
                                     UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Center"
                       d:ItemsSource="{d:SampleData ItemCount=100}"
@@ -246,10 +198,9 @@
                                                VerticalAlignment="Top"/>
                                 </StackPanel>
 
-                                <Border Background="#272837"
-                                        Padding="10"
+                                <Border CornerRadius="10"
+                                        Background="#272837"
                                         Grid.Row="3"
-                                        CornerRadius="10"
                                         Margin="0 0 10 0"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
@@ -257,20 +208,21 @@
                                         <MouseBinding Gesture="LeftClick"
                                                       Command="{Binding AddProductInBasketCommand}"/>
                                     </Border.InputBindings>
+                                    <Button>
+                                        <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Center">
 
-                                    <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Center">
+                                            <TextBlock Text="В корзину"
+                                                        FontSize="14"
+                                                        Margin="0 0 20 0"/>
 
-                                        <TextBlock Text="В корзину"
-                                                   FontSize="14"
-                                                   Margin="0 0 20 0"/>
-
-                                        <fa:ImageAwesome Icon="CartPlus"
-                                                         Width="20"
-                                                         VerticalAlignment="Center"
-                                                         HorizontalAlignment="Right"
-                                                        Foreground="#99FFFFFF"/>
-                                    </StackPanel>
+                                            <fa:ImageAwesome Icon="CartPlus"
+                                                                Width="20"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Right"
+                                                            Foreground="#99FFFFFF"/>
+                                        </StackPanel>
+                                    </Button>
                                 </Border>
                             </Grid>
                         </Border>
