@@ -47,21 +47,47 @@
 
                                 <Border VerticalAlignment="Center"
                                         Grid.Row="0"
-                                        Grid.ColumnSpan="3"
-                                        Margin="5 10 80 0"
+                                        Grid.ColumnSpan="2"
+                                        Margin="5 10 0 0"
                                         Background="#272837"
                                         CornerRadius="10"
                                         Padding="10 3"
                                         Grid.Column="0">
                                     <Grid>
-                                        <TextBox Style="{StaticResource TextBoxCustomStyle}"
-                                                 Margin="0 0 25 0"/>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60*"/>
+                                            <ColumnDefinition Width="2.6*"/>
+                                        </Grid.ColumnDefinitions>
                                         
-                                        <fa:ImageAwesome Icon="Search"
-                                                         Width="20"
-                                                         Foreground="#FFFFFF"
-                                                         HorizontalAlignment="Right"
-                                                         x:Name="SearchBtn"/>
+                                        <TextBox Style="{StaticResource TextBoxCustomStyle}"
+                                                 Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="0,0,1,0"
+                                                 Grid.Row="0"/>
+
+                                        <Border Grid.Column="1"
+                                                CornerRadius="10"
+                                                Padding="3">
+                                            <fa:ImageAwesome Icon="Search"
+                                                             Width="20"
+                                                             Foreground="#FFFFFF"
+                                                             HorizontalAlignment="Center"
+                                                             x:Name="SearchBtn"/>
+                                            <Border.InputBindings>
+                                                <MouseBinding Gesture="LeftClick"
+                                                              Command="{Binding ProductSearchCommand}"/>
+                                            </Border.InputBindings>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="#464649"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
 
                                     </Grid>
                                 </Border>
@@ -73,7 +99,7 @@
 
                                     <Border Style="{StaticResource BorderShopBasket}"
                                             CornerRadius="10"
-                                            Padding="0 10 0 10"
+                                            Padding="6"
                                             HorizontalAlignment="Center"
                                             x:Name="ShopBasketBtn">
                                         <Border.InputBindings>

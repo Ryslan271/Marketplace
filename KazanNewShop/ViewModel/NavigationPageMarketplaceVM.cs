@@ -5,6 +5,7 @@ using KazanNewShop.Database.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Data;
 
@@ -29,6 +30,9 @@ namespace KazanNewShop.ViewModel
 
         [ObservableProperty]
         private Product? _selectedItem;
+
+        [ObservableProperty]
+        private string? _search;
 
         /// <summary>
         /// Свойство сортировки
@@ -86,6 +90,32 @@ namespace KazanNewShop.ViewModel
 
                 return _cetegorySelectedItem == DatabaseContext.Entities.Categories.Local.ToObservableCollection().First()
                        || product!.IdCategoryNavigation == _cetegorySelectedItem;
+            };
+        }
+
+
+        /// <summary>
+        /// Команда поиска по товарам
+        /// </summary>
+        [RelayCommand]
+        public void ProductSearch()
+        {
+            if (Search == null)
+            {
+                ViewProducts.Filter = (obj) => true;
+                return;
+            }
+
+            ViewProducts.Filter = (obj) =>
+            {
+                string? search = Search?.ToLower().Trim();
+
+                var product = obj as Product;
+
+                if (product?.Name.ToLower().Contains(search!) == false)
+                    return false;
+
+                return true;
             };
         }
 

@@ -59,7 +59,7 @@
 
             <Button Content="Зарегистрироваться"
                     HorizontalAlignment="Center"
-                    Margin="0 20 0 0"
+                    Margin="0 20 0 10"
                     Command="{Binding RegisterCommand}"/>
                     
             <Button Content="Авторизация"

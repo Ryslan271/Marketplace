@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace KazanNewShop.Database
 {
@@ -6,6 +7,8 @@ namespace KazanNewShop.Database
     {
         private static DatabaseContext _entities = null!;
         public static DatabaseContext Entities => _entities ??= new DatabaseContext();
+
+        public static bool LodingFlag = false;
 
         /// <summary>
         /// Загрузка таблиц для регистрации и авторизации
@@ -29,6 +32,8 @@ namespace KazanNewShop.Database
             Entities.Orders.Load();
             Entities.Statuses.Load();
             Entities.Addresses.Load();
+
+            LodingFlag = true;
         }
     }
 }

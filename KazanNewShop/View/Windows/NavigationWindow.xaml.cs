@@ -1,12 +1,14 @@
 ﻿using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
+using KazanNewShop.View.Pages.LoadedPage;
 using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Pages.UserCreation;
 using KazanNewShop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
@@ -28,15 +30,20 @@ namespace KazanNewShop.View.Windows
             {
                 {typeof(FillingClientDataVM) , typeof(FillingClientData)},
                 {typeof(FillingSalesmanDataVM) , typeof(FillingSalesmanData)},
-                {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)}
+                {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)},
+                {typeof(LoadingScreenVM) , typeof(LoadingScreenPage)}
             };
 
         public NavigationWindow()
         {
-            // подгрузка основных сущностей
-            DatabaseContext.LoadEntitesForMarketplace();
-
-            //
+            InitializeComponent();
+            
+            Instance = this;
+            
+            if (DatabaseContext.LodingFlag == false)
+                Navigate(typeof(LoadingScreenVM));
+           
+            // Добавление в категории "Все" 
             DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
 
             // Создание дефолтной картинкой
@@ -45,10 +52,6 @@ namespace KazanNewShop.View.Windows
             // выдача первой картинки продукту для отображения картинки в списке продуктов
             foreach (Product item in DatabaseContext.Entities.Products.Local)
                 item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
-
-            InitializeComponent();
-
-            Instance = this;
         }
 
         /// <summary>

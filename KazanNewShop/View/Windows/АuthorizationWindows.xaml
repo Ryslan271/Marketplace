@@ -48,7 +48,7 @@
 
             <Button Content="Авторизоваться"
                     HorizontalAlignment="Center"
-                    Margin="0 20 0 0"
+                    Margin="0 20 0 10"
                     Command="{Binding AuthorizedCommand}"/>
 
             <Button Content="Регистрация"
@@ -56,6 +56,7 @@
                     HorizontalAlignment="Center"
                     Background="Transparent"
                     BorderBrush="Transparent"/>
+
         </StackPanel>
     </Grid>
 </ui:UiWindow>
