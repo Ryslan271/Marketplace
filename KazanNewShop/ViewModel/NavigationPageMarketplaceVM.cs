@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -127,7 +128,10 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void OpenBasket()
         {
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.IdClientNavigation == App.CarrentUser.Client) != true)
+                CreateBasket();
 
+            NavigationWindow.Navigate(typeof(BasketPageVM));
         }
 
         /// <summary>
@@ -144,9 +148,9 @@ namespace KazanNewShop.ViewModel
 
             Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
 
-            if (basket.ProductLists.Any(p => p.IdProductNavigation == SelectedItem!))
+            if (basket.ProductLists.Any(p => p.IdProductNavigation == SelectedItem!) == true)
             {
-                basket.ProductLists.First(p => p.IdProductNavigation == SelectedItem!).Count += 1;
+               basket.ProductLists.First(p => p.IdProductNavigation == SelectedItem!).Count += 1;
             }
             else
             {

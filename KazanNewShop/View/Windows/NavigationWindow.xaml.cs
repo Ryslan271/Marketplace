@@ -43,34 +43,46 @@ namespace KazanNewShop.View.Windows
 
             Instance = this;
 
-            if (DatabaseContext.LodingFlag == false)
-                Navigate(typeof(LoadingScreenVM));
-
             // Загрузка основных страниц во втором потоке
+            if (DatabaseContext.LodingFlag == false)
+                TransitionProductList();
+        }
+
+        /// <summary>
+        /// Создание экрана загрузки при переходе на страницу со всеми товарами
+        /// </summary>
+        public static void TransitionProductList()
+        {
+            Navigate(typeof(LoadingScreenVM));
+
             Task.Factory.StartNew(() =>
             {
-                Thread.Sleep(600);
+                Thread.Sleep(500);
 
-                DatabaseContext.LoadEntitesForMarketplace();
+                if (DatabaseContext.LodingFlag == false)
+                {
+                    // загрузка таблиц
+                    DatabaseContext.LoadEntitesForMarketplace();
 
-                // Добавление в категории "Все" 
-                DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
+                    // Добавление в категории "Все" 
+                    DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
 
-                // Создание дефолтной картинкой
-                ConvernMainPhoto();
+                    // Создание дефолтной картинкой
+                    ConvernMainPhoto();
 
-                // Выдача первой картинки продукту для отображения картинки в списке продуктов
-                foreach (Product item in DatabaseContext.Entities.Products.Local)
-                    item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
+                    // Выдача первой картинки продукту для отображения картинки в списке продуктов
+                    foreach (Product item in DatabaseContext.Entities.Products.Local)
+                        item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
+                }
 
             }).ContinueWith(task => { Navigate(typeof(NavigationPageMarketplaceVM)); },
-                                      TaskScheduler.FromCurrentSynchronizationContext());
+                                                  TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>
         /// Создание в байтах картинки для продуктов без картинок
         /// </summary>
-        private void ConvernMainPhoto() =>
+        private static void ConvernMainPhoto() =>
            CommonMethods.MainForProductNullPhoto =
             CommonMethods.ConvertImage(".\\Resources\\Images\\iconforNullValueProduct.png")!;
 

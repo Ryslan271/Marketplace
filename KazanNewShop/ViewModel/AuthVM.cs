@@ -38,7 +38,9 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
-            if (AuthRegService.AuthorizeUser(Login, Password) == null) return;
+            App.CarrentUser = AuthRegService.AuthorizeUser(Login!, Password!)!;
+
+            if (App.CarrentUser == null) return;
             
             new NavigationWindow().Show();
 
