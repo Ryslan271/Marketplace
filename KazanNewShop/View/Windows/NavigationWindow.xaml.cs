@@ -8,8 +8,10 @@ using KazanNewShop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace KazanNewShop.View.Windows
@@ -31,27 +33,38 @@ namespace KazanNewShop.View.Windows
                 {typeof(FillingClientDataVM) , typeof(FillingClientData)},
                 {typeof(FillingSalesmanDataVM) , typeof(FillingSalesmanData)},
                 {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)},
-                {typeof(LoadingScreenVM) , typeof(LoadingScreenPage)}
+                {typeof(LoadingScreenVM) , typeof(LoadingScreenPage)},
+                {typeof(BasketPageVM) , typeof(BasketPage)},
             };
 
         public NavigationWindow()
         {
             InitializeComponent();
-            
+
             Instance = this;
-            
+
             if (DatabaseContext.LodingFlag == false)
                 Navigate(typeof(LoadingScreenVM));
-           
-            // Добавление в категории "Все" 
-            DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
 
-            // Создание дефолтной картинкой
-            ConvernMainPhoto();
+            // Загрузка основных страниц во втором потоке
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(600);
 
-            // выдача первой картинки продукту для отображения картинки в списке продуктов
-            foreach (Product item in DatabaseContext.Entities.Products.Local)
-                item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
+                DatabaseContext.LoadEntitesForMarketplace();
+
+                // Добавление в категории "Все" 
+                DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
+
+                // Создание дефолтной картинкой
+                ConvernMainPhoto();
+
+                // Выдача первой картинки продукту для отображения картинки в списке продуктов
+                foreach (Product item in DatabaseContext.Entities.Products.Local)
+                    item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
+
+            }).ContinueWith(task => { Navigate(typeof(NavigationPageMarketplaceVM)); },
+                                      TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>

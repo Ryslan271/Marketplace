@@ -1,6 +1,9 @@
 ﻿using KazanNewShop.Database;
+using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Wpf.Ui.Controls;
 
@@ -14,14 +17,6 @@ namespace KazanNewShop.View.Pages.LoadedPage
         public LoadingScreenPage()
         {
             InitializeComponent();
-
-            // подгрузка основных сущностей
-            Task loadEntities = new(DatabaseContext.LoadEntitesForMarketplace);
-            loadEntities.Start();
-
-            // Ожидание загрузки
-            loadEntities.Wait(1000);
-
         }
     }
 }

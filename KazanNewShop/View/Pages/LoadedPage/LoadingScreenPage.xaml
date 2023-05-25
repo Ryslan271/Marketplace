@@ -10,7 +10,7 @@
       Title="loadingScreen">
 
     <Grid Width="100" Height="100">
-        <Path Stroke="Gray" StrokeThickness="4" StrokeEndLineCap="Round">
+        <Path Stroke="LightBlue" StrokeThickness="4" StrokeEndLineCap="Round">
             <Path.Data>
                 <PathGeometry>
                     <PathFigure StartPoint="50,10">
@@ -39,5 +39,37 @@
                 <RotateTransform x:Name="rotateTransform" CenterX="50" CenterY="50" />
             </Path.RenderTransform>
         </Path>
+
+        <Path Stroke="LightBlue" StrokeThickness="4"
+              StrokeEndLineCap="Round">
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="50,10">
+                        <LineSegment Point="10,50" />
+                        <LineSegment Point="50,90" />
+                        <LineSegment Point="90,50" />
+                        <LineSegment Point="50,10" />
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+            <Path.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                        Storyboard.TargetName="rotateTransformTwo"
+                        Storyboard.TargetProperty="Angle"
+                        From="0" To="360"
+                        Duration="0:0:5"
+                        RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Path.Triggers>
+            <Path.RenderTransform>
+                <RotateTransform x:Name="rotateTransformTwo" CenterX="50" CenterY="50" />
+            </Path.RenderTransform>
+        </Path>
     </Grid>
+    
 </ui:UiPage>

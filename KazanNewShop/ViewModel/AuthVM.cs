@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -22,12 +23,12 @@ namespace KazanNewShop.ViewModel
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _login;
+        private string? _login = "asd";
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _password;
+        private string? _password = "asd";
 
         [RelayCommand]
         private void Authorized()
@@ -38,10 +39,8 @@ namespace KazanNewShop.ViewModel
                 return;
 
             if (AuthRegService.AuthorizeUser(Login, Password) == null) return;
-
+            
             new NavigationWindow().Show();
-
-            NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
 
             CloseWindow();
         }

@@ -5,7 +5,6 @@ using KazanNewShop.Database.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Data;
 
@@ -13,6 +12,9 @@ namespace KazanNewShop.ViewModel
 {
     public partial class NavigationPageMarketplaceVM : ObservableValidator
     {
+        /// <summary>
+        /// Словарь сортировки
+        /// </summary>
         public static Dictionary<string, SortDescription> SortContentTag { get; } = new()
         {
             { "От А до Я", new SortDescription { PropertyName = nameof(Product.Name), Direction = ListSortDirection.Ascending } },
