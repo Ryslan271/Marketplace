@@ -7,7 +7,8 @@
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
            xmlns:fa="http://schemas.fontawesome.io/icons/"
            mc:Ignorable="d" 
-           d:DesignHeight="850" d:DesignWidth="800">
+           d:DesignHeight="850" d:DesignWidth="800"
+           x:Name="Root">
 
     <Page.Resources>
         <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
@@ -156,9 +157,9 @@
                 HorizontalAlignment="Center">
             <ListView ItemsSource="{Binding ViewProducts,
                                     UpdateSourceTrigger=PropertyChanged}"
+                      ScrollViewer.CanContentScroll="False"
                       HorizontalAlignment="Center"
                       d:ItemsSource="{d:SampleData ItemCount=100}"
-                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                       BorderBrush="Transparent"
                       Background="Transparent"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -213,27 +214,31 @@
                                                TextWrapping="Wrap"/>
 
                                     <TextBlock Text="{Binding Cost,
-                                                  StringFormat='{}Цена: {0}'}"
+                                                      StringFormat='{}Цена: {0}'}"
                                                FontSize="12"
                                                Margin="0 10 0 0"/>
 
                                     <TextBlock Text="{Binding CostWithDiscount,
-                                                  StringFormat='{} {0}'}"
+                                                      StringFormat='{} {0}'}"
                                                FontSize="8"
                                                Margin="0 10 0 0"
                                                VerticalAlignment="Top"/>
                                 </StackPanel>
 
-                                <Border CornerRadius="10"
+                                <Border Visibility="{Binding VisibilyButtonProductNotInCart}"
+                                        CornerRadius="10"
                                         Background="#272837"
                                         Grid.Row="3"
                                         Padding="7 5"
-                                        Margin="0 0 10 0"
+                                        Margin="0 0 10 10"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
                                     <Border.InputBindings>
                                         <MouseBinding Gesture="LeftClick"
-                                                      Command="{Binding OpenBasketCommand}"/>
+                                                      Command="{Binding Path=DataContext.AddProductInBasketCommand,
+                                                                ElementName=Root,
+                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                      CommandParameter="{Binding .}"/>
                                     </Border.InputBindings>
                                     <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Center">
@@ -249,6 +254,57 @@
                                                          Foreground="#99FFFFFF"/>
                                     </StackPanel>
                                 </Border>
+
+                                <Grid Margin="0 10 0 10"
+                                      Grid.Row="3"
+                                      Visibility="{Binding VisibilyButtonProductInCart}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border CornerRadius="10"
+                                            Grid.Column="0"
+                                            Background="#272837"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+
+                                        <Button Command="{Binding DataContext.AddProductInBasketCommand,
+                                                          ElementName=Root,
+                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                CommandParameter="{Binding .}">
+                                            <fa:ImageAwesome Icon="Plus"
+                                                             Width="15"
+                                                             Foreground="#ded8d7"/>
+                                        </Button>
+                                    </Border>
+
+                                    <TextBlock Text="{Binding CountInBasket,
+                                                      UpdateSourceTrigger=PropertyChanged}"
+                                               Grid.Column="1"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+
+                                    <Border CornerRadius="10"
+                                            Grid.Column="2"
+                                            Background="#272837"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+
+                                        <Button Padding="10 10 10 10"
+                                                Command="{Binding DataContext.DeleteProductInBasketCommand,
+                                                          ElementName=Root,
+                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                CommandParameter="{Binding .}">
+                                            <fa:ImageAwesome Icon="Minus"
+                                                         Width="15"
+                                                         Foreground="#ded8d7"/>
+                                        </Button>
+                                    </Border>
+                                </Grid>
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -32,9 +32,6 @@ namespace KazanNewShop.ViewModel
         private int _countProdutsInBasket = 0;
 
         [ObservableProperty]
-        private Product? _selectedItem;
-
-        [ObservableProperty]
         private string? _search;
 
         /// <summary>
@@ -138,29 +135,88 @@ namespace KazanNewShop.ViewModel
         /// Команда добавление товара в корзину
         /// </summary>
         [RelayCommand]
-        public void AddProductInBasket()
+        public void AddProductInBasket(Product SelectedItem)
         {
-            if (SelectedItem == null)
-                return;
-
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.IdClientNavigation == App.CarrentUser.Client) != true)
-                CreateBasket();
+            ValidateExistenceBasket();
 
             Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
 
-            if (basket.ProductLists.Any(p => p.IdProductNavigation == SelectedItem!) == true)
+            if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
             {
-               basket.ProductLists.First(p => p.IdProductNavigation == SelectedItem!).Count += 1;
+                basket.ProductLists.First(p => p.Product == SelectedItem!).Count += 1;
+
+                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
             }
             else
             {
                 DatabaseContext.Entities.ProductLists.Local.Add(new ProductList()
                 {
-                    IdBasketNavigation = basket,
-                    IdProductNavigation = SelectedItem!,
+                    Basket = basket,
+                    Product = SelectedItem!,
                     Count = 1
                 });
+
+                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
             }
+
+            ValidateCountInProductBasket(SelectedItem);
+
+            ViewProducts.Refresh();
+        }
+
+        /// <summary>
+        /// Команда удаление товара в корзину
+        /// </summary>
+        [RelayCommand]
+        public void DeleteProductInBasket(Product SelectedItem)
+        {
+            ValidateExistenceBasket();
+
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
+
+            if (basket.ProductLists.First(p => p.Product == SelectedItem!).Count - 1 > 0)
+            {
+                basket.ProductLists.First(p => p.Product == SelectedItem!).Count -= 1;
+
+                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
+            }
+            else
+            {
+                DatabaseContext.Entities.ProductLists.Local.Remove(basket.ProductLists.First(p => p.Product == SelectedItem!));
+
+                SelectedItem.CountInBasket = 0;
+            }
+
+            ValidateCountInProductBasket(SelectedItem);
+
+            ViewProducts.Refresh();
+        }
+
+        /// <summary>
+        /// Проверка количество, для показать или скрить элементы
+        /// </summary>
+        /// <param name="SelectedItem">Выбранный элемент</param>
+        private static void ValidateCountInProductBasket(Product SelectedItem)
+        {
+            if (SelectedItem.CountInBasket <= 0)
+            {
+                SelectedItem.VisibilyButtonProductNotInCart = System.Windows.Visibility.Visible;
+                SelectedItem.VisibilyButtonProductInCart = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                SelectedItem.VisibilyButtonProductNotInCart = System.Windows.Visibility.Collapsed;
+                SelectedItem.VisibilyButtonProductInCart = System.Windows.Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Проверка на существование корзины
+        /// </summary>
+        private static void ValidateExistenceBasket()
+        {
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.IdClientNavigation == App.CarrentUser.Client) != true)
+                CreateBasket();
         }
 
         /// <summary>

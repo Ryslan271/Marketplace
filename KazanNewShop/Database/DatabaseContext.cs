@@ -182,12 +182,12 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdBasket).HasColumnName("ID_Basket");
             entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
 
-            entity.HasOne(d => d.IdBasketNavigation).WithMany(p => p.ProductLists)
+            entity.HasOne(d => d.Basket).WithMany(p => p.ProductLists)
                 .HasForeignKey(d => d.IdBasket)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductList_Basket");
 
-            entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.ProductLists)
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductLists)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductList_Product");

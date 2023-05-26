@@ -18,9 +18,8 @@ namespace KazanNewShop.ViewModel
     {
         // список продуктов в корзине
         public ICollectionView ViewProductsInBasket { get; }
-            = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.ProductLists.Local.ToObservableCollection()
-                .Where(p => p.IdBasketNavigation == DatabaseContext.Entities.Baskets.Local.ToObservableCollection().FirstOrDefault(b => b == App.CarrentUser.Client!.Baskets))
-                .Select(p => p.IdProductNavigation));
+            = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
+                .First(b => b.IdClientNavigation == App.CarrentUser.Client).ProductLists);
 
         // Нужная корзина 
         private Basket _basket 
@@ -32,19 +31,18 @@ namespace KazanNewShop.ViewModel
         [ObservableProperty]
         private string? _search;
 
-        [ObservableProperty]
-        private Product? _selectedItem;
-
         /// <summary>
         /// Удаление -1 к указанному товару
         /// </summary>
         [RelayCommand]
-        public void DeleteOneSelectedProduct()
+        public void DeleteOneSelectedProduct(ProductList SelectedItem)
         {
-            DatabaseContext.Entities.ProductLists.Local
-                .FirstOrDefault(p => p.IdProductNavigation == SelectedItem &&
-                                     p.IdBasketNavigation == _basket)!
-                .Count -= 1;
+            if (SelectedItem.Count - 1 < 1)
+                return;
+
+            SelectedItem.Count -= 1;
+
+            SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
 
@@ -55,12 +53,11 @@ namespace KazanNewShop.ViewModel
         /// Добавление +1 к указанному товару
         /// </summary>
         [RelayCommand]
-        public void AddOneSelectedProduct()
+        public void AddOneSelectedProduct(ProductList SelectedItem)
         {
-            DatabaseContext.Entities.ProductLists.Local
-                .FirstOrDefault(p => p.IdProductNavigation == SelectedItem &&
-                                     p.IdBasketNavigation == _basket)!
-                .Count += 1;
+            SelectedItem.Count += 1;
+
+            SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
 
@@ -71,12 +68,11 @@ namespace KazanNewShop.ViewModel
         /// Удаление товара из корзины
         /// </summary>
         [RelayCommand]
-        public void DeleteProduct() 
+        public void DeleteProduct(ProductList SelectedItem) 
         {
-            DatabaseContext.Entities.ProductLists.Local.Remove
-                (
-                    DatabaseContext.Entities.ProductLists.Local.FirstOrDefault(p => p.IdBasketNavigation == _basket)!
-                );
+            DatabaseContext.Entities.ProductLists.Local.Remove(SelectedItem);
+
+            ViewProductsInBasket.Refresh();
 
             DatabaseContext.Entities.SaveChanges();
         }

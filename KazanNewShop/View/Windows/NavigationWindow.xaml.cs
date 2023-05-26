@@ -44,7 +44,7 @@ namespace KazanNewShop.View.Windows
             Instance = this;
 
             // Загрузка основных страниц во втором потоке
-            if (DatabaseContext.LodingFlag == false)
+            if (DatabaseContext.LoadingFlag == false)
                 TransitionProductList();
         }
 
@@ -59,7 +59,7 @@ namespace KazanNewShop.View.Windows
             {
                 Thread.Sleep(500);
 
-                if (DatabaseContext.LodingFlag == false)
+                if (DatabaseContext.LoadingFlag == false)
                 {
                     // загрузка таблиц
                     DatabaseContext.LoadEntitesForMarketplace();
@@ -84,7 +84,7 @@ namespace KazanNewShop.View.Windows
         /// </summary>
         private static void ConvernMainPhoto() =>
            CommonMethods.MainForProductNullPhoto =
-            CommonMethods.ConvertImage(".\\Resources\\Images\\iconforNullValueProduct.png")!;
+               CommonMethods.ConvertImage(".\\Resources\\Images\\iconforNullValueProduct.png")!;
 
         /// <summary>
         /// Переход на нужный Page

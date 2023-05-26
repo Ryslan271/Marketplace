@@ -8,7 +8,7 @@ namespace KazanNewShop.Database
         private static DatabaseContext _entities = null!;
         public static DatabaseContext Entities => _entities ??= new DatabaseContext();
 
-        public static bool LodingFlag = false;
+        public static bool LoadingFlag = false;
 
         /// <summary>
         /// Загрузка таблиц для регистрации и авторизации
@@ -33,7 +33,7 @@ namespace KazanNewShop.Database
             Entities.Statuses.Load();
             Entities.Addresses.Load();
 
-            LodingFlag = true;
+            LoadingFlag = true;
         }
     }
 }
