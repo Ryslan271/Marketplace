@@ -31,9 +31,9 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
     
-            AuthRegService.FilledClientData(Name!, Surname!, Patronymic!);
+            AuthRegService.FillClientData(Name!, Surname!, Patronymic!);
 
-            NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
+            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
         }
     }
 }

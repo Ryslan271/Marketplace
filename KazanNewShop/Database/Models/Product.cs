@@ -35,5 +35,7 @@ public partial class Product
 
     public virtual ICollection<PhotoProduct> PhotoProducts { get; set; } = new List<PhotoProduct>();
 
+    public virtual ICollection<ProductListOrder> ProductListOrders { get; set; } = new List<ProductListOrder>();
+
     public virtual ICollection<ProductList> ProductLists { get; set; } = new List<ProductList>();
 }

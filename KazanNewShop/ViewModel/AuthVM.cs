@@ -44,6 +44,8 @@ namespace KazanNewShop.ViewModel
             
             new NavigationWindow().Show();
 
+            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+
             CloseWindow();
         }
 

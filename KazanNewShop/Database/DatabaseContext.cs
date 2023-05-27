@@ -16,13 +16,9 @@ public partial class DatabaseContext : DbContext
     {
     }
 
-    public virtual DbSet<Address> Addresses { get; set; }
-
     public virtual DbSet<Basket> Baskets { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<Characteristic> Characteristics { get; set; }
 
     public virtual DbSet<Client> Clients { get; set; }
 
@@ -32,9 +28,13 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<PhotoProduct> PhotoProducts { get; set; }
 
+    public virtual DbSet<PointOfIssue> PointOfIssues { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductList> ProductLists { get; set; }
+
+    public virtual DbSet<ProductListOrder> ProductListOrders { get; set; }
 
     public virtual DbSet<Salesman> Salesmen { get; set; }
 
@@ -48,14 +48,6 @@ public partial class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Address>(entity =>
-        {
-            entity.ToTable("Address");
-
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Name).HasMaxLength(250);
-        });
-
         modelBuilder.Entity<Basket>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Basket_1");
@@ -63,10 +55,9 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("Basket");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.AllCost).HasColumnType("money");
             entity.Property(e => e.IdClient).HasColumnName("ID_Client");
 
-            entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.Baskets)
+            entity.HasOne(d => d.Client).WithMany(p => p.Baskets)
                 .HasForeignKey(d => d.IdClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Basket_Client");
@@ -80,39 +71,39 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(150);
         });
 
-        modelBuilder.Entity<Characteristic>(entity =>
-        {
-            entity.HasNoKey();
-
-            entity.Property(e => e.Id).HasColumnName("ID");
-        });
-
         modelBuilder.Entity<Client>(entity =>
         {
             entity.ToTable("Client");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.IdUser).HasColumnName("ID_User");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(150);
+            entity.Property(e => e.NumberOfCreditCard).HasMaxLength(16);
             entity.Property(e => e.Patronymic).HasMaxLength(150);
             entity.Property(e => e.Surname).HasMaxLength(150);
 
-            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Clients)
-                .HasForeignKey(d => d.IdUser)
-                .HasConstraintName("FK_Client_User");
+            entity.HasOne(d => d.User).WithOne(p => p.Client)
+                .HasForeignKey<Client>(d => d.Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Client_User1");
         });
 
         modelBuilder.Entity<Employee>(entity =>
         {
             entity.ToTable("Employee");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.IdUser).HasColumnName("ID_User");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(150);
+            entity.Property(e => e.Patronymic).HasMaxLength(150);
+            entity.Property(e => e.Surname).HasMaxLength(150);
 
-            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Employees)
-                .HasForeignKey(d => d.IdUser)
+            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Employee)
+                .HasForeignKey<Employee>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Employee_User");
+                .HasConstraintName("FK_Employee_User1");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -120,18 +111,18 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("Order");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.IdAddress).HasColumnName("ID_Address");
-            entity.Property(e => e.IdBasket).HasColumnName("ID_Basket");
+            entity.Property(e => e.IdClient).HasColumnName("ID_Client");
+            entity.Property(e => e.IdPointOfIssue).HasColumnName("ID_PointOfIssue");
 
-            entity.HasOne(d => d.IdAddressNavigation).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.IdAddress)
+            entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.IdClient)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Client");
+
+            entity.HasOne(d => d.IdPointOfIssueNavigation).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.IdPointOfIssue)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Address");
-
-            entity.HasOne(d => d.IdBasketNavigation).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.IdBasket)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Basket1");
         });
 
         modelBuilder.Entity<PhotoProduct>(entity =>
@@ -146,6 +137,22 @@ public partial class DatabaseContext : DbContext
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PhotoProduct_Product1");
+        });
+
+        modelBuilder.Entity<PointOfIssue>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Address");
+
+            entity.ToTable("PointOfIssue");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Lat)
+                .HasColumnType("decimal(8, 6)")
+                .HasColumnName("lat");
+            entity.Property(e => e.Lot)
+                .HasColumnType("decimal(9, 6)")
+                .HasColumnName("lot");
+            entity.Property(e => e.Name).HasMaxLength(250);
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -176,6 +183,8 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<ProductList>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_ProductList_1");
+
             entity.ToTable("ProductList");
 
             entity.Property(e => e.Id).HasColumnName("ID");
@@ -193,18 +202,40 @@ public partial class DatabaseContext : DbContext
                 .HasConstraintName("FK_ProductList_Product");
         });
 
+        modelBuilder.Entity<ProductListOrder>(entity =>
+        {
+            entity.HasKey(e => new { e.IdProduct, e.IdOrder });
+
+            entity.ToTable("ProductListOrder");
+
+            entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
+            entity.Property(e => e.IdOrder).HasColumnName("ID_Order");
+
+            entity.HasOne(d => d.IdOrderNavigation).WithMany(p => p.ProductListOrders)
+                .HasForeignKey(d => d.IdOrder)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductListOrder_Order");
+
+            entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.ProductListOrders)
+                .HasForeignKey(d => d.IdProduct)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductListOrder_Product");
+        });
+
         modelBuilder.Entity<Salesman>(entity =>
         {
             entity.ToTable("Salesman");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
             entity.Property(e => e.DateOnMarketplace).HasColumnType("date");
-            entity.Property(e => e.IdUser).HasColumnName("ID_User");
             entity.Property(e => e.NameCompany).HasMaxLength(150);
 
-            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Salesmen)
-                .HasForeignKey(d => d.IdUser)
-                .HasConstraintName("FK_Salesman_User");
+            entity.HasOne(d => d.User).WithOne(p => p.Salesman)
+                .HasForeignKey<Salesman>(d => d.Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Salesman_User1");
         });
 
         modelBuilder.Entity<Status>(entity =>

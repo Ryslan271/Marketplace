@@ -7,11 +7,13 @@ public partial class Order
 {
     public int Id { get; set; }
 
-    public int IdBasket { get; set; }
+    public int IdPointOfIssue { get; set; }
 
-    public int IdAddress { get; set; }
+    public int IdClient { get; set; }
 
-    public virtual Address IdAddressNavigation { get; set; } = null!;
+    public virtual Client IdClientNavigation { get; set; } = null!;
 
-    public virtual Basket IdBasketNavigation { get; set; } = null!;
+    public virtual PointOfIssue IdPointOfIssueNavigation { get; set; } = null!;
+
+    public virtual ICollection<ProductListOrder> ProductListOrders { get; set; } = new List<ProductListOrder>();
 }

@@ -26,12 +26,14 @@ namespace KazanNewShop.Database
         public static void LoadEntitesForMarketplace()
         {
             Entities.Baskets.Load();
+            Entities.ProductLists.Load();
             Entities.Products.Load();
             Entities.Categories.Load();
             Entities.PhotoProducts.Load();
             Entities.Orders.Load();
             Entities.Statuses.Load();
-            Entities.Addresses.Load();
+            Entities.PointOfIssues.Load();
+            Entities.ProductListOrders.Load();
 
             LoadingFlag = true;
         }

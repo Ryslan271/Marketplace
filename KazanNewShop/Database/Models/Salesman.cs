@@ -13,9 +13,9 @@ public partial class Salesman
 
     public DateTime? DateOnMarketplace { get; set; }
 
-    public int? IdUser { get; set; }
+    public byte[]? ProfilePhoto { get; set; }
 
-    public virtual User? IdUserNavigation { get; set; }
+    public virtual User User { get; set; } = null!;
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

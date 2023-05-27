@@ -52,7 +52,7 @@ namespace KazanNewShop.Services
         /// <param name="name">Имя</param>
         /// <param name="surname">Фамилия</param>
         /// <param name="patronymic">Отчество</param>
-        public static void FilledClientData(string name, string surname, string patronymic)
+        public static void FillClientData(string name, string surname, string patronymic)
         {
 
             DatabaseContext.Entities.Users.Local.Add(App.CarrentUser);
@@ -63,13 +63,13 @@ namespace KazanNewShop.Services
                     Name = name,
                     Surname = surname,
                     Patronymic = patronymic,
-                    IdUserNavigation = App.CarrentUser
+                    User = App.CarrentUser
                 });
 
             DatabaseContext.Entities.SaveChanges();
         }
 
-        public static void FilledSalesmanData(string description, DateTime dateOnMarketplace, string companyName)
+        public static void FillSalesmanData(string description, DateTime dateOnMarketplace, string companyName)
         {
             DatabaseContext.Entities.Users.Local.Add(App.CarrentUser);
 
@@ -79,7 +79,7 @@ namespace KazanNewShop.Services
                     DateOnMarketplace = dateOnMarketplace,
                     NameCompany = companyName,
                     Description = description,
-                    IdUserNavigation = App.CarrentUser
+                    User = App.CarrentUser
                 });
 
             DatabaseContext.Entities.SaveChanges();

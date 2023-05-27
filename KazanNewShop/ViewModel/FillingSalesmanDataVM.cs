@@ -33,9 +33,9 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
-            AuthRegService.FilledSalesmanData(Description!, DateOnMarketplace, CompanyName!);
+            AuthRegService.FillSalesmanData(Description!, DateOnMarketplace, CompanyName!);
 
-            NavigationWindow.Navigate(typeof(ProductList));
+            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
         }
     }
 }

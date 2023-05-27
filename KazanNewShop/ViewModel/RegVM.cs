@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KazanNewShop.Database;
 using KazanNewShop.DataTypes.Enums;
 using KazanNewShop.Services;
 using KazanNewShop.View.Base;

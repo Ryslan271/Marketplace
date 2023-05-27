@@ -3,13 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.View.Windows;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace KazanNewShop.ViewModel
@@ -19,10 +14,10 @@ namespace KazanNewShop.ViewModel
         // список продуктов в корзине
         public ICollectionView ViewProductsInBasket { get; }
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
-                .First(b => b.IdClientNavigation == App.CarrentUser.Client).ProductLists);
+                .First(b => b.Client == App.CarrentUser.Client).ProductLists);
 
         // Нужная корзина 
-        private Basket _basket 
+        private Basket _basket
             = DatabaseContext.Entities.Baskets.Local.ToObservableCollection().FirstOrDefault(b => b == App.CarrentUser.Client!.Baskets)!;
 
         [ObservableProperty]
@@ -45,8 +40,6 @@ namespace KazanNewShop.ViewModel
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
-
-            DatabaseContext.Entities.SaveChanges();
         }
 
         /// <summary>
@@ -60,15 +53,13 @@ namespace KazanNewShop.ViewModel
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
-
-            DatabaseContext.Entities.SaveChanges();
         }
 
         /// <summary>
         /// Удаление товара из корзины
         /// </summary>
         [RelayCommand]
-        public void DeleteProduct(ProductList SelectedItem) 
+        public void DeleteProduct(ProductList SelectedItem)
         {
             DatabaseContext.Entities.ProductLists.Local.Remove(SelectedItem);
 
@@ -107,6 +98,6 @@ namespace KazanNewShop.ViewModel
         /// </summary>
         [RelayCommand]
         public void OpenProductsList() =>
-            NavigationWindow.TransitionProductList();
+            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
     }
 }

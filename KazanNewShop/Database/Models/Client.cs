@@ -13,9 +13,13 @@ public partial class Client
 
     public string? Patronymic { get; set; }
 
-    public int? IdUser { get; set; }
+    public byte[]? ProfilePhoto { get; set; }
+
+    public string? NumberOfCreditCard { get; set; }
 
     public virtual ICollection<Basket> Baskets { get; set; } = new List<Basket>();
 
-    public virtual User? IdUserNavigation { get; set; }
+    public virtual User User { get; set; } = null!;
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

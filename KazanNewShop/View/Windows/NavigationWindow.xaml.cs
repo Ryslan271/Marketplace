@@ -5,11 +5,14 @@ using KazanNewShop.View.Pages.LoadedPage;
 using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Pages.UserCreation;
 using KazanNewShop.ViewModel;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
@@ -42,22 +45,20 @@ namespace KazanNewShop.View.Windows
             InitializeComponent();
 
             Instance = this;
-
-            // Загрузка основных страниц во втором потоке
-            if (DatabaseContext.LoadingFlag == false)
-                TransitionProductList();
         }
 
         /// <summary>
         /// Создание экрана загрузки при переходе на страницу со всеми товарами
         /// </summary>
-        public static void TransitionProductList()
+        public static void TransitionProductList(Type VMToNavigate)
         {
             Navigate(typeof(LoadingScreenVM));
 
             Task.Factory.StartNew(() =>
             {
                 Thread.Sleep(500);
+
+                DatabaseContext.Entities.SaveChanges();
 
                 if (DatabaseContext.LoadingFlag == false)
                 {
@@ -75,8 +76,8 @@ namespace KazanNewShop.View.Windows
                         item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
                 }
 
-            }).ContinueWith(task => { Navigate(typeof(NavigationPageMarketplaceVM)); },
-                                                  TaskScheduler.FromCurrentSynchronizationContext());
+            }).ContinueWith(task => { Navigate(VMToNavigate); },
+                                      TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>
@@ -113,6 +114,39 @@ namespace KazanNewShop.View.Windows
         {
             if (Instance.NavigationFrame.CanGoBack)
                 Instance.NavigationFrame.GoBack();
+        }
+
+        /// <summary>
+        /// При закрытии окна
+        /// </summary>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (DatabaseContext.Entities.ChangeTracker.HasChanges() == false)
+                base.OnClosing(e);
+
+            var dialog = new Wpf.Ui.Controls.MessageBox
+            {
+                Content = "Хотите ли вы сохранить изменения",
+                Title = "Уведомление",
+                ButtonLeftName = "Да",
+                ButtonRightName = "Нет",
+            };
+
+            var dialogResult = false;
+            dialog.ButtonLeftClick += (_, _) =>
+            {
+                dialogResult = true;
+                dialog.Close();
+            };
+            dialog.ButtonRightClick += (_, _) => { dialog.Close(); };
+
+            dialog.ShowDialog();
+            if (dialogResult)
+            {
+                DatabaseContext.Entities.SaveChanges();
+            }
+
+            base.OnClosing(e);
         }
     }
 }

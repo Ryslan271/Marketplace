@@ -1,10 +1,11 @@
 ﻿using KazanNewShop.DataTypes.Enums;
-using System.Linq;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KazanNewShop.Database.Models
 {
     public partial class User
     {
+        [NotMapped]
         public UserRole Role
         {
             get
@@ -18,14 +19,5 @@ namespace KazanNewShop.Database.Models
                 return UserRole.Selesman;
             }
         }
-
-        private Client? _client;
-        public Client? Client => _client ??= DatabaseContext.Entities.Clients.FirstOrDefault(c => c.IdUserNavigation == this);
-
-        private Employee? _employee;
-        public Employee? Employee => _employee ??= DatabaseContext.Entities.Employees.FirstOrDefault(c => c.IdUserNavigation == this);
-
-        private Salesman? _selesman;
-        public Salesman? Selesman => _selesman ??= DatabaseContext.Entities.Salesmen.FirstOrDefault(c => c.IdUserNavigation == this);
     }
 }

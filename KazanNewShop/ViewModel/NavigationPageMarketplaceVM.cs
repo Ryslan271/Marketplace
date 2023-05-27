@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 
 namespace KazanNewShop.ViewModel
@@ -125,7 +126,7 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void OpenBasket()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.IdClientNavigation == App.CarrentUser.Client) != true)
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CarrentUser.Client) != true)
                 CreateBasket();
 
             NavigationWindow.Navigate(typeof(BasketPageVM));
@@ -139,7 +140,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CarrentUser.Client);
 
             if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
             {
@@ -172,7 +173,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.IdClientNavigation == App.CarrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CarrentUser.Client);
 
             if (basket.ProductLists.First(p => p.Product == SelectedItem!).Count - 1 > 0)
             {
@@ -200,13 +201,13 @@ namespace KazanNewShop.ViewModel
         {
             if (SelectedItem.CountInBasket <= 0)
             {
-                SelectedItem.VisibilyButtonProductNotInCart = System.Windows.Visibility.Visible;
-                SelectedItem.VisibilyButtonProductInCart = System.Windows.Visibility.Collapsed;
+                SelectedItem.VisibilyButtonProductNotInCart = Visibility.Visible;
+                SelectedItem.VisibilyButtonProductInCart = Visibility.Collapsed;
             }
             else
             {
-                SelectedItem.VisibilyButtonProductNotInCart = System.Windows.Visibility.Collapsed;
-                SelectedItem.VisibilyButtonProductInCart = System.Windows.Visibility.Visible;
+                SelectedItem.VisibilyButtonProductNotInCart = Visibility.Collapsed;
+                SelectedItem.VisibilyButtonProductInCart = Visibility.Visible;
             }
         }
 
@@ -215,7 +216,7 @@ namespace KazanNewShop.ViewModel
         /// </summary>
         private static void ValidateExistenceBasket()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.IdClientNavigation == App.CarrentUser.Client) != true)
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CarrentUser.Client) != true)
                 CreateBasket();
         }
 
@@ -225,10 +226,7 @@ namespace KazanNewShop.ViewModel
         private static void CreateBasket() =>
             DatabaseContext.Entities.Baskets.Local.Add(new Basket()
             {
-                IdClientNavigation = App.CarrentUser.Client!,
-                AllCost = 0,
-                CountProduct = 0
+                Client = App.CarrentUser.Client!
             });
-
     }
 }
