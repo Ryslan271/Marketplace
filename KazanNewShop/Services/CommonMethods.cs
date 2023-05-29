@@ -7,6 +7,8 @@ namespace KazanNewShop.Services
     {
         #region Работа с изображениями 
 
+        public static byte[] MainForProfileClientNullPhoto = null!;
+
         public static byte[] MainForProductNullPhoto = null!;
 
         public static byte[]? ConvertImage(string? filePath = null)

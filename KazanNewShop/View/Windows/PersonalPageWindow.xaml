@@ -1,0 +1,93 @@
+﻿<ui:UiWindow x:Class="KazanNewShop.View.Windows.PersonalPageWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:KazanNewShop.ViewModel"
+             mc:Ignorable="d"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             ExtendsContentIntoTitleBar="True"
+             WindowCornerPreference="RoundSmall"
+             WindowStartupLocation="CenterScreen"
+             x:Name="Root"
+             Height="550"
+             Width="400">
+
+    <Window.Resources>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:PersonalPageWindowVM/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Title="Личная страница"/>
+
+        <StackPanel Grid.Row="1"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center">
+
+            <Image Source="{Binding DataContext.Photo,
+                            ElementName=Root}"
+                   Grid.Row="0"
+                   Opacity="0.2"
+                   Panel.ZIndex="2"
+                   Height="150"
+                   Margin="10 0 0 0"
+                   Width="150"
+                   Stretch="Fill"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center">
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding DataContext.ImageScrollingDownCommand,
+                                            ElementName=Root,
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.InputBindings>
+                <Image.Clip>
+                    <RectangleGeometry RadiusX="10"
+                                       RadiusY="10"
+                                       Rect="0,0,150,150"/>
+                </Image.Clip>
+            </Image>
+            
+            <TextBlock Text="Имя*"
+                       Margin="0 0 0 5"/>
+            <TextBox x:Name="Name"
+                     Text="{Binding DataContext.Name,
+                            ElementName=Root,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Фамилия*"
+                       Margin="0 0 0 5"/>
+            <TextBox x:Name="Surname"
+                     Text="{Binding DataContext.Surname,
+                            ElementName=Root,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Отчество*"
+                       Margin="0 0 0 5"/>
+            <TextBox x:Name="Patronymic"
+                     Text="{Binding DataContext.Patronymic,
+                            ElementName=Root,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <TextBlock Text="Номер карты"
+                       Margin="0 0 0 5"/>
+            <TextBox x:Name="NumberOfCreditCard"
+                     Text="{Binding DataContext.NumberOfCreditCard,
+                            ElementName=Root,
+                            UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBoxCustomStyle}"/>
+        </StackPanel>
+    </Grid>
+</ui:UiWindow>

@@ -97,15 +97,40 @@
                                       Grid.RowSpan="2"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Style="{StaticResource BorderShopBasket}"
+                                            CornerRadius="100"
+                                            Background="#272837"
+                                            Margin="0 0 0 10"
+                                            Grid.Row="0"
+                                            Padding="19 15"
+                                            HorizontalAlignment="Center">
+                                        <Border.InputBindings>
+                                            <MouseBinding Gesture="LeftClick"
+                                                          Command="{Binding DataContext.OpenPersonalPageCommand,
+                                                                    ElementName=Root}"/>
+                                        </Border.InputBindings>
+                                        <StackPanel>
+                                            <fa:ImageAwesome Icon="User"
+                                                             Width="20"
+                                                             Foreground="#ded8d7"/>
+                                        </StackPanel>
+                                    </Border>
 
                                     <Border Style="{StaticResource BorderShopBasket}"
                                             CornerRadius="10"
+                                            Grid.Row="1"
                                             Padding="6"
                                             HorizontalAlignment="Center"
                                             x:Name="ShopBasketBtn">
                                         <Border.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
-                                                          Command="{Binding OpenBasketCommand}"/>
+                                                          Command="{Binding DataContext.OpenBasketCommand,
+                                                                    ElementName=Root}"/>
                                         </Border.InputBindings>
                                         <StackPanel>
                                             <fa:ImageAwesome Icon="ShoppingBasket"

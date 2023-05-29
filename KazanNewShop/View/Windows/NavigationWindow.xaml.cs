@@ -72,8 +72,11 @@ namespace KazanNewShop.View.Windows
                     // Добавление в категории "Все" 
                     DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
 
-                    // Создание дефолтной картинкой
+                    // Создание дефолтной картинкой для товара
                     ConvernMainPhoto();
+
+                    // Создание дефолтной картинки для профиля
+                    ConvernProfilePhoto();
 
                     // Выдача первой картинки продукту для отображения картинки в списке продуктов
                     foreach (Product item in DatabaseContext.Entities.Products.Local)
@@ -92,6 +95,13 @@ namespace KazanNewShop.View.Windows
         private static void ConvernMainPhoto() =>
            CommonMethods.MainForProductNullPhoto =
                CommonMethods.ConvertImage(".\\Resources\\Images\\iconforNullValueProduct.png")!;
+
+        /// <summary>
+        /// Создание в байтах картинки для клиента без картиноки
+        /// </summary>
+        private static void ConvernProfilePhoto() =>
+           CommonMethods.MainForProfileClientNullPhoto =
+               CommonMethods.ConvertImage(".\\Resources\\Images\\ProfilePhotoNull.png")!;
 
         /// <summary>
         /// Переход на нужный Page

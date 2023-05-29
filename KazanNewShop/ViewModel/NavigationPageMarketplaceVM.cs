@@ -237,5 +237,12 @@ namespace KazanNewShop.ViewModel
             {
                 Client = App.CarrentUser.Client!
             });
+
+        /// <summary>
+        /// Открытие окна пользователя 
+        /// </summary>
+        [RelayCommand]
+        private static void OpenPersonalPage() =>
+            new PersonalPageWindow().ShowDialog();
     }
 }
