@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="View\Pages\MainPages\OrderPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Resources\Images\iconforNullValueProduct.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

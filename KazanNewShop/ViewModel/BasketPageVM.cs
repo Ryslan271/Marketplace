@@ -99,5 +99,15 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void OpenProductsList() =>
             NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+
+        /// <summary>
+        /// Создание и открытие заказа
+        /// </summary>
+        [RelayCommand]
+        public void OpenCreatingOrder()
+        {
+            NavigationWindow.TransitionProductList(typeof(OrderPageVM));
+            DatabaseContext.Entities.SaveChanges();
+        }
     }
 }

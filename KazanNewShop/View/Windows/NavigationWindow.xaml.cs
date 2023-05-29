@@ -26,6 +26,9 @@ namespace KazanNewShop.View.Windows
     {
         public static NavigationWindow Instance { get; private set; } = null!;
 
+        // Страница на которой ты находишься
+        public static Type CurrentVM { get; private set; } = null!;
+
         /// <summary>
         /// Словарь для хранения VM и его View
         /// Dictionary<Type VM, Type Page>
@@ -38,6 +41,7 @@ namespace KazanNewShop.View.Windows
                 {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)},
                 {typeof(LoadingScreenVM) , typeof(LoadingScreenPage)},
                 {typeof(BasketPageVM) , typeof(BasketPage)},
+                {typeof(OrderPageVM) , typeof(OrderPage)},
             };
 
         public NavigationWindow()
@@ -78,6 +82,8 @@ namespace KazanNewShop.View.Windows
 
             }).ContinueWith(task => { Navigate(VMToNavigate); },
                                       TaskScheduler.FromCurrentSynchronizationContext());
+
+            CurrentVM = VMToNavigate;
         }
 
         /// <summary>
@@ -105,6 +111,8 @@ namespace KazanNewShop.View.Windows
                 Instance.Title = title;
             else
                 Instance.Title = "Marketplace";
+
+            CurrentVM = viewModelType;
         }
 
         /// <summary>
@@ -121,32 +129,44 @@ namespace KazanNewShop.View.Windows
         /// </summary>
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (DatabaseContext.Entities.ChangeTracker.HasChanges() == false)
+            if (DatabaseContext.Entities.ChangeTracker.HasChanges() == false ||
+                CurrentVM == typeof(FillingSalesmanDataVM) || CurrentVM == typeof(FillingClientDataVM))
+            {
                 base.OnClosing(e);
+                return;
+            }
 
-            var dialog = new Wpf.Ui.Controls.MessageBox
+            Wpf.Ui.Controls.MessageBox dialog = CreatingDialogMessageBox();
+
+            var dialogResult = false;
+
+            dialog.ButtonLeftClick += (_, _) =>
+            {
+                dialogResult = true;
+                dialog.Close();
+            };
+
+            dialog.ButtonRightClick += (_, _) => { dialog.Close(); };
+
+            dialog.ShowDialog();
+
+            if (dialogResult)
+                DatabaseContext.Entities.SaveChanges();
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
+        /// Создание окна сообщения
+        /// </summary>
+        /// <returns>Wpf.Ui.Controls.MessageBox</returns>
+        private static Wpf.Ui.Controls.MessageBox CreatingDialogMessageBox() =>
+            new Wpf.Ui.Controls.MessageBox
             {
                 Content = "Хотите ли вы сохранить изменения",
                 Title = "Уведомление",
                 ButtonLeftName = "Да",
                 ButtonRightName = "Нет",
             };
-
-            var dialogResult = false;
-            dialog.ButtonLeftClick += (_, _) =>
-            {
-                dialogResult = true;
-                dialog.Close();
-            };
-            dialog.ButtonRightClick += (_, _) => { dialog.Close(); };
-
-            dialog.ShowDialog();
-            if (dialogResult)
-            {
-                DatabaseContext.Entities.SaveChanges();
-            }
-
-            base.OnClosing(e);
-        }
     }
 }
