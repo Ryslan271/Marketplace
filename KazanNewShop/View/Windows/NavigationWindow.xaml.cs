@@ -77,7 +77,7 @@ namespace KazanNewShop.View.Windows
 
                     // Выдача первой картинки продукту для отображения картинки в списке продуктов
                     foreach (Product item in DatabaseContext.Entities.Products.Local)
-                        item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.IdProductNavigation == item)?.Photo;
+                        item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.Product == item)?.Photo;
                 }
 
             }).ContinueWith(task => { Navigate(VMToNavigate); },

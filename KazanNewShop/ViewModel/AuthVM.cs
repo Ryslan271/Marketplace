@@ -41,7 +41,7 @@ namespace KazanNewShop.ViewModel
             App.CarrentUser = AuthRegService.AuthorizeUser(Login!, Password!)!;
 
             if (App.CarrentUser == null) return;
-            
+
             new NavigationWindow().Show();
 
             NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));

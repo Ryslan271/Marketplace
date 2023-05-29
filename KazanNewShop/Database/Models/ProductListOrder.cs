@@ -11,7 +11,7 @@ public partial class ProductListOrder
 
     public int? Count { get; set; }
 
-    public virtual Order IdOrderNavigation { get; set; } = null!;
+    public virtual Order Order { get; set; } = null!;
 
-    public virtual Product IdProductNavigation { get; set; } = null!;
+    public virtual Product Product { get; set; } = null!;
 }

@@ -133,7 +133,7 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
             entity.Property(e => e.Photo).HasColumnType("image");
 
-            entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.PhotoProducts)
+            entity.HasOne(d => d.Product).WithMany(p => p.PhotoProducts)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PhotoProduct_Product1");
@@ -211,12 +211,12 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
             entity.Property(e => e.IdOrder).HasColumnName("ID_Order");
 
-            entity.HasOne(d => d.IdOrderNavigation).WithMany(p => p.ProductListOrders)
+            entity.HasOne(d => d.Order).WithMany(p => p.ProductListOrders)
                 .HasForeignKey(d => d.IdOrder)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductListOrder_Order");
 
-            entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.ProductListOrders)
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductListOrders)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductListOrder_Product");

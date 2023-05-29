@@ -176,6 +176,14 @@
                                 CornerRadius="15"
                                 Padding="5"
                                 TextBlock.Foreground="#ded8d7">
+                            <Border.InputBindings>
+                                <MouseBinding Gesture="LeftDoubleClick"
+                                  Command="{Binding DataContext.ProductDetailsCommand,
+                                            ElementName=Root,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                  CommandParameter="{Binding .}"/>
+                            </Border.InputBindings>
+
                             <Grid HorizontalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -191,8 +199,7 @@
                                            Grid.Row="0"/>
 
                                 <Image Grid.Row="1"
-                                       Source="{Binding MainPhoto,
-                                                TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
+                                       Source="{Binding MainPhoto}"
                                        Height="130" Width="130"
                                        Stretch="Fill"
                                        HorizontalAlignment="Center">

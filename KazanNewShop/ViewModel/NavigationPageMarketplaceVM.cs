@@ -27,7 +27,7 @@ namespace KazanNewShop.ViewModel
 
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
-        public ICollectionView ViewProducts { get; } = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Products.Local.ToObservableCollection());
+        public static ICollectionView ViewProducts { get; } = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Products.Local.ToObservableCollection());
 
         [ObservableProperty]
         private int _countProdutsInBasket = 0;
@@ -191,6 +191,15 @@ namespace KazanNewShop.ViewModel
             ValidateCountInProductBasket(SelectedItem);
 
             ViewProducts.Refresh();
+        }
+
+        /// <summary>
+        /// Открытие окна подробнее о товаре 
+        /// </summary>
+        [RelayCommand]
+        public void ProductDetails(Product SelectedItem)
+        {
+            new ProductDetails(SelectedItem).ShowDialog();
         }
 
         /// <summary>
