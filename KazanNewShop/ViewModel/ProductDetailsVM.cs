@@ -2,20 +2,33 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.Services;
+using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace KazanNewShop.ViewModel
 {
     public partial class ProductDetailsVM : WindowViewModelBase
     {
+        // Текущий VM
+        public static ProductDetailsVM Instance = null!;
+
         // Видимость первой картинки
         [ObservableProperty]
         private Visibility _visiblyFirstImage = Visibility.Collapsed;
         [ObservableProperty]
         private Visibility _visiblyLastImage = Visibility.Visible;
+
+        // Кружки для списка картинок
+        [ObservableProperty]
+        private List<Ellipse> _ellipses = new();
 
         // Выбранный продукт
         [ObservableProperty]
@@ -41,8 +54,26 @@ namespace KazanNewShop.ViewModel
             Images ??= DatabaseContext.Entities.PhotoProducts.Local
                 .ToObservableCollection().Where(p => p.Product == CurrentProduct).Select(p => p.Photo).ToList()!;
 
+            if (Images.Count == 0)
+                Images.Add(CommonMethods.MainForProductNullPhoto);
+
+            for (int i = 0; i < Images.Count; i++)
+                Ellipses.Add
+                (
+                    new Ellipse()
+                    {
+                        Width = 10,
+                        Height = 10,
+                        Fill = Brushes.Gray
+                    }
+                );
+
+            Ellipses[0].Fill = Brushes.Wheat;
+
             CurrentPhoto = Images.FirstOrDefault();
-            NextPhoto = Images.Count > 1 ? Images[1] : null; 
+            NextPhoto = Images.Count > 1 ? Images[1] : null;
+
+            Instance = this;
         }
 
         /// <summary>
@@ -57,8 +88,11 @@ namespace KazanNewShop.ViewModel
                 return;
             }
 
-            PrevPhoto = CurrentPhoto;
+            Ellipses.ForEach(e => e.Fill = Brushes.Gray);
+
+            PrevPhoto = _currPhotoIndex - 2 >= 0 ? Images[_currPhotoIndex - 2] : null; ;
             _currPhotoIndex -= 1;
+            Ellipses[_currPhotoIndex].Fill = Brushes.Wheat;
             CurrentPhoto = Images[_currPhotoIndex];
             NextPhoto = Images[_currPhotoIndex + 1];
             ImageScrollingDownCommand.NotifyCanExecuteChanged();
@@ -81,11 +115,13 @@ namespace KazanNewShop.ViewModel
 
             VisiblyFirstImage = Visibility.Visible;
 
+            Ellipses.ForEach(e => e.Fill = Brushes.Gray);
+
             PrevPhoto = CurrentPhoto;
             _currPhotoIndex += 1;
+            Ellipses[_currPhotoIndex].Fill = Brushes.Wheat;
             CurrentPhoto = Images[_currPhotoIndex];
-            if (_currPhotoIndex + 1 <= Images.Count - 1)
-                NextPhoto = Images[_currPhotoIndex + 1];
+            NextPhoto = _currPhotoIndex + 1 <= Images.Count - 1 ? Images[_currPhotoIndex + 1] : null;
             ImageScrollingUpCommand.NotifyCanExecuteChanged();
         }
 
@@ -120,6 +156,9 @@ namespace KazanNewShop.ViewModel
             ValidateCountInProductBasket(CurrentProduct);
 
             NavigationPageMarketplaceVM.ViewProducts.Refresh();
+
+            ProductDetails.Instance.DataContext = null;
+            ProductDetails.Instance.DataContext = Instance;
         }
 
         /// <summary>
@@ -148,6 +187,9 @@ namespace KazanNewShop.ViewModel
             ValidateCountInProductBasket(CurrentProduct );
 
             NavigationPageMarketplaceVM.ViewProducts.Refresh();
+
+            ProductDetails.Instance.DataContext = null;
+            ProductDetails.Instance.DataContext = Instance;
         }
 
         /// <summary>

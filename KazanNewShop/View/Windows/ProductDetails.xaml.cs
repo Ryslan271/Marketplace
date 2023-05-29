@@ -2,6 +2,7 @@
 using KazanNewShop.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,15 @@ namespace KazanNewShop.View.Windows
     /// </summary>
     public partial class ProductDetails : UiWindow
     {
-        public ProductDetails(Product product)
+        public static ProductDetails Instance = null!;
 
+        public ProductDetails(Product product)
         {
             InitializeComponent();
 
-            DataContext = new ProductDetailsVM(product);
+            Instance = this;
+
+            Instance.DataContext = new ProductDetailsVM(product);
         }
     }
 }
