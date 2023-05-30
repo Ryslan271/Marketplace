@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:KazanNewShop.ViewModel"
              mc:Ignorable="d"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              ExtendsContentIntoTitleBar="True"
              WindowCornerPreference="RoundSmall"
              WindowStartupLocation="CenterScreen"
              x:Name="Root"
-             Height="550"
+             Height="600"
              Width="400">
 
     <Window.Resources>
@@ -36,7 +37,7 @@
             <Image Source="{Binding DataContext.Photo,
                             ElementName=Root}"
                    Grid.Row="0"
-                   Opacity="0.2"
+                   Opacity="0.8"
                    Panel.ZIndex="2"
                    Height="150"
                    Margin="10 0 0 0"
@@ -46,7 +47,7 @@
                    HorizontalAlignment="Center">
                 <Image.InputBindings>
                     <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding DataContext.ImageScrollingDownCommand,
+                                  Command="{Binding DataContext.EditUserPhotoCommand,
                                             ElementName=Root,
                                             UpdateSourceTrigger=PropertyChanged}"/>
                 </Image.InputBindings>
@@ -88,6 +89,88 @@
                             ElementName=Root,
                             UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource TextBoxCustomStyle}"/>
+
+            <StackPanel Orientation="Horizontal">
+                <Border CornerRadius="10"
+                        DockPanel.Dock="Right"
+                        Grid.Column="2"
+                        Background="#772837"
+                        VerticalAlignment="Center"
+                        Margin="0 0 20 0"
+                        HorizontalAlignment="Right">
+
+                    <Button Padding="10 10 10 10"
+                        Command="{Binding DataContext.LogoutCommand,
+                                  ElementName=Root,
+                                  UpdateSourceTrigger=PropertyChanged}">
+                        <StackPanel Orientation="Horizontal">
+
+                            <fa:ImageAwesome Icon="Close"
+                                             Width="20"
+                                             Foreground="#ded8d7"/>
+
+                            <TextBlock Text="Выйти"
+                                       Margin="10 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.LogoutCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#464649"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Border CornerRadius="10"
+                        Grid.Column="2"
+                        Background="#272837"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                    <Button Padding="10 10 10 10"
+                            Command="{Binding DataContext.SaveChangesCommand,
+                                      ElementName=Root,
+                                      UpdateSourceTrigger=PropertyChanged}">
+                        <StackPanel Orientation="Horizontal">
+
+                            <fa:ImageAwesome Icon="Check"
+                                             Width="20"
+                                             Foreground="#ded8d7"/>
+
+                            <TextBlock Text="Сохранить"
+                                       Margin="10 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.SaveChangesCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#464649"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </ui:UiWindow>

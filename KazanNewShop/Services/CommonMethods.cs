@@ -15,7 +15,7 @@ namespace KazanNewShop.Services
         {
             filePath ??= OpenImage();
 
-            return File.ReadAllBytes(filePath!);
+            return filePath != null ? File.ReadAllBytes(filePath) : null;
         }
 
         private static string? OpenImage()

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.DataTypes.Enums;
 using KazanNewShop.Services;
 using KazanNewShop.View.Base;
 using KazanNewShop.View.Windows;
@@ -23,12 +24,12 @@ namespace KazanNewShop.ViewModel
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _login = "asd";
+        private string? _login = "qwe";
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _password = "asd";
+        private string? _password = "qwe";
 
         [RelayCommand]
         private void Authorized()
@@ -38,13 +39,18 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
-            App.CarrentUser = AuthRegService.AuthorizeUser(Login!, Password!)!;
+            App.CurrentUser = AuthRegService.AuthorizeUser(Login!, Password!)!;
 
-            if (App.CarrentUser == null) return;
+            if (App.CurrentUser == null) return;
 
             new NavigationWindow().Show();
 
-            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+            if (App.CurrentUser.Role == UserRole.Client)
+                NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+            else if (App.CurrentUser.Role == UserRole.Selesman)
+                NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
+            else
+                return;
 
             CloseWindow();
         }

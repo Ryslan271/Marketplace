@@ -1,5 +1,6 @@
 ﻿using KazanNewShop.Database.Models;
 using KazanNewShop.ViewModel;
+using KazanNewShop.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

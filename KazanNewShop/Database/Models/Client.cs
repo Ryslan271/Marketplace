@@ -19,7 +19,7 @@ public partial class Client
 
     public virtual ICollection<Basket> Baskets { get; set; } = new List<Basket>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual User IdNavigation { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

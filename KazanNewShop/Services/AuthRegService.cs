@@ -1,5 +1,6 @@
 ﻿using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.DataTypes.Enums;
 using System;
 using System.Linq;
 
@@ -38,7 +39,11 @@ namespace KazanNewShop.Services
                 Removed = false
             };
 
-            App.CarrentUser = user;
+            DatabaseContext.Entities.Users.Local.Add(user);
+
+            DatabaseContext.Entities.SaveChanges();
+
+            App.CurrentUser = DatabaseContext.Entities.Users.Local.LastOrDefault()!;
 
             return true;
         }
@@ -54,33 +59,34 @@ namespace KazanNewShop.Services
         /// <param name="patronymic">Отчество</param>
         public static void FillClientData(string name, string surname, string patronymic)
         {
+            Client client = new()
+            {
+                Id = App.CurrentUser.Id + 1,
+                Name = name,
+                Surname = surname,
+                Patronymic = patronymic
+            };
 
-            DatabaseContext.Entities.Users.Local.Add(App.CarrentUser);
+            DatabaseContext.Entities.Clients.Local.Add(client);
 
-            DatabaseContext.Entities.Clients.Local.Add(
-                new Client()
-                {
-                    Name = name,
-                    Surname = surname,
-                    Patronymic = patronymic,
-                    User = App.CarrentUser
-                });
+            App.CurrentUser.Client = client;
 
             DatabaseContext.Entities.SaveChanges();
         }
 
         public static void FillSalesmanData(string description, DateTime dateOnMarketplace, string companyName)
         {
-            DatabaseContext.Entities.Users.Local.Add(App.CarrentUser);
+            Salesman salesman = new()
+            {
+                Id = App.CurrentUser.Id + 1,
+                DateOnMarketplace = dateOnMarketplace,
+                NameCompany = companyName,
+                Description = description
+            };
 
-            DatabaseContext.Entities.Salesmen.Local.Add(
-                new Salesman()
-                {
-                    DateOnMarketplace = dateOnMarketplace,
-                    NameCompany = companyName,
-                    Description = description,
-                    User = App.CarrentUser
-                });
+            DatabaseContext.Entities.Salesmen.Local.Add(salesman);
+
+            App.CurrentUser.Salesman = salesman;
 
             DatabaseContext.Entities.SaveChanges();
         }

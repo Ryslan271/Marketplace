@@ -8,7 +8,7 @@ namespace KazanNewShop
     /// </summary>
     public partial class App : Application
     {
-        public static User CarrentUser { get; set; } = null!;
+        public static User? CurrentUser { get; set; }
 
         public App()
         {

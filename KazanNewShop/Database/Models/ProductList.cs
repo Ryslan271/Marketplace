@@ -11,7 +11,7 @@ public partial class ProductList
 
     public int IdBasket { get; set; }
 
-    public int Count { get; set; }
+    public int? Count { get; set; }
 
     public virtual Basket Basket { get; set; } = null!;
 

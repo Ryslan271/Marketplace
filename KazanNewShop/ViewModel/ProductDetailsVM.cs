@@ -133,7 +133,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CarrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
 
             if (basket.ProductLists.Any(p => p.Product == CurrentProduct!) == true)
             {
@@ -169,7 +169,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CarrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
 
             if (basket.ProductLists.First(p => p.Product == CurrentProduct!).Count - 1 > 0)
             {
@@ -215,7 +215,7 @@ namespace KazanNewShop.ViewModel
         /// </summary>
         private static void ValidateExistenceBasket()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CarrentUser.Client) != true)
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser.Client) != true)
                 CreateBasket();
         }
 
@@ -225,7 +225,7 @@ namespace KazanNewShop.ViewModel
         private static void CreateBasket() =>
             DatabaseContext.Entities.Baskets.Local.Add(new Basket()
             {
-                Client = App.CarrentUser.Client!
+                Client = App.CurrentUser.Client!
             });
     }
 }

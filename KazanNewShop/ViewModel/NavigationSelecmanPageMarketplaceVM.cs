@@ -13,7 +13,7 @@ using System.Windows.Data;
 
 namespace KazanNewShop.ViewModel
 {
-    public partial class NavigationPageMarketplaceVM : ObservableValidator
+    public partial class NavigationSelecmanPageMarketplaceVM : ObservableValidator
     {
         /// <summary>
         /// Словарь сортировки
@@ -26,11 +26,15 @@ namespace KazanNewShop.ViewModel
             { "Цена по убыванию", new SortDescription { PropertyName = nameof(Product.Cost), Direction = ListSortDirection.Descending } }
         };
 
-        public static NavigationPageMarketplaceVM Instance { get; private set; }
+        public static NavigationSelecmanPageMarketplaceVM Instance { get; private set; } = null!;
+
+        // Кнопка мои заказы
+        [ObservableProperty]
+        private bool _isChekedMyProduct = false;
 
         // Иконка клиента
         [ObservableProperty]
-        private byte[] _clientPhoto = App.CurrentUser.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
+        private byte[] _clientPhoto = App.CurrentUser.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
 
         // Список категорий
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
@@ -64,7 +68,7 @@ namespace KazanNewShop.ViewModel
         /// <summary>
         /// Конструктор класса
         /// </summary>
-        public NavigationPageMarketplaceVM() =>
+        public NavigationSelecmanPageMarketplaceVM() =>
             Instance = this;
 
         /// <summary>
@@ -109,6 +113,34 @@ namespace KazanNewShop.ViewModel
             };
         }
 
+        /// <summary>
+        /// Филтрация товаров для вывода товара продовца
+        /// </summary>
+        [RelayCommand]
+        public void ShowMyProduct()
+        {
+            if (IsChekedMyProduct)
+                FilterShowMyProduct();
+            
+            ProductSearch();
+            ProductFiltration();
+        }
+
+        /// <summary>
+        /// Метод фильтрации всез товаров для вывода только тех, которые создал продавец
+        /// </summary>
+        private static void FilterShowMyProduct()
+        {
+            ViewProducts.Filter = (obj) =>
+            {
+                var product = obj as Product;
+
+                if (product?.Salesman == App.CurrentUser.Salesman)
+                    return true;
+
+                return false;
+            };
+        }
 
         /// <summary>
         /// Команда поиска по товарам

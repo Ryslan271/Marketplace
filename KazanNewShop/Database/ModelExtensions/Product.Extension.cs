@@ -28,7 +28,7 @@ namespace KazanNewShop.Database.Models
             get
             {
                 var count = DatabaseContext.Entities.ProductLists.Local.ToObservableCollection().ToList()
-                            .FirstOrDefault(p => p.Product == this && p.Basket.Client == App.CarrentUser.Client);
+                            .FirstOrDefault(p => p.Product == this && p.Basket.Client == App.CurrentUser.Client);
 
                 _countInBasket = count == null ? 0 : count.Count;
 

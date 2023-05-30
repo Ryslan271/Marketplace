@@ -4,9 +4,9 @@ namespace KazanNewShop.Database.Models
 {
     partial class ProductList
     {
-        private decimal _cost;
+        private decimal? _cost;
         [NotMapped]
-        public decimal Cost
+        public decimal? Cost
         {
             get
             {

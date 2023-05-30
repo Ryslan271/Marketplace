@@ -14,11 +14,11 @@ namespace KazanNewShop.ViewModel
         // список продуктов в корзине
         public ICollectionView ViewProductsInBasket { get; }
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
-                .First(b => b.Client == App.CarrentUser.Client).ProductLists);
+                .First(b => b.Client == App.CurrentUser.Client).ProductLists);
 
         // Нужная корзина 
         private Basket _basket
-            = DatabaseContext.Entities.Baskets.Local.ToObservableCollection().FirstOrDefault(b => b == App.CarrentUser.Client!.Baskets)!;
+            = DatabaseContext.Entities.Baskets.Local.ToObservableCollection().FirstOrDefault(b => b == App.CurrentUser.Client!.Baskets)!;
 
         [ObservableProperty]
         private string? _name;

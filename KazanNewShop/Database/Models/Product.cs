@@ -27,11 +27,11 @@ public partial class Product
 
     public int? IdStatus { get; set; }
 
-    public virtual Category IdCategoryNavigation { get; set; } = null!;
+    public virtual Category Category { get; set; } = null!;
 
-    public virtual Salesman IdSalesmanNavigation { get; set; } = null!;
+    public virtual Salesman Salesman { get; set; } = null!;
 
-    public virtual Status? IdStatusNavigation { get; set; }
+    public virtual Status? Status { get; set; }
 
     public virtual ICollection<PhotoProduct> PhotoProducts { get; set; } = new List<PhotoProduct>();
 

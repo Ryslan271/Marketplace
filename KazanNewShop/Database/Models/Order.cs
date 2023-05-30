@@ -11,9 +11,9 @@ public partial class Order
 
     public int IdClient { get; set; }
 
-    public virtual Client IdClientNavigation { get; set; } = null!;
+    public virtual Client Client { get; set; } = null!;
 
-    public virtual PointOfIssue IdPointOfIssueNavigation { get; set; } = null!;
+    public virtual PointOfIssue PointOfIssue { get; set; } = null!;
 
     public virtual ICollection<ProductListOrder> ProductListOrders { get; set; } = new List<ProductListOrder>();
 }

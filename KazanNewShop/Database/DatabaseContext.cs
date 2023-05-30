@@ -83,7 +83,7 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Patronymic).HasMaxLength(150);
             entity.Property(e => e.Surname).HasMaxLength(150);
 
-            entity.HasOne(d => d.User).WithOne(p => p.Client)
+            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Client)
                 .HasForeignKey<Client>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Client_User1");
@@ -94,7 +94,7 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("Employee");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
+                .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(150);
             entity.Property(e => e.Patronymic).HasMaxLength(150);
@@ -114,12 +114,12 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdClient).HasColumnName("ID_Client");
             entity.Property(e => e.IdPointOfIssue).HasColumnName("ID_PointOfIssue");
 
-            entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.Orders)
+            entity.HasOne(d => d.Client).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.IdClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Client");
 
-            entity.HasOne(d => d.IdPointOfIssueNavigation).WithMany(p => p.Orders)
+            entity.HasOne(d => d.PointOfIssue).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.IdPointOfIssue)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Address");
@@ -166,17 +166,17 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdStatus).HasColumnName("ID_Status");
             entity.Property(e => e.Name).HasMaxLength(150);
 
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdCategory)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Category1");
 
-            entity.HasOne(d => d.IdSalesmanNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.Salesman).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdSalesman)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Salesman1");
 
-            entity.HasOne(d => d.IdStatusNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.Status).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdStatus)
                 .HasConstraintName("FK_Product_Status1");
         });
@@ -227,12 +227,12 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("Salesman");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
+                .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.DateOnMarketplace).HasColumnType("date");
             entity.Property(e => e.NameCompany).HasMaxLength(150);
 
-            entity.HasOne(d => d.User).WithOne(p => p.Salesman)
+            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Salesman)
                 .HasForeignKey<Salesman>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Salesman_User1");

@@ -35,7 +35,7 @@ namespace KazanNewShop.ViewModel
 
             AuthRegService.FillSalesmanData(Description!, DateOnMarketplace, CompanyName!);
 
-            NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+            NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
         }
     }
 }

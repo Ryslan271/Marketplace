@@ -18,7 +18,7 @@ namespace KazanNewShop.ViewModel
         // список продуктов в корзине
         public ICollectionView ViewProductsInBasket { get; }
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
-                .First(b => b.Client == App.CarrentUser.Client).ProductLists);
+                .First(b => b.Client == App.CurrentUser.Client).ProductLists);
 
         [ObservableProperty]
         private string? _search;
