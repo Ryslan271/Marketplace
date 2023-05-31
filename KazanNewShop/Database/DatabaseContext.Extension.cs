@@ -15,9 +15,10 @@ namespace KazanNewShop.Database
         /// </summary>
         public static void LoadEntitesForAuthReg()
         {
-            Entities.Users.Load();
             Entities.Clients.Load();
+            Entities.Salesmen.Load();
             Entities.Employees.Load();
+            Entities.Users.Load();
         }
 
         /// <summary>

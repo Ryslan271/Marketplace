@@ -13,9 +13,9 @@ public partial class User
 
     public bool? Removed { get; set; }
 
-    public virtual Client? Client { get; set; }
+    public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
 
-    public virtual Employee? Employee { get; set; }
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 
-    public virtual Salesman? Salesman { get; set; }
+    public virtual ICollection<Salesman> Salesmens { get; set; } = new List<Salesman>();
 }

@@ -29,7 +29,7 @@ namespace KazanNewShop.Services
         /// <param name="password">Пароль</param>
         public static bool RegisterUser(string login, string password)
         {
-            if (DatabaseContext.Entities.Users.Local.Any(x => x.Login == login && x.Password == password) == true)
+            if (DatabaseContext.Entities.Users.Local.Any(x => x.Login == login) == true)
                 return false;
 
             User user = new()
@@ -61,15 +61,13 @@ namespace KazanNewShop.Services
         {
             Client client = new()
             {
-                Id = App.CurrentUser.Id + 1,
                 Name = name,
                 Surname = surname,
-                Patronymic = patronymic
+                Patronymic = patronymic,
+                User = App.CurrentUser
             };
 
             DatabaseContext.Entities.Clients.Local.Add(client);
-
-            App.CurrentUser.Client = client;
 
             DatabaseContext.Entities.SaveChanges();
         }
@@ -78,15 +76,13 @@ namespace KazanNewShop.Services
         {
             Salesman salesman = new()
             {
-                Id = App.CurrentUser.Id + 1,
                 DateOnMarketplace = dateOnMarketplace,
                 NameCompany = companyName,
-                Description = description
+                Description = description,
+                User = App.CurrentUser
             };
 
             DatabaseContext.Entities.Salesmen.Local.Add(salesman);
-
-            App.CurrentUser.Salesman = salesman;
 
             DatabaseContext.Entities.SaveChanges();
         }

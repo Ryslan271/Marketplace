@@ -26,17 +26,21 @@ namespace KazanNewShop.ViewModel
             { "Цена по убыванию", new SortDescription { PropertyName = nameof(Product.Cost), Direction = ListSortDirection.Descending } }
         };
 
-        public static NavigationPageMarketplaceVM Instance { get; private set; }
+        public static NavigationPageMarketplaceVM Instance { get; private set; } = null!;
 
         // Иконка клиента
         [ObservableProperty]
-        private byte[] _clientPhoto = App.CurrentUser.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
+        private byte[] _clientPhoto = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
 
         // Список категорий
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public static ICollectionView ViewProducts { get; } = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Products.Local.ToObservableCollection());
+        public static ICollectionView ViewProducts { get; } 
+            = CollectionViewSource.GetDefaultView
+                (
+                    DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
+                );
 
         [ObservableProperty]
         private int _countProdutsInBasket = 0;

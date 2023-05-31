@@ -21,7 +21,7 @@ public partial class Product
 
     public int? Discount { get; set; }
 
-    public int IdSalesman { get; set; }
+    public int? IdSalesman { get; set; }
 
     public bool Removed { get; set; }
 
@@ -29,7 +29,7 @@ public partial class Product
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual Salesman Salesman { get; set; } = null!;
+    public virtual Salesman? Salesman { get; set; }
 
     public virtual Status? Status { get; set; }
 

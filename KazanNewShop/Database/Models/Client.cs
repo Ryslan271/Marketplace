@@ -17,9 +17,11 @@ public partial class Client
 
     public string? NumberOfCreditCard { get; set; }
 
+    public int? UserId { get; set; }
+
     public virtual ICollection<Basket> Baskets { get; set; } = new List<Basket>();
 
-    public virtual User IdNavigation { get; set; } = null!;
-
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual User? User { get; set; }
 }

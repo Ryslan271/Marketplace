@@ -45,14 +45,26 @@ namespace KazanNewShop.ViewModel
 
             new NavigationWindow().Show();
 
-            if (App.CurrentUser.Role == UserRole.Client)
+            ValidateRoleUser();
+
+            if (App.CurrentUser.Client is not null)
                 NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
-            else if (App.CurrentUser.Role == UserRole.Selesman)
+            else if (App.CurrentUser.Salesmens is not null)
                 NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
             else
                 return;
 
             CloseWindow();
+        }
+
+        /// <summary>
+        /// Проверка на роль пользователя 
+        /// </summary>
+        private void ValidateRoleUser()
+        {
+            App.CurrentUser!.Client = DatabaseContext.Entities.Clients.Local.FirstOrDefault(c => c.User == App.CurrentUser);
+            App.CurrentUser!.Salesman = DatabaseContext.Entities.Salesmen.Local.FirstOrDefault(c => c.User == App.CurrentUser);
+            App.CurrentUser!.Employee = DatabaseContext.Entities.Employees.Local.FirstOrDefault(c => c.User == App.CurrentUser);
         }
 
         [RelayCommand]

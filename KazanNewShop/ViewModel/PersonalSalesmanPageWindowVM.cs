@@ -5,38 +5,30 @@ using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 
 namespace KazanNewShop.ViewModel
 {
-    public partial class PersonalPageWindowVM : WindowViewModelBase
+    public partial class PersonalSalesmanPageWindowVM : WindowViewModelBase
     {
         [ObservableProperty]
-        private byte[] _photo 
-            = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
+        private byte[] _photo
+            = App.CurrentUser!.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string _name = App.CurrentUser.Client!.Name!;
+        private string _nameCompany = App.CurrentUser.Salesman!.NameCompany!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string _surname = App.CurrentUser.Client!.Surname!;
+        private string _description = App.CurrentUser.Salesman!.Description!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string _patronymic = App.CurrentUser.Client!.Patronymic!;
-
-        [ObservableProperty]
-        private string? _numberOfCreditCard = App.CurrentUser.Client?.NumberOfCreditCard;
+        private DateTime? _dateOnMarketplace = App.CurrentUser.Salesman!.DateOnMarketplace;
 
         /// <summary>
         /// Изменение картинки пользователя
@@ -60,15 +52,14 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
-            App.CurrentUser!.Client!.Name = Name;
-            App.CurrentUser!.Client!.Surname = Surname;
-            App.CurrentUser!.Client!.Patronymic = Patronymic;
-            App.CurrentUser!.Client!.NumberOfCreditCard = NumberOfCreditCard;
-            App.CurrentUser!.Client!.ProfilePhoto = Photo;
+            App.CurrentUser!.Salesman!.NameCompany = NameCompany;
+            App.CurrentUser!.Salesman!.Description = Description;
+            App.CurrentUser!.Salesman!.DateOnMarketplace = DateOnMarketplace;
+            App.CurrentUser!.Salesman!.ProfilePhoto = Photo;
 
             DatabaseContext.Entities.SaveChanges();
 
-            NavigationPageMarketplaceVM.Instance.ClientPhoto = App.CurrentUser.Client.ProfilePhoto;
+            NavigationPageMarketplaceVM.Instance.ClientPhoto = App.CurrentUser.Salesman!.ProfilePhoto!;
 
             CloseWindow();
         }
@@ -85,7 +76,7 @@ namespace KazanNewShop.ViewModel
             new АuthorizationWindows().Show();
 
             NavigationWindow.Instance.Close();
-            
+
             CloseWindow();
         }
     }

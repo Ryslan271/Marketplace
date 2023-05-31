@@ -75,35 +75,31 @@ public partial class DatabaseContext : DbContext
         {
             entity.ToTable("Client");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(150);
             entity.Property(e => e.NumberOfCreditCard).HasMaxLength(16);
             entity.Property(e => e.Patronymic).HasMaxLength(150);
             entity.Property(e => e.Surname).HasMaxLength(150);
+            entity.Property(e => e.UserId).HasColumnName("User_ID");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Client)
-                .HasForeignKey<Client>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Client_User1");
+            entity.HasOne(d => d.User).WithMany(p => p.Clients)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Client_User");
         });
 
         modelBuilder.Entity<Employee>(entity =>
         {
             entity.ToTable("Employee");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(150);
             entity.Property(e => e.Patronymic).HasMaxLength(150);
             entity.Property(e => e.Surname).HasMaxLength(150);
+            entity.Property(e => e.UserId).HasColumnName("User_ID");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Employee)
-                .HasForeignKey<Employee>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Employee_User1");
+            entity.HasOne(d => d.User).WithMany(p => p.Employees)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Employee_User");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -173,7 +169,6 @@ public partial class DatabaseContext : DbContext
 
             entity.HasOne(d => d.Salesman).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdSalesman)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Salesman1");
 
             entity.HasOne(d => d.Status).WithMany(p => p.Products)
@@ -226,16 +221,14 @@ public partial class DatabaseContext : DbContext
         {
             entity.ToTable("Salesman");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.DateOnMarketplace).HasColumnType("date");
             entity.Property(e => e.NameCompany).HasMaxLength(150);
+            entity.Property(e => e.UserId).HasColumnName("User_ID");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Salesman)
-                .HasForeignKey<Salesman>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Salesman_User1");
+            entity.HasOne(d => d.User).WithMany(p => p.Salesmens)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Salesman_User");
         });
 
         modelBuilder.Entity<Status>(entity =>

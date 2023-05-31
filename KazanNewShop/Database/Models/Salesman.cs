@@ -15,7 +15,9 @@ public partial class Salesman
 
     public byte[]? ProfilePhoto { get; set; }
 
-    public virtual User IdNavigation { get; set; } = null!;
+    public int? UserId { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public virtual User? User { get; set; }
 }

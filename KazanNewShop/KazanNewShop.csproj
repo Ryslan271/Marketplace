@@ -26,6 +26,9 @@
     <Compile Update="View\Pages\MainPages\OrderPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Windows\PersonalSalesmanPageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

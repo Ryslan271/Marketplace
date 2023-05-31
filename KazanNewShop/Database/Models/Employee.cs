@@ -15,5 +15,7 @@ public partial class Employee
 
     public byte[]? ProfilePhoto { get; set; }
 
-    public virtual User IdNavigation { get; set; } = null!;
+    public int? UserId { get; set; }
+
+    public virtual User? User { get; set; }
 }

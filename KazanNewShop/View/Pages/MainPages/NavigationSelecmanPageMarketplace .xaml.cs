@@ -5,9 +5,9 @@ namespace KazanNewShop.View.Pages.MainPages
     /// <summary>
     /// Логика взаимодействия для NavigationPageMarketplace.xaml
     /// </summary>
-    public partial class NavigationPageMarketplace : UiPage
+    public partial class NavigationSelecmanPageMarketplace : UiPage
     {
-        public NavigationPageMarketplace()
+        public NavigationSelecmanPageMarketplace()
         {
             InitializeComponent();
         }

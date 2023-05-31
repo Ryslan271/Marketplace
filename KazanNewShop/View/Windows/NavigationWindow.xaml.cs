@@ -38,11 +38,11 @@ namespace KazanNewShop.View.Windows
             {
                 {typeof(FillingClientDataVM) , typeof(FillingClientData)},
                 {typeof(FillingSalesmanDataVM) , typeof(FillingSalesmanData)},
-                {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)},
                 {typeof(LoadingScreenVM) , typeof(LoadingScreenPage)},
+                {typeof(NavigationPageMarketplaceVM) , typeof(NavigationPageMarketplace)},
+                {typeof(NavigationSelecmanPageMarketplaceVM) , typeof(NavigationSelecmanPageMarketplace)},
                 {typeof(BasketPageVM) , typeof(BasketPage)},
                 {typeof(OrderPageVM) , typeof(OrderPage)},
-                {typeof(NavigationSelecmanPageMarketplaceVM) , typeof(NavigationSelecmanPageMarketplace)},
             };
 
         public NavigationWindow()
@@ -71,7 +71,8 @@ namespace KazanNewShop.View.Windows
                     DatabaseContext.LoadEntitesForMarketplace();
 
                     // Добавление в категории "Все" 
-                    DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
+                    if (DatabaseContext.Entities.Categories.Local.ToObservableCollection().Any(c => c.Name == "Все") == false)
+                        DatabaseContext.Entities.Categories.Local.ToObservableCollection().Insert(0, new Category() { Name = "Все" });
 
                     // Создание дефолтной картинкой для товара
                     ConvernMainPhoto();

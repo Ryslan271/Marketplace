@@ -32,15 +32,20 @@ namespace KazanNewShop.ViewModel
         [ObservableProperty]
         private bool _isChekedMyProduct = false;
 
-        // Иконка клиента
+        // Иконка продавца
         [ObservableProperty]
-        private byte[] _clientPhoto = App.CurrentUser.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
+        private byte[] _salesmanPhoto 
+            = App.CurrentUser!.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
 
         // Список категорий
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public static ICollectionView ViewProducts { get; } = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Products.Local.ToObservableCollection());
+        public static ICollectionView ViewProducts { get; } 
+            = CollectionViewSource.GetDefaultView
+                (
+                    DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
+                );
 
         [ObservableProperty]
         private int _countProdutsInBasket = 0;
@@ -135,7 +140,7 @@ namespace KazanNewShop.ViewModel
             {
                 var product = obj as Product;
 
-                if (product?.Salesman == App.CurrentUser.Salesman)
+                if (product?.Salesman == App.CurrentUser!.Salesman)
                     return true;
 
                 return false;
@@ -168,76 +173,12 @@ namespace KazanNewShop.ViewModel
         }
 
         /// <summary>
-        /// Открытие корзины
+        /// Открытие списка всех заказов
         /// </summary>
         [RelayCommand]
-        public void OpenBasket()
+        public void OpenOrdersList()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser.Client) != true)
-                CreateBasket();
-
-            NavigationWindow.Navigate(typeof(BasketPageVM));
-        }
-
-        /// <summary>
-        /// Команда добавление товара в корзину
-        /// </summary>
-        [RelayCommand]
-        public void AddProductInBasket(Product SelectedItem)
-        {
-            ValidateExistenceBasket();
-
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
-
-            if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
-            {
-                basket.ProductLists.First(p => p.Product == SelectedItem!).Count += 1;
-
-                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
-            }
-            else
-            {
-                DatabaseContext.Entities.ProductLists.Local.Add(new ProductList()
-                {
-                    Basket = basket,
-                    Product = SelectedItem!,
-                    Count = 1
-                });
-
-                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
-            }
-
-            ValidateCountInProductBasket(SelectedItem);
-
-            ViewProducts.Refresh();
-        }
-
-        /// <summary>
-        /// Команда удаление товара в корзину
-        /// </summary>
-        [RelayCommand]
-        public void DeleteProductInBasket(Product SelectedItem)
-        {
-            ValidateExistenceBasket();
-
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
-
-            if (basket.ProductLists.First(p => p.Product == SelectedItem!).Count - 1 > 0)
-            {
-                basket.ProductLists.First(p => p.Product == SelectedItem!).Count -= 1;
-
-                SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
-            }
-            else
-            {
-                DatabaseContext.Entities.ProductLists.Local.Remove(basket.ProductLists.First(p => p.Product == SelectedItem!));
-
-                SelectedItem.CountInBasket = 0;
-            }
-
-            ValidateCountInProductBasket(SelectedItem);
-
-            ViewProducts.Refresh();
+            
         }
 
         /// <summary>
@@ -250,46 +191,10 @@ namespace KazanNewShop.ViewModel
         }
 
         /// <summary>
-        /// Проверка количество, для показать или скрить элементы
-        /// </summary>
-        /// <param name="SelectedItem">Выбранный элемент</param>
-        private static void ValidateCountInProductBasket(Product SelectedItem)
-        {
-            if (SelectedItem.CountInBasket <= 0)
-            {
-                SelectedItem.VisibilyButtonProductNotInCart = Visibility.Visible;
-                SelectedItem.VisibilyButtonProductInCart = Visibility.Collapsed;
-            }
-            else
-            {
-                SelectedItem.VisibilyButtonProductNotInCart = Visibility.Collapsed;
-                SelectedItem.VisibilyButtonProductInCart = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
-        /// Проверка на существование корзины
-        /// </summary>
-        private static void ValidateExistenceBasket()
-        {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser.Client) != true)
-                CreateBasket();
-        }
-
-        /// <summary>
-        /// Создание новой корзины
-        /// </summary>
-        private static void CreateBasket() =>
-            DatabaseContext.Entities.Baskets.Local.Add(new Basket()
-            {
-                Client = App.CurrentUser.Client!
-            });
-
-        /// <summary>
         /// Открытие окна пользователя 
         /// </summary>
         [RelayCommand]
         private static void OpenPersonalPage() =>
-            new PersonalPageWindow().ShowDialog();
+            new PersonalSalesmanPageWindow().ShowDialog();
     }
 }
