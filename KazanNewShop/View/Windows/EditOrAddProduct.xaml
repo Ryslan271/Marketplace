@@ -11,12 +11,8 @@
              WindowStartupLocation="CenterScreen"
              WindowCornerPreference="RoundSmall"
              x:Name="Root"
-             Height="450"
+             Height="650"
              Width="800">
-
-    <Window.DataContext>
-        <local:EditOrAddProductVM/>
-    </Window.DataContext>
 
     <Window.Resources>
         <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
@@ -26,16 +22,291 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <ui:TitleBar Title="{Binding DataContext.Title,
                              ElementName=Root}"/>
 
-        <StackPanel Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            
-            
-        </StackPanel>
+        <Grid Grid.Row="1"
+              Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid HorizontalAlignment="Center"
+                  Grid.Column="0">
+
+                <Image Source="{Binding PrevPhoto}"
+                       Visibility="{Binding VisiblyFirstImage}"
+                       Grid.Row="0"
+                       Opacity="0.2"
+                       Panel.ZIndex="2"
+                       Height="200"
+                       Margin="10 0 0 0"
+                       Width="200"
+                       Stretch="Fill"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.ImageScrollingDownCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+                    </Image.InputBindings>
+                    <Image.Clip>
+                        <RectangleGeometry RadiusX="10"
+                                           RadiusY="10"
+                                           Rect="0,0,200,200"/>
+                    </Image.Clip>
+                </Image>
+
+                <Image Source="{Binding CurrentPhoto}"
+                       Panel.ZIndex="2"
+                       Grid.Row="1"
+                       Height="200"
+                       Margin="10 0 0 0"
+                       Width="200"
+                       Stretch="Fill"
+                       HorizontalAlignment="Left">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.ImageScrollingUpCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+                    </Image.InputBindings>
+                    <Image.Clip>
+                        <RectangleGeometry RadiusX="10"
+                                           RadiusY="10"
+                                           Rect="0,0,200,200"/>
+                    </Image.Clip>
+                </Image>
+
+                <Image Source="{Binding NextPhoto}"
+                       Visibility="{Binding VisiblyLastImage}"
+                       Grid.Row="2"
+                       Opacity="0.2"
+                       Panel.ZIndex="1"
+                       Height="200"
+                       Margin="10 0 0 0"
+                       Width="200"
+                       Stretch="Fill"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Left">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.ImageScrollingUpCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+                    </Image.InputBindings>
+                    <Image.Clip>
+                        <RectangleGeometry RadiusX="10"
+                                           RadiusY="10"
+                                           Rect="0,0,200,200"/>
+                    </Image.Clip>
+                </Image>
+            </Grid>
+
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding DataContext.Ellipses,
+                                    ElementName=Root,
+                                    UpdateSourceTrigger=PropertyChanged}"
+                      IsEnabled="True"
+                      Grid.Column="1"
+                      d:ItemsSource="{d:SampleData ItemCount=10}"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left"/>
+
+            <ScrollViewer Grid.Row="1"
+                          Grid.Column="2"
+                          Padding="20 0 0 0"
+                          VerticalScrollBarVisibility="Visible">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Название товара"
+                               Margin="0 0 0 5"/>
+
+                        <TextBox Text="{Binding DataContext.CurrentProduct.Name,
+                                        ElementName=Root}"
+                                 Style="{StaticResource TextBoxCustomStyle}"
+                                 Margin="0 5 0 10"
+                                 HorizontalAlignment="Left"
+                                 TextWrapping="Wrap"
+                                 FontSize="20"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="Категория"
+                                   Margin="0 0 0 5"/>
+
+                        <ComboBox ItemsSource="{Binding DataContext.Category,
+                                                ElementName=Root}"
+                                  SelectedItem="{Binding DataContext.CurrentProduct.Category, 
+                                                 UpdateSourceTrigger=PropertyChanged,
+                                                 ElementName=Root}"
+                                  Margin="0 0 10 0"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="2"
+                                VerticalAlignment="Center">
+
+                        <StackPanel Margin="0 0 10 0"
+                                    VerticalAlignment="Center">
+                            
+                            <TextBlock Text="Количество"
+                                       Margin="0 0 0 5"/>
+
+                            <TextBox Text="{Binding DataContext.CurrentProduct.Count,
+                                            ElementName=Root}"
+                                     MaxWidth="50"
+                                     VerticalAlignment="Center"
+                                     Style="{StaticResource TextBoxCustomStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="Стоимость"
+                                       Margin="0 0 0 5"/>
+
+                            <TextBox Text="{Binding DataContext.CurrentProduct.Cost,
+                                            ElementName=Root}"
+                                     MaxWidth="50"
+                                     VerticalAlignment="Center"
+                                     Style="{StaticResource TextBoxCustomStyle}"/>
+
+                            <TextBlock Text="Скидка"
+                                       Margin="0 0 0 5"/>
+
+                            <TextBox Text="{Binding DataContext.CurrentProduct.Discount,
+                                            ElementName=Root}"
+                                     MaxWidth="50"
+                                     VerticalAlignment="Center"
+                                     Style="{StaticResource TextBoxCustomStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Text="Описание"
+                                   Margin="0 0 0 5"/>
+
+                        <TextBox Text="{Binding DataContext.CurrentProduct.Description,
+                                        ElementName=Root}"
+                                 Style="{StaticResource TextBoxCustomStyle}"
+                                 Margin="0 5 0 0"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Text="Характеристики"
+                                   Margin="0 0 0 5"/>
+
+                        <TextBox Text="{Binding DataContext.CurrentProduct.Characteristics,
+                                        ElementName=Root}"
+                                 Style="{StaticResource TextBoxCustomStyle}"
+                                 Margin="0 5 0 0"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Border CornerRadius="10"
+                Grid.Row="2"
+                Margin="10 10 20 0"
+                Background="#272837"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left">
+
+            <Button Padding="7 7 7 7"
+                            Command="{Binding DataContext.AddImageCommand,
+                                      ElementName=Root,
+                                      UpdateSourceTrigger=PropertyChanged}">
+                <StackPanel Orientation="Horizontal">
+
+                    <fa:ImageAwesome Icon="Plus"
+                                             Width="15"
+                                             Foreground="#ded8d7"/>
+
+                    <TextBlock Text="Добавить каринтку"
+                                       Margin="10 0 0 0"
+                                       FontSize="13"/>
+                </StackPanel>
+            </Button>
+            <Border.InputBindings>
+                <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding DataContext.AddImageCommand,
+                                                ElementName=Root,
+                                                UpdateSourceTrigger=PropertyChanged}"/>
+            </Border.InputBindings>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                         Value="True">
+                            <Setter Property="Background"
+                                            Value="#464649"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+
+        <Border CornerRadius="10"
+                Grid.Row="2"
+                Margin="0 10 20 10"
+                Background="#272837"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right">
+
+            <Button Padding="10 10 10 10"
+                    Command="{Binding DataContext.SaveChangesCommand,
+                                ElementName=Root,
+                                UpdateSourceTrigger=PropertyChanged}">
+                <StackPanel Orientation="Horizontal">
+
+                    <fa:ImageAwesome Icon="Check"
+                                     Width="20"
+                                     Foreground="#ded8d7"/>
+
+                    <TextBlock Text="Сохранить"
+                               Margin="10 0 0 0"/>
+                </StackPanel>
+            </Button>
+            <Border.InputBindings>
+                <MouseBinding Gesture="LeftClick"
+                              Command="{Binding DataContext.SaveChangesCommand,
+                                        ElementName=Root,
+                                        UpdateSourceTrigger=PropertyChanged}"/>
+            </Border.InputBindings>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="#464649"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
     </Grid>
 </ui:UiWindow>

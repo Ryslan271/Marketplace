@@ -187,7 +187,10 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void ProductDetails(Product SelectedItem)
         {
-            new ProductDetails(SelectedItem).ShowDialog();
+            if (SelectedItem.Salesman == App.CurrentUser.Salesman!)
+                new EditOrAddProduct(SelectedItem, "Редактирование").Show();
+            else
+                new ProductDetails(SelectedItem).ShowDialog();
         }
 
         /// <summary>

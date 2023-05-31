@@ -1,18 +1,6 @@
-﻿using Wpf.Ui.Controls;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using KazanNewShop.Database.Models;
+using KazanNewShop.ViewModel;
+using Wpf.Ui.Controls;
 
 namespace KazanNewShop.View.Windows
 {
@@ -21,9 +9,14 @@ namespace KazanNewShop.View.Windows
     /// </summary>
     public partial class EditOrAddProduct : UiWindow
     {
-        public EditOrAddProduct()
+        public static EditOrAddProduct Instance = null!;
+        public EditOrAddProduct(Product product, string title)
         {
             InitializeComponent();
+
+            Instance = this;
+
+            Instance.DataContext = new EditOrAddProductVM(product, title);
         }
     }
 }

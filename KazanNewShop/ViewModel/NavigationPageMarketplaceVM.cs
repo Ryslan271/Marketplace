@@ -42,9 +42,11 @@ namespace KazanNewShop.ViewModel
                     DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
                 );
 
+        // Количество товара в корзине
         [ObservableProperty]
         private int _countProdutsInBasket = 0;
 
+        // Строка поиска
         [ObservableProperty]
         private string? _search;
 

@@ -24,12 +24,12 @@ namespace KazanNewShop.ViewModel
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _login = "qwe";
+        private string? _login = "asd";
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _password = "qwe";
+        private string? _password = "asd";
 
         [RelayCommand]
         private void Authorized()
