@@ -135,27 +135,27 @@ namespace KazanNewShop.ViewModel
 
             Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
 
-            if (basket.ProductLists.Any(p => p.Product == CurrentProduct!) == true)
+            if (basket.ProductLists.Any((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)) == true)
             {
-                basket.ProductLists.First(p => p.Product == CurrentProduct!).Count += 1;
+                basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count += 1;
 
-                CurrentProduct.CountInBasket = basket.ProductLists.First(p => p.Product == CurrentProduct!).Count;
+                this.CurrentProduct.CountInBasket = basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count;
             }
             else
             {
                 DatabaseContext.Entities.ProductLists.Local.Add(new ProductList()
                 {
                     Basket = basket,
-                    Product = CurrentProduct!,
+                    Product = this.CurrentProduct!,
                     Count = 1
                 });
 
-                CurrentProduct.CountInBasket = basket.ProductLists.First(p => p.Product == CurrentProduct!).Count;
+                this.CurrentProduct.CountInBasket = basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count;
             }
 
             ValidateCountInProductBasket(CurrentProduct);
 
-            NavigationPageMarketplaceVM.ViewProducts.Refresh();
+            NavigationPageMarketplaceVM.Instance.ViewProducts.Refresh();
 
             ProductDetails.Instance.DataContext = null;
             ProductDetails.Instance.DataContext = Instance;
@@ -171,22 +171,22 @@ namespace KazanNewShop.ViewModel
 
             Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
 
-            if (basket.ProductLists.First(p => p.Product == CurrentProduct!).Count - 1 > 0)
+            if (basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count - 1 > 0)
             {
-                basket.ProductLists.First(p => p.Product == CurrentProduct!).Count -= 1;
+                basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count -= 1;
 
-                CurrentProduct.CountInBasket = basket.ProductLists.First(p => p.Product == CurrentProduct!).Count;
+                this.CurrentProduct.CountInBasket = basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)).Count;
             }
             else
             {
-                DatabaseContext.Entities.ProductLists.Local.Remove(basket.ProductLists.First(p => p.Product == CurrentProduct!));
+                DatabaseContext.Entities.ProductLists.Local.Remove(basket.ProductLists.First((System.Func<ProductList, bool>)(p => p.Product == this.CurrentProduct!)));
 
-                CurrentProduct.CountInBasket = 0;
+                this.CurrentProduct.CountInBasket = 0;
             }
 
             ValidateCountInProductBasket(CurrentProduct );
 
-            NavigationPageMarketplaceVM.ViewProducts.Refresh();
+            NavigationPageMarketplaceVM.Instance.ViewProducts.Refresh();
 
             ProductDetails.Instance.DataContext = null;
             ProductDetails.Instance.DataContext = Instance;

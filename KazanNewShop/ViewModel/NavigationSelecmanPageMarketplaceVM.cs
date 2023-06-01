@@ -29,8 +29,19 @@ namespace KazanNewShop.ViewModel
         public static NavigationSelecmanPageMarketplaceVM Instance { get; private set; } = null!;
 
         // Кнопка мои заказы
-        [ObservableProperty]
         private bool _isChekedMyProduct = false;
+        public bool IsChekedMyProduct
+        {
+            get => _isChekedMyProduct;
+            set
+            {
+                _isChekedMyProduct = value;
+                if (IsChekedMyProduct)
+                    FilterShowMyProduct();
+                else
+                    ViewProducts.Filter = (obj) => true;
+            }
+        }
 
         // Иконка продавца
         [ObservableProperty]
@@ -41,7 +52,7 @@ namespace KazanNewShop.ViewModel
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public static ICollectionView ViewProducts { get; } 
+        public ICollectionView ViewProducts { get; set; } 
             = CollectionViewSource.GetDefaultView
                 (
                     DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
@@ -121,32 +132,20 @@ namespace KazanNewShop.ViewModel
         /// <summary>
         /// Филтрация товаров для вывода товара продовца
         /// </summary>
-        [RelayCommand]
-        public void ShowMyProduct()
-        {
-            if (IsChekedMyProduct)
-                FilterShowMyProduct();
-            
-            ProductSearch();
-            ProductFiltration();
-        }
-
-        /// <summary>
-        /// Метод фильтрации всез товаров для вывода только тех, которые создал продавец
-        /// </summary>
-        private static void FilterShowMyProduct()
+        public void FilterShowMyProduct()
         {
             ViewProducts.Filter = (obj) =>
             {
-                var product = obj as Product;
+                Product product = (obj as Product)!;
 
-                if (product?.Salesman == App.CurrentUser!.Salesman)
+                if (product.Salesman == App.CurrentUser!.Salesman)
                     return true;
 
                 return false;
             };
         }
 
+    
         /// <summary>
         /// Команда поиска по товарам
         /// </summary>

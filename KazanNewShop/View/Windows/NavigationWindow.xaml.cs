@@ -43,6 +43,7 @@ namespace KazanNewShop.View.Windows
                 {typeof(NavigationSelecmanPageMarketplaceVM) , typeof(NavigationSelecmanPageMarketplace)},
                 {typeof(BasketPageVM) , typeof(BasketPage)},
                 {typeof(OrderPageVM) , typeof(OrderPage)},
+                {typeof(ListOrderPageVM) , typeof(ListOrderPage)},
             };
 
         public NavigationWindow()
@@ -81,14 +82,20 @@ namespace KazanNewShop.View.Windows
                     ConvernProfilePhoto();
 
                     // Выдача первой картинки продукту для отображения картинки в списке продуктов
-                    foreach (Product item in DatabaseContext.Entities.Products.Local)
-                        item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.Product == item)?.Photo;
+                    IssuingImage();
                 }
 
             }).ContinueWith(task => { Navigate(VMToNavigate); },
                                       TaskScheduler.FromCurrentSynchronizationContext());
 
             CurrentVM = VMToNavigate;
+        }
+
+        // метод выдачи первой картинки товару
+        public static void IssuingImage()
+        {
+            foreach (Product item in DatabaseContext.Entities.Products.Local)
+                item.MainPhoto = DatabaseContext.Entities.PhotoProducts.Local.FirstOrDefault(p => p.Product == item)?.Photo;
         }
 
         /// <summary>

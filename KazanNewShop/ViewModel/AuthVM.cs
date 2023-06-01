@@ -49,7 +49,7 @@ namespace KazanNewShop.ViewModel
 
             if (App.CurrentUser.Client is not null)
                 NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
-            else if (App.CurrentUser.Salesmens is not null)
+            else if (App.CurrentUser.Salesmen is not null)
                 NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
             else
                 return;

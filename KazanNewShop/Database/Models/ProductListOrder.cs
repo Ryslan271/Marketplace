@@ -9,7 +9,7 @@ public partial class ProductListOrder
 
     public int IdOrder { get; set; }
 
-    public int? Count { get; set; }
+    public int Count { get; set; }
 
     public virtual Order Order { get; set; } = null!;
 

@@ -2,7 +2,7 @@
 
 namespace KazanNewShop.Database.Models
 {
-    partial class ProductList
+    public partial class ProductListOrder
     {
         private decimal? _cost;
         [NotMapped]
@@ -10,7 +10,7 @@ namespace KazanNewShop.Database.Models
         {
             get
             {
-                _cost = Product.Cost * Count;
+                _cost = Models.Product.Cost * Models.Product.Count;
 
                 return _cost;
             }

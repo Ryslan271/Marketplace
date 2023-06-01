@@ -26,6 +26,8 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
 
+    public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+
     public virtual DbSet<PhotoProduct> PhotoProducts { get; set; }
 
     public virtual DbSet<PointOfIssue> PointOfIssues { get; set; }
@@ -109,6 +111,7 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.IdClient).HasColumnName("ID_Client");
             entity.Property(e => e.IdPointOfIssue).HasColumnName("ID_PointOfIssue");
+            entity.Property(e => e.IdStatus).HasColumnName("ID_Status");
 
             entity.HasOne(d => d.Client).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.IdClient)
@@ -119,6 +122,19 @@ public partial class DatabaseContext : DbContext
                 .HasForeignKey(d => d.IdPointOfIssue)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Address");
+
+            entity.HasOne(d => d.OrderStatus).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.IdStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_OrderStatus");
+        });
+
+        modelBuilder.Entity<OrderStatus>(entity =>
+        {
+            entity.ToTable("OrderStatus");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<PhotoProduct>(entity =>
@@ -203,7 +219,9 @@ public partial class DatabaseContext : DbContext
 
             entity.ToTable("ProductListOrder");
 
-            entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
+            entity.Property(e => e.IdProduct)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID_Product");
             entity.Property(e => e.IdOrder).HasColumnName("ID_Order");
 
             entity.HasOne(d => d.Order).WithMany(p => p.ProductListOrders)
@@ -226,7 +244,7 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.NameCompany).HasMaxLength(150);
             entity.Property(e => e.UserId).HasColumnName("User_ID");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Salesmens)
+            entity.HasOne(d => d.User).WithMany(p => p.Salesmen)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Salesman_User");
         });

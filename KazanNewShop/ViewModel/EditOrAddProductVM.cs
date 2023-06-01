@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
+using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,10 @@ namespace KazanNewShop.ViewModel
         // Список всех картинок
         [ObservableProperty]
         private List<byte[]?> _images;
+
+        // Список всех картинок на удаление
+        [ObservableProperty]
+        private List<byte[]?> _imagesIsRemoved = new();
 
         // Выбранный продукт
         [ObservableProperty]
@@ -83,7 +88,25 @@ namespace KazanNewShop.ViewModel
 
             Images.Add(newImage);
 
+            _currPhotoIndex = 0;
+
             WorkWithImages();
+        }
+
+        /// <summary>
+        /// Команда удаление центральной картинки
+        /// </summary>
+        [RelayCommand]
+        public void RemoveCurrentImage()
+        {
+            Images.Remove(CurrentPhoto);
+
+            ImagesIsRemoved.Add(CurrentPhoto);
+
+            _currPhotoIndex = 0;
+            VisiblyFirstImage = Visibility.Collapsed;
+
+            UpdateEllipseList();
         }
 
         /// <summary>
@@ -96,6 +119,16 @@ namespace KazanNewShop.ViewModel
             else
                 Images.Remove(CommonMethods.MainForProductNullPhoto);
 
+            UpdateEllipseList();
+        }
+
+        /// <summary>
+        /// Метод обновление списка кружков
+        /// </summary>
+        private void UpdateEllipseList()
+        {
+            Ellipses.Clear();
+
             for (int i = 0; i < Images.Count; i++)
                 Ellipses.Add
                 (
@@ -106,6 +139,9 @@ namespace KazanNewShop.ViewModel
                         Fill = Brushes.Gray
                     }
                 );
+
+            if (Ellipses.Count <= 0)
+                return;
 
             Ellipses[0].Fill = Brushes.Wheat;
 
@@ -188,9 +224,22 @@ namespace KazanNewShop.ViewModel
                     );
             }
 
+            foreach (var image in ImagesIsRemoved)
+            {
+                if (DatabaseContext.Entities.PhotoProducts.Local.Select(p => p.Photo).Contains(image) == false)
+                    continue;
+
+                DatabaseContext.Entities.PhotoProducts.Local.Remove
+                   (
+                       DatabaseContext.Entities.PhotoProducts.Local.First(p => p.Photo == image)
+                   );
+            }
+
             DatabaseContext.Entities.SaveChanges();
 
-            NavigationPageMarketplaceVM.ViewProducts.Refresh();
+            NavigationWindow.IssuingImage();
+
+            NavigationSelecmanPageMarketplaceVM.Instance.ViewProducts.Refresh();
 
             CloseWindow();
         }

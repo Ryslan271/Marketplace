@@ -163,13 +163,13 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
 
-                                    <RadioButton HorizontalAlignment="Right"
-                                                 Grid.Column="1"
-                                                 Content="Мои товары"
-                                                 IsChecked="{Binding DataContext.IsChekedMyProduct,
-                                                             ElementName=Root}"
-                                                 Command="{Binding DataContext.ShowMyProductCommand,
-                                                           ElementName=Root}"/>
+                                    <CheckBox HorizontalAlignment="Right"
+                                              Grid.Column="1"
+                                              Content="Мои товары"
+                                              IsChecked="{Binding DataContext.IsChekedMyProduct,
+                                                          ElementName=Root}"
+                                              Command="{Binding DataContext.ShowMyProductCommand,
+                                                        ElementName=Root}"/>
                                 </Grid>
 
                                 <Grid Grid.Column="0"

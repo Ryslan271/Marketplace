@@ -17,5 +17,5 @@ public partial class User
 
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 
-    public virtual ICollection<Salesman> Salesmens { get; set; } = new List<Salesman>();
+    public virtual ICollection<Salesman> Salesmen { get; set; } = new List<Salesman>();
 }

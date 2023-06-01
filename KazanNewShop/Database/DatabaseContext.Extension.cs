@@ -27,6 +27,7 @@ namespace KazanNewShop.Database
         public static void LoadEntitesForMarketplace()
         {
             Entities.Baskets.Load();
+            Entities.OrderStatuses.Load();
             Entities.ProductLists.Load();
             Entities.Products.Load();
             Entities.Categories.Load();

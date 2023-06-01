@@ -36,7 +36,7 @@ namespace KazanNewShop.ViewModel
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public static ICollectionView ViewProducts { get; } 
+        public ICollectionView ViewProducts { get; } 
             = CollectionViewSource.GetDefaultView
                 (
                     DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
