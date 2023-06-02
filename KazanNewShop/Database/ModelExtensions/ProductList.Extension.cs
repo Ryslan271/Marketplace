@@ -2,21 +2,19 @@
 
 namespace KazanNewShop.Database.Models
 {
-    public partial class ProductListOrder
+    public partial class ProductList
     {
-        private decimal? _cost;
+        private bool _IsEnableButtomPlus;
         [NotMapped]
-        public decimal? Cost
+        public bool IsEnableButtomPlus
         {
             get
             {
-                _cost = Product.Cost * Product.Count;
-
-                return _cost;
+                return _IsEnableButtomPlus;
             }
             set
             {
-                _cost = value;
+                _IsEnableButtomPlus = value;
             }
         }
     }

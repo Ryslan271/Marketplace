@@ -73,5 +73,19 @@ namespace KazanNewShop.Database.Models
                 _visibilyButtonProductInCart = value;
             }
         }
+
+        private bool _IsEnableButtomPlus;
+        [NotMapped]
+        public bool IsEnableButtomPlus
+        {
+            get
+            {
+                return _IsEnableButtomPlus;
+            }
+            set
+            {
+                _IsEnableButtomPlus = value;
+            }
+        }
     }
 }

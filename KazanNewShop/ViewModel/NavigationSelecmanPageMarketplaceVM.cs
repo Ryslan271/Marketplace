@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
+using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -177,7 +178,16 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void OpenOrdersList()
         {
-            
+            NavigationWindow.Navigate(typeof(ListOrderPageVM));
+        }
+
+        /// <summary>
+        /// Создание заказа
+        /// </summary>
+        [RelayCommand]
+        public void CreatedProduct()
+        {
+            new EditOrAddProduct(new Product(), "Создание товара").ShowDialog();
         }
 
         /// <summary>
@@ -186,7 +196,7 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void ProductDetails(Product SelectedItem)
         {
-            if (SelectedItem.Salesman == App.CurrentUser.Salesman!)
+            if (SelectedItem.Salesman == App.CurrentUser!.Salesman!)
                 new EditOrAddProduct(SelectedItem, "Редактирование").Show();
             else
                 new ProductDetails(SelectedItem).ShowDialog();

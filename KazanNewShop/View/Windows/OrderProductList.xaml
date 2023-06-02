@@ -1,0 +1,76 @@
+﻿<ui:UiWindow
+    x:Class="KazanNewShop.View.Windows.OrderProductList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:KazanNewShop.ViewModel.WindowsVM"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root"
+    Width="800"
+    Height="450"
+    ExtendsContentIntoTitleBar="True"
+    WindowCornerPreference="RoundSmall"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml" />
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Title="Список продуктов" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="0,0,0,10" Text="{Binding DataContext.CurrentOrder.ID, ElementName=Root, StringFormat='{}Номер заказа: {0}'}" />
+
+            <ListBox
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                ItemsSource="{Binding DataContext.Products, ElementName=Root}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="10,0,0,10" Orientation="Horizontal">
+
+                            <Image
+                                Grid.RowSpan="2"
+                                Width="40"
+                                Height="40"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Center"
+                                Source="{Binding Product.MainPhoto, TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
+                                Stretch="Fill">
+                                <Image.Clip>
+                                    <RectangleGeometry
+                                        RadiusX="5"
+                                        RadiusY="5"
+                                        Rect="0,0,40,40" />
+                                </Image.Clip>
+                            </Image>
+
+                            <TextBlock
+                                MaxWidth="400"
+                                Text="{Binding Name, StringFormat='{}Название: {0}'}"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock Margin="10,0,0,0" Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
+
+                            <TextBlock Margin="10,0,0,0" Text="{Binding Cost, StringFormat='{}Стоимость: {0}'}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</ui:UiWindow>

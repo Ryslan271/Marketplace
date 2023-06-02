@@ -5,7 +5,9 @@ using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -43,9 +45,95 @@ namespace KazanNewShop.ViewModel
         [ObservableProperty]
         private List<byte[]?> _imagesIsRemoved = new();
 
-        // Выбранный продукт
-        [ObservableProperty]
+        #region Выбранный продукт/новый продукт
+
+        [Required(ErrorMessage = "Заполните все поля")]
         private Product _currentProduct;
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public Product CurrentProduct
+        {
+            get => _currentProduct;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public string Name
+        {
+            get => _currentProduct.Name;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public int? Count
+        {
+            get => _currentProduct.Count;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Count = Convert.ToInt32(value);
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public decimal? Cost
+        {
+            get => _currentProduct.Cost;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Cost = Convert.ToInt32(value);
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public int? Discount
+        {
+            get => _currentProduct.Discount;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Discount = Convert.ToInt32(value);
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public string Description
+        {
+            get => _currentProduct.Description;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Description = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Required(ErrorMessage = "Заполните все поля")]
+        public string? Characteristics
+        {
+            get => _currentProduct.Characteristics;
+            set
+            {
+                ValidateProperty(value);
+                _currentProduct.Characteristics = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
 
         // Выбранный продукт
         [ObservableProperty]
@@ -56,7 +144,7 @@ namespace KazanNewShop.ViewModel
         private List<Ellipse> _ellipses = new();
 
         // Список категорий
-        public IEnumerable<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection().Skip(1);
+        public IEnumerable<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         #endregion
 
@@ -209,6 +297,9 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
+            if (CurrentProduct.Category.Id == 0)
+                return;
+
             foreach (var image in Images)
             {
                 if (DatabaseContext.Entities.PhotoProducts.Local.Select(p => p.Photo).Contains(image) == true)
@@ -234,6 +325,10 @@ namespace KazanNewShop.ViewModel
                        DatabaseContext.Entities.PhotoProducts.Local.First(p => p.Photo == image)
                    );
             }
+
+            CurrentProduct.Salesman = App.CurrentUser!.Salesman;
+
+            CurrentProduct.IdStatus = 1; // изменить на 2
 
             DatabaseContext.Entities.SaveChanges();
 

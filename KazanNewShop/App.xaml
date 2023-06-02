@@ -1,16 +1,18 @@
-﻿<Application x:Class="KazanNewShop.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:KazanNewShop"
-             StartupUri="View/Windows/АuthorizationWindows.xaml"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+﻿<Application
+    x:Class="KazanNewShop.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:KazanNewShop"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    StartupUri="View/Windows/АuthorizationWindows.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/TextBoxStyle.xaml"/>
-                <ResourceDictionary Source="Resources/TextBlockStyle.xaml"/>
-                <ResourceDictionary Source="Resources/Styles.xaml"/>
-                <ResourceDictionary Source="Resources/DatePickerStyle.xaml"/>
+                <ResourceDictionary Source="Resources/TextBoxStyle.xaml" />
+                <ResourceDictionary Source="Resources/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Resources/Styles.xaml" />
+                <ResourceDictionary Source="Resources/DatePickerStyle.xaml" />
+                <ResourceDictionary Source="Resources/Converters.xaml" />
 
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />

@@ -35,6 +35,9 @@ namespace KazanNewShop.ViewModel
             if (SelectedItem.Count - 1 < 1)
                 return;
 
+            if (SelectedItem.Product.Count <= SelectedItem.Count)
+                SelectedItem.IsEnableButtomPlus = false;
+
             SelectedItem.Count -= 1;
 
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
@@ -48,7 +51,10 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void AddOneSelectedProduct(ProductList SelectedItem)
         {
-            SelectedItem.Count += 1;
+            if (SelectedItem.Product.Count - 1 >= SelectedItem.Count)
+                SelectedItem.Count += 1;
+            else
+                SelectedItem.IsEnableButtomPlus = true;
 
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
 

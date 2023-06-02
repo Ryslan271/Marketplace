@@ -161,11 +161,14 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
 
             if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
             {
-                basket.ProductLists.First(p => p.Product == SelectedItem!).Count += 1;
+                if (SelectedItem.Count - 1 >= basket.ProductLists.First(p => p.Product == SelectedItem!).Count)
+                    basket.ProductLists.First(p => p.Product == SelectedItem!).Count += 1;
+                else
+                    SelectedItem.IsEnableButtomPlus = true;
 
                 SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
             }
@@ -194,11 +197,14 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
 
             if (basket.ProductLists.First(p => p.Product == SelectedItem!).Count - 1 > 0)
             {
                 basket.ProductLists.First(p => p.Product == SelectedItem!).Count -= 1;
+
+                if (SelectedItem.Count <= basket.ProductLists.First(p => p.Product == SelectedItem!).Count)
+                    SelectedItem.IsEnableButtomPlus = false;
 
                 SelectedItem.CountInBasket = basket.ProductLists.First(p => p.Product == SelectedItem!).Count;
             }
@@ -256,7 +262,7 @@ namespace KazanNewShop.ViewModel
         private static void CreateBasket() =>
             DatabaseContext.Entities.Baskets.Local.Add(new Basket()
             {
-                Client = App.CurrentUser.Client!
+                Client = App.CurrentUser!.Client!
             });
 
         /// <summary>

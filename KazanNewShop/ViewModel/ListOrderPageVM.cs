@@ -84,10 +84,17 @@ namespace KazanNewShop.ViewModel
         }
 
         /// <summary>
-        /// Открытие корзины
+        /// Открытие списка продуктов в заказе
+        /// </summary>
+        [RelayCommand]
+        public void OrderProductList(Order SelectOrder) =>
+            new OrderProductList(SelectOrder).Show();
+
+        /// <summary>
+        /// Открытие все товары
         /// </summary>
         [RelayCommand]
         public void OpenProductList() =>
-            NavigationWindow.Navigate(typeof(NavigationSelecmanPageMarketplaceVM));
+             NavigationWindow.Navigate(typeof(NavigationSelecmanPageMarketplaceVM));
     }
 }

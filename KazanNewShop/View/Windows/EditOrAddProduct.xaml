@@ -137,7 +137,7 @@
                         <TextBlock Text="Название товара"
                                Margin="0 0 0 5"/>
 
-                        <TextBox Text="{Binding DataContext.CurrentProduct.Name,
+                        <TextBox Text="{Binding DataContext.Name,
                                         ElementName=Root}"
                                  Style="{StaticResource TextBoxCustomStyle}"
                                  Margin="0 5 0 10"
@@ -175,7 +175,7 @@
                             <TextBlock Text="Количество"
                                        Margin="0 0 0 5"/>
 
-                            <TextBox Text="{Binding DataContext.CurrentProduct.Count,
+                            <TextBox Text="{Binding DataContext.Count,
                                             ElementName=Root}"
                                      MaxWidth="50"
                                      VerticalAlignment="Center"
@@ -186,7 +186,7 @@
                             <TextBlock Text="Стоимость"
                                        Margin="0 0 0 5"/>
 
-                            <TextBox Text="{Binding DataContext.CurrentProduct.Cost,
+                            <TextBox Text="{Binding DataContext.Cost,
                                             ElementName=Root}"
                                      MaxWidth="50"
                                      VerticalAlignment="Center"
@@ -195,7 +195,7 @@
                             <TextBlock Text="Скидка"
                                        Margin="0 0 0 5"/>
 
-                            <TextBox Text="{Binding DataContext.CurrentProduct.Discount,
+                            <TextBox Text="{Binding DataContext.Discount,
                                             ElementName=Root}"
                                      MaxWidth="50"
                                      VerticalAlignment="Center"
@@ -207,7 +207,7 @@
                         <TextBlock Text="Описание"
                                    Margin="0 0 0 5"/>
 
-                        <TextBox Text="{Binding DataContext.CurrentProduct.Description,
+                        <TextBox Text="{Binding DataContext.Description,
                                         ElementName=Root}"
                                  Style="{StaticResource TextBoxCustomStyle}"
                                  Margin="0 5 0 0"
@@ -218,7 +218,7 @@
                         <TextBlock Text="Характеристики"
                                    Margin="0 0 0 5"/>
 
-                        <TextBox Text="{Binding DataContext.CurrentProduct.Characteristics,
+                        <TextBox Text="{Binding DataContext.Characteristics,
                                         ElementName=Root}"
                                  Style="{StaticResource TextBoxCustomStyle}"
                                  Margin="0 5 0 0"
