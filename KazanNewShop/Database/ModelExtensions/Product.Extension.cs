@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using Brush = System.Drawing.Brush;
+using Color = System.Windows.Media.Color;
 
 namespace KazanNewShop.Database.Models
 {
@@ -74,17 +78,17 @@ namespace KazanNewShop.Database.Models
             }
         }
 
-        private bool _IsEnableButtomPlus;
+        private bool _isEnableButtomPlus;
         [NotMapped]
         public bool IsEnableButtomPlus
         {
             get
             {
-                return _IsEnableButtomPlus;
+                return _isEnableButtomPlus;
             }
             set
             {
-                _IsEnableButtomPlus = value;
+                _isEnableButtomPlus = value;
             }
         }
     }

@@ -19,5 +19,6 @@ namespace KazanNewShop.View.Windows
 
             Instance.DataContext = new ProductDetailsVM(product);
         }
+
     }
 }

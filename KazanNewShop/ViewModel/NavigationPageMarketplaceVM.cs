@@ -226,6 +226,7 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void ProductDetails(Product SelectedItem)
         {
+            DatabaseContext.Entities.SaveChanges();
             new ProductDetails(SelectedItem).ShowDialog();
         }
 

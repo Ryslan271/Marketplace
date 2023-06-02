@@ -260,7 +260,7 @@
                                         <Button
                                             Command="{Binding DataContext.AddOneSelectedProductCommand, ElementName=Root}"
                                             CommandParameter="{Binding .}"
-                                            IsEnabled="{Binding Datacontext.IsEnableButtomPlus, ElementName=Root}">
+                                            IsEnabled="{Binding DataContext.IsEnableButtomPlus, ElementName=Root}">
                                             <fa:ImageAwesome
                                                 Width="15"
                                                 Foreground="#ded8d7"
