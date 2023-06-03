@@ -15,7 +15,7 @@ public partial class Product
 
     public int IdCategory { get; set; }
 
-    public int? Count { get; set; }
+    public int Count { get; set; }
 
     public decimal Cost { get; set; }
 

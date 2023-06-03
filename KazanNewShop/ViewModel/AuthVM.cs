@@ -47,12 +47,14 @@ namespace KazanNewShop.ViewModel
 
             ValidateRoleUser();
 
-            if (App.CurrentUser.Client is not null)
-                NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
-            else if (App.CurrentUser.Salesmen is not null)
-                NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
-            else
-                return;
+            new AddSelectorAddress().Show();
+
+            //if (App.CurrentUser.Client is not null)
+            //    NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
+            //else if (App.CurrentUser.Salesmen is not null)
+            //    NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
+            //else
+            //    return;
 
             CloseWindow();
         }

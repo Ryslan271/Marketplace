@@ -67,9 +67,7 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void CretingOrder()
         {
-            DatabaseContext.Entities.SaveChanges();
 
-            new OrderCreationWindow().ShowDialog();
         }
 
         /// <summary>

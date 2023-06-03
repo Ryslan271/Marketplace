@@ -128,13 +128,30 @@ namespace KazanNewShop.ViewModel
             NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
 
         /// <summary>
-        /// Создание и открытие заказа
+        /// Создание нового заказа
         /// </summary>
         [RelayCommand]
-        public void OpenCreatingOrder()
+        public void CreatingOrder()
         {
-            NavigationWindow.TransitionProductList(typeof(OrderPageVM));
-            DatabaseContext.Entities.SaveChanges();
+            //Order order = new Order()
+            //{
+            //    Client = App.CurrentUser!.Client!,
+                
+            //};
+
+            //foreach (var item in DatabaseContext.Entities.Baskets.Local.FirstOrDefault(b => b == App.CurrentUser!.Client!.Baskets.First())!.ProductLists)
+            //{
+            //    DatabaseContext.Entities.ProductListOrders.Local.Add
+            //        (
+            //            new ProductListOrder()
+            //            {
+            //                Cost = item.Product.CostWithDiscount,
+            //                Count = item.Product.Count,
+            //                Product = item.Product,
+            //                Order = order
+            //            }
+            //        );
+            //}
         }
     }
 }
