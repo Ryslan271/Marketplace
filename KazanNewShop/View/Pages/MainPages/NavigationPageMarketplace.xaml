@@ -262,16 +262,19 @@
                                         Text="{Binding Description}"
                                         TextWrapping="Wrap" />
 
-                                    <TextBlock
-                                        Margin="0,10,0,0"
-                                        FontSize="12"
-                                        Text="{Binding Cost, StringFormat='{}Цена: {0}'}" />
 
                                     <TextBlock
                                         Margin="0,10,0,0"
+                                        FontSize="12"
+                                        Text="{Binding CostWithDiscount, StringFormat='{}Цена: {0:f2}'}" />
+
+                                    <TextBlock
+                                        Margin="0,10,10,0"
+                                        HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
-                                        FontSize="8"
-                                        Text="{Binding CostWithDiscount, StringFormat='{} {0}'}" />
+                                        FontSize="12"
+                                        Text="{Binding Cost, StringFormat='{} {0:f2}'}"
+                                        TextDecorations="Strikethrough" />
                                 </StackPanel>
                                 <Border
                                     Grid.Row="3"

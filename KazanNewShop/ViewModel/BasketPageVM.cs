@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.View.Windows;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -16,12 +17,11 @@ namespace KazanNewShop.ViewModel
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
                 .First(b => b.Client == App.CurrentUser!.Client).ProductLists);
 
-        // Нужная корзина 
-        private Basket _basket
-            = DatabaseContext.Entities.Baskets.Local.ToObservableCollection().FirstOrDefault(b => b == App.CurrentUser!.Client!.Baskets)!;
-
         [ObservableProperty]
         private string? _name;
+
+        // Общая стоимость корзины
+        public decimal? AllCostBasket => TotalCostCalculation();
 
         [ObservableProperty]
         private string? _search;
@@ -43,6 +43,10 @@ namespace KazanNewShop.ViewModel
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
+
+            DatabaseContext.Entities.SaveChanges();
+
+            OnPropertyChanged(nameof(AllCostBasket));
         }
 
         /// <summary>
@@ -59,6 +63,10 @@ namespace KazanNewShop.ViewModel
             SelectedItem.Product.CountInBasket = SelectedItem.Count;
 
             ViewProductsInBasket.Refresh();
+
+            DatabaseContext.Entities.SaveChanges();
+
+            OnPropertyChanged(nameof(AllCostBasket));
         }
 
         /// <summary>
@@ -72,6 +80,8 @@ namespace KazanNewShop.ViewModel
             ViewProductsInBasket.Refresh();
 
             DatabaseContext.Entities.SaveChanges();
+
+            OnPropertyChanged(nameof(AllCostBasket));
         }
 
         /// <summary>
@@ -98,6 +108,17 @@ namespace KazanNewShop.ViewModel
                 return true;
             };
         }
+
+        /// <summary>
+        /// Подсчет общей стоимости корзины
+        /// </summary>
+        public decimal? TotalCostCalculation() =>
+             DatabaseContext.Entities.Baskets.Local
+            .FirstOrDefault(b => App.CurrentUser!.Client!.Baskets.Contains(b))!
+            .ProductLists.Select(p => p.Product)
+            .Sum(p => p.CostWithDiscount * Convert.ToDecimal(DatabaseContext.Entities.Baskets.Local.ToObservableCollection()
+                                                                                                     .FirstOrDefault(b => b == App.CurrentUser!.Client!.Baskets.First())!
+                                                                                                     .ProductLists.First(product => product.Product == p).Count));
 
         /// <summary>
         /// Команда перехода на страницу продуктов

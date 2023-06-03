@@ -158,8 +158,9 @@
                 <TextBlock
                     Margin="0,10,0,0"
                     VerticalAlignment="Top"
-                    FontSize="8"
-                    Text="{Binding DataContext.CurrentProduct.CostWithDiscount, ElementName=Root, StringFormat='{} {0}'}" />
+                    FontSize="16"
+                    Text="{Binding DataContext.CurrentProduct.Cost, ElementName=Root, StringFormat='{} {0}'}"
+                    TextDecorations="Strikethrough" />
 
             </StackPanel>
 
@@ -212,7 +213,7 @@
                     Grid.ColumnSpan="2"
                     Margin="0,10,0,0"
                     FontSize="16"
-                    Text="{Binding DataContext.CurrentProduct.Cost, ElementName=Root, StringFormat='{}Цена: {0}'}" />
+                    Text="{Binding DataContext.CurrentProduct.CostWithDiscount, ElementName=Root, StringFormat='{}Цена: {0}'}" />
 
                 <Border
                     Grid.Column="4"

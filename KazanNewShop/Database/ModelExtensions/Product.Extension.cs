@@ -1,4 +1,5 @@
 ﻿using KazanNewShop.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,7 +33,7 @@ namespace KazanNewShop.Database.Models
             get
             {
                 var count = DatabaseContext.Entities.ProductLists.Local.ToObservableCollection().ToList()
-                            .FirstOrDefault(p => p.Product == this && p.Basket.Client == App.CurrentUser.Client);
+                            .FirstOrDefault(p => p.Product == this && p.Basket.Client == App.CurrentUser!.Client);
 
                 _countInBasket = count == null ? 0 : count.Count;
 
@@ -43,6 +44,22 @@ namespace KazanNewShop.Database.Models
             set
             {
                 _countInBasket = value;
+            }
+        }
+
+        private decimal? _costWithDiscount = 0;
+        [NotMapped]
+        public decimal? CostWithDiscount
+        {
+            get
+            {
+                _costWithDiscount = Cost - (Cost * (Discount * Convert.ToDecimal(0.01)));
+
+                return _costWithDiscount;
+            }
+            set
+            {
+                _costWithDiscount = value;
             }
         }
 

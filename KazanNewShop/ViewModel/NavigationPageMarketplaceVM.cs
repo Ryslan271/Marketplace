@@ -161,7 +161,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
+                Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
 
             if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
             {
@@ -253,7 +253,7 @@ namespace KazanNewShop.ViewModel
         /// </summary>
         private static void ValidateExistenceBasket()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser.Client) != true)
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser!.Client) != true)
                 CreateBasket();
         }
 
