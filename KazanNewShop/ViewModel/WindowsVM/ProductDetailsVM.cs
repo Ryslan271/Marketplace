@@ -5,6 +5,7 @@ using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
+using KazanNewShop.ViewModel.PageVM;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;

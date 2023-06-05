@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class AddSelectorAddressVM : ObservableValidator
     {

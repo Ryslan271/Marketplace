@@ -2,9 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
+using KazanNewShop.ViewModel.PageVM;
 using System.ComponentModel.DataAnnotations;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class FillingClientDataVM : ObservableValidator
     {
@@ -30,7 +31,7 @@ namespace KazanNewShop.ViewModel
 
             if (HasErrors)
                 return;
-    
+
             AuthRegService.FillClientData(Name!, Surname!, Patronymic!);
 
             NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));

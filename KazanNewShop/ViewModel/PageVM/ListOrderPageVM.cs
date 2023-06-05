@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.PageVM
 {
     public partial class ListOrderPageVM : ObservableValidator
     {

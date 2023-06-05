@@ -7,6 +7,7 @@ using KazanNewShop.Services;
 using KazanNewShop.View.Base;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
+using KazanNewShop.ViewModel.PageVM;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -17,7 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class AuthVM : WindowViewModelBase
     {

@@ -4,31 +4,40 @@ using KazanNewShop.Database;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
+using KazanNewShop.ViewModel.PageVM;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
-    public partial class PersonalSalesmanPageWindowVM : WindowViewModelBase
+    public partial class PersonalPageWindowVM : WindowViewModelBase
     {
         [ObservableProperty]
         private byte[] _photo
-            = App.CurrentUser!.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
+            = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string _nameCompany = App.CurrentUser.Salesman!.NameCompany!;
+        private string _name = App.CurrentUser.Client!.Name!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string _description = App.CurrentUser.Salesman!.Description!;
+        private string _surname = App.CurrentUser.Client!.Surname!;
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private DateTime? _dateOnMarketplace = App.CurrentUser.Salesman!.DateOnMarketplace;
+        private string _patronymic = App.CurrentUser.Client!.Patronymic!;
+
+        [ObservableProperty]
+        private string? _numberOfCreditCard = App.CurrentUser.Client?.NumberOfCreditCard;
 
         /// <summary>
         /// Изменение картинки пользователя
@@ -52,14 +61,15 @@ namespace KazanNewShop.ViewModel
             if (HasErrors)
                 return;
 
-            App.CurrentUser!.Salesman!.NameCompany = NameCompany;
-            App.CurrentUser!.Salesman!.Description = Description;
-            App.CurrentUser!.Salesman!.DateOnMarketplace = DateOnMarketplace;
-            App.CurrentUser!.Salesman!.ProfilePhoto = Photo;
+            App.CurrentUser!.Client!.Name = Name;
+            App.CurrentUser!.Client!.Surname = Surname;
+            App.CurrentUser!.Client!.Patronymic = Patronymic;
+            App.CurrentUser!.Client!.NumberOfCreditCard = NumberOfCreditCard;
+            App.CurrentUser!.Client!.ProfilePhoto = Photo;
 
             DatabaseContext.Entities.SaveChanges();
 
-            NavigationPageMarketplaceVM.Instance.ClientPhoto = App.CurrentUser.Salesman!.ProfilePhoto!;
+            NavigationPageMarketplaceVM.Instance.ClientPhoto = App.CurrentUser.Client.ProfilePhoto;
 
             CloseWindow();
         }

@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.PageVM
 {
     public partial class EditOrAddProductVM : WindowViewModelBase
     {

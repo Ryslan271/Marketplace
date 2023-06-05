@@ -9,7 +9,7 @@ using KazanNewShop.ViewModel.Base;
 using System.ComponentModel.DataAnnotations;
 using System.Windows;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class RegVM : WindowViewModelBase
     {
@@ -48,7 +48,7 @@ namespace KazanNewShop.ViewModel
                 CloseWindow();
             }
             else
-               MessageBox.Show("Такой пользователь уже есть в системе", "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show("Такой пользователь уже есть в системе", "Ошибка", MessageBoxButton.OK);
         }
 
         [RelayCommand]

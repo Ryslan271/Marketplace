@@ -5,6 +5,8 @@ using KazanNewShop.View.Pages.LoadedPage;
 using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Pages.UserCreation;
 using KazanNewShop.ViewModel;
+using KazanNewShop.ViewModel.PageVM;
+using KazanNewShop.ViewModel.WindowsVM;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;

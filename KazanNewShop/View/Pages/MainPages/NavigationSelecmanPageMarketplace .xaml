@@ -22,8 +22,21 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Separator
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            BorderBrush="#ded8d7"
+            BorderThickness="1" />
 
         <Border
+            Grid.ColumnSpan="3"
             Margin="6"
             BorderBrush="#ded8d7"
             BorderThickness="0,0,0,1"
@@ -36,6 +49,7 @@
                 <Border
                     Grid.Row="1"
                     Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
                     Background="#20242E"
                     CornerRadius="10">
                     <Grid>
@@ -124,26 +138,6 @@
                                             <Image Width="30" Source="{Binding DataContext.SalesmanPhoto, ElementName=Root}" />
                                         </StackPanel>
                                     </Border>
-
-                                    <Border
-                                        x:Name="ShopBasketBtn"
-                                        Grid.Row="1"
-                                        Padding="6"
-                                        HorizontalAlignment="Center"
-                                        CornerRadius="10"
-                                        Style="{StaticResource BorderShopBasket}">
-                                        <Border.InputBindings>
-                                            <MouseBinding Command="{Binding DataContext.OpenOrdersListCommand, ElementName=Root}" Gesture="LeftClick" />
-                                        </Border.InputBindings>
-                                        <StackPanel>
-                                            <fa:ImageAwesome
-                                                Width="20"
-                                                Foreground="#ded8d7"
-                                                Icon="Reorder" />
-
-                                            <TextBlock FontSize="14" Text="Заказы" />
-                                        </StackPanel>
-                                    </Border>
                                 </Grid>
 
                                 <Grid
@@ -195,7 +189,94 @@
                 </Border>
             </Grid>
         </Border>
-        <Border Grid.Row="2" HorizontalAlignment="Center">
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="10,0,0,0"
+            BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    x:Name="ShopBasketBtn"
+                    Grid.Row="0"
+                    Padding="6"
+                    HorizontalAlignment="Stretch"
+                    CornerRadius="10">
+                    <Border.InputBindings>
+                        <MouseBinding Command="{Binding DataContext.OpenOrdersListCommand, ElementName=Root}" Gesture="LeftClick" />
+                    </Border.InputBindings>
+                    <StackPanel
+                        Margin="10,5"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Width="25"
+                            Foreground="#ded8d7"
+                            Icon="Reorder" />
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            FontSize="15"
+                            Foreground="#ded8d7"
+                            Text="Заказы" />
+                    </StackPanel>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#ded8d7" />
+                                    <Setter Property="BorderThickness" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="6"
+                    HorizontalAlignment="Left"
+                    CornerRadius="10">
+                    <Border.InputBindings>
+                        <MouseBinding Command="{Binding DataContext.OpenOrdersListCommand, ElementName=Root}" Gesture="LeftClick" />
+                    </Border.InputBindings>
+                    <StackPanel
+                        Margin="10,5"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Width="25"
+                            Foreground="#ded8d7"
+                            Icon="BarChart" />
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            FontSize="15"
+                            Foreground="#ded8d7"
+                            Text="Диаграмма" />
+                    </StackPanel>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#ded8d7" />
+                                    <Setter Property="BorderThickness" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            HorizontalAlignment="Center">
             <ListView
                 HorizontalAlignment="Center"
                 d:ItemsSource="{d:SampleData ItemCount=100}"

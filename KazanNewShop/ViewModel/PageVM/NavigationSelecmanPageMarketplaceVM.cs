@@ -12,7 +12,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.PageVM
 {
     public partial class NavigationSelecmanPageMarketplaceVM : ObservableValidator
     {
@@ -46,14 +46,14 @@ namespace KazanNewShop.ViewModel
 
         // Иконка продавца
         [ObservableProperty]
-        private byte[] _salesmanPhoto 
+        private byte[] _salesmanPhoto
             = App.CurrentUser!.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
 
         // Список категорий
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public ICollectionView ViewProducts { get; set; } 
+        public ICollectionView ViewProducts { get; set; }
             = CollectionViewSource.GetDefaultView
                 (
                     DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
@@ -146,7 +146,7 @@ namespace KazanNewShop.ViewModel
             };
         }
 
-    
+
         /// <summary>
         /// Команда поиска по товарам
         /// </summary>

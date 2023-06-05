@@ -1,170 +1,148 @@
-﻿<ui:UiWindow x:Class="KazanNewShop.View.Windows.PersonalPageWindow"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:KazanNewShop.ViewModel"
-             mc:Ignorable="d"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             ExtendsContentIntoTitleBar="True"
-             WindowCornerPreference="RoundSmall"
-             WindowStartupLocation="CenterScreen"
-             x:Name="Root"
-             Height="600"
-             Width="400">
+﻿<ui:UiWindow
+    x:Class="KazanNewShop.View.Windows.PersonalPageWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local="clr-namespace:KazanNewShop.ViewModel.WindowsVM"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root"
+    Width="400"
+    Height="600"
+    ExtendsContentIntoTitleBar="True"
+    WindowCornerPreference="RoundSmall"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
 
     <Window.Resources>
-        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml"/>
+        <ResourceDictionary Source="/Resources/TextBlockStyle.xaml" />
     </Window.Resources>
 
     <Window.DataContext>
-        <local:PersonalPageWindowVM/>
+        <local:PersonalPageWindowVM />
     </Window.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Title="Личная страница"/>
+        <ui:TitleBar Title="Личная страница" />
 
-        <StackPanel Grid.Row="1"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center">
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
 
-            <Image Source="{Binding DataContext.Photo,
-                            ElementName=Root}"
-                   Grid.Row="0"
-                   Opacity="0.8"
-                   Panel.ZIndex="2"
-                   Height="150"
-                   Margin="10 0 0 0"
-                   Width="150"
-                   Stretch="Fill"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Center">
+            <Image
+                Grid.Row="0"
+                Width="150"
+                Height="150"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Panel.ZIndex="2"
+                Opacity="0.8"
+                Source="{Binding DataContext.Photo, ElementName=Root}"
+                Stretch="Fill">
                 <Image.InputBindings>
-                    <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding DataContext.EditUserPhotoCommand,
-                                            ElementName=Root,
-                                            UpdateSourceTrigger=PropertyChanged}"/>
+                    <MouseBinding Command="{Binding DataContext.EditUserPhotoCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" Gesture="LeftClick" />
                 </Image.InputBindings>
                 <Image.Clip>
-                    <RectangleGeometry RadiusX="10"
-                                       RadiusY="10"
-                                       Rect="0,0,150,150"/>
+                    <RectangleGeometry
+                        RadiusX="10"
+                        RadiusY="10"
+                        Rect="0,0,150,150" />
                 </Image.Clip>
             </Image>
-            
-            <TextBlock Text="Имя*"
-                       Margin="0 0 0 5"/>
-            <TextBox x:Name="Name"
-                     Text="{Binding DataContext.Name,
-                            ElementName=Root,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
 
-            <TextBlock Text="Фамилия*"
-                       Margin="0 0 0 5"/>
-            <TextBox x:Name="Surname"
-                     Text="{Binding DataContext.Surname,
-                            ElementName=Root,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
+            <TextBlock Margin="0,0,0,5" Text="Имя*" />
+            <TextBox
+                x:Name="Name"
+                Style="{StaticResource TextBoxCustomStyle}"
+                Text="{Binding DataContext.Name, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Text="Отчество*"
-                       Margin="0 0 0 5"/>
-            <TextBox x:Name="Patronymic"
-                     Text="{Binding DataContext.Patronymic,
-                            ElementName=Root,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
+            <TextBlock Margin="0,0,0,5" Text="Фамилия*" />
+            <TextBox
+                x:Name="Surname"
+                Style="{StaticResource TextBoxCustomStyle}"
+                Text="{Binding DataContext.Surname, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Text="Номер карты"
-                       Margin="0 0 0 5"/>
-            <TextBox x:Name="NumberOfCreditCard"
-                     Text="{Binding DataContext.NumberOfCreditCard,
-                            ElementName=Root,
-                            UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource TextBoxCustomStyle}"/>
+            <TextBlock Margin="0,0,0,5" Text="Отчество*" />
+            <TextBox
+                x:Name="Patronymic"
+                Style="{StaticResource TextBoxCustomStyle}"
+                Text="{Binding DataContext.Patronymic, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Margin="0,0,0,5" Text="Номер карты" />
+            <TextBox
+                x:Name="NumberOfCreditCard"
+                Style="{StaticResource TextBoxCustomStyle}"
+                Text="{Binding DataContext.NumberOfCreditCard, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" />
 
             <StackPanel Orientation="Horizontal">
-                <Border CornerRadius="10"
-                        DockPanel.Dock="Right"
-                        Grid.Column="2"
-                        Background="#772837"
-                        VerticalAlignment="Center"
-                        Margin="0 0 20 0"
-                        HorizontalAlignment="Right">
+                <Border
+                    Grid.Column="2"
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="#772837"
+                    CornerRadius="10"
+                    DockPanel.Dock="Right">
 
-                    <Button Padding="10 10 10 10"
-                        Command="{Binding DataContext.LogoutCommand,
-                                  ElementName=Root,
-                                  UpdateSourceTrigger=PropertyChanged}">
+                    <Button Padding="10,10,10,10" Command="{Binding DataContext.LogoutCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
                         <StackPanel Orientation="Horizontal">
 
-                            <fa:ImageAwesome Icon="Close"
-                                             Width="20"
-                                             Foreground="#ded8d7"/>
+                            <fa:ImageAwesome
+                                Width="20"
+                                Foreground="#ded8d7"
+                                Icon="Close" />
 
-                            <TextBlock Text="Выйти"
-                                       Margin="10 0 0 0"/>
+                            <TextBlock Margin="10,0,0,0" Text="Выйти" />
                         </StackPanel>
                     </Button>
                     <Border.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding DataContext.LogoutCommand,
-                                                ElementName=Root,
-                                                UpdateSourceTrigger=PropertyChanged}"/>
+                        <MouseBinding Command="{Binding DataContext.LogoutCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" Gesture="LeftClick" />
                     </Border.InputBindings>
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Background"
-                                            Value="#464649"/>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#464649" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
                 </Border>
 
-                <Border CornerRadius="10"
-                        Grid.Column="2"
-                        Background="#272837"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+                <Border
+                    Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="#272837"
+                    CornerRadius="10">
 
-                    <Button Padding="10 10 10 10"
-                            Command="{Binding DataContext.SaveChangesCommand,
-                                      ElementName=Root,
-                                      UpdateSourceTrigger=PropertyChanged}">
+                    <Button Padding="10,10,10,10" Command="{Binding DataContext.SaveChangesCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
                         <StackPanel Orientation="Horizontal">
 
-                            <fa:ImageAwesome Icon="Check"
-                                             Width="20"
-                                             Foreground="#ded8d7"/>
+                            <fa:ImageAwesome
+                                Width="20"
+                                Foreground="#ded8d7"
+                                Icon="Check" />
 
-                            <TextBlock Text="Сохранить"
-                                       Margin="10 0 0 0"/>
+                            <TextBlock Margin="10,0,0,0" Text="Сохранить" />
                         </StackPanel>
                     </Button>
                     <Border.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                                      Command="{Binding DataContext.SaveChangesCommand,
-                                                ElementName=Root,
-                                                UpdateSourceTrigger=PropertyChanged}"/>
+                        <MouseBinding Command="{Binding DataContext.SaveChangesCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" Gesture="LeftClick" />
                     </Border.InputBindings>
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Background"
-                                            Value="#464649"/>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#464649" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>

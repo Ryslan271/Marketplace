@@ -3,10 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
+using KazanNewShop.ViewModel.PageVM;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class FillingSalesmanDataVM : ObservableValidator
     {

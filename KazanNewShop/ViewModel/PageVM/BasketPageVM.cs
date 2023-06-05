@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.View.Windows;
+using KazanNewShop.ViewModel.PageVM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

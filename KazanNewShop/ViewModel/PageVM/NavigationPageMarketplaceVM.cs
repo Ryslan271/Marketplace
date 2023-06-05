@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace KazanNewShop.ViewModel
+namespace KazanNewShop.ViewModel.PageVM
 {
     public partial class NavigationPageMarketplaceVM : ObservableValidator
     {
@@ -36,7 +36,7 @@ namespace KazanNewShop.ViewModel
         public ObservableCollection<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
         // Список всех продуктов
-        public ICollectionView ViewProducts { get; } 
+        public ICollectionView ViewProducts { get; }
             = CollectionViewSource.GetDefaultView
                 (
                     DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
@@ -161,7 +161,7 @@ namespace KazanNewShop.ViewModel
         {
             ValidateExistenceBasket();
 
-                Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
+            Basket basket = DatabaseContext.Entities.Baskets.Local.First(b => b.Client == App.CurrentUser!.Client);
 
             if (basket.ProductLists.Any(p => p.Product == SelectedItem!) == true)
             {
