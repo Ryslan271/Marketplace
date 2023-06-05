@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.View.Windows;
-using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -18,21 +18,59 @@ namespace KazanNewShop.ViewModel
             = CollectionViewSource.GetDefaultView
             (
                 DatabaseContext.Entities.ProductListOrders.Local
+                .ToObservableCollection()
                 .Where(p => p.Product.Salesman == App.CurrentUser!.Salesman)
                 .Select(p => p.Order)
+                .Distinct()
             );
 
+
+        private OrderStatus? _statusSelectedItem;
+        public OrderStatus? StatusSelectedItem
+        {
+            get => _statusSelectedItem;
+            set
+            {
+                _statusSelectedItem = value;
+                OrderSorted();
+            }
+        }
+        public List<OrderStatus> Statuses { get; } = DatabaseContext.Entities.OrderStatuses.Local.ToList();
+
         // список статусов заказа
-        public IEnumerable<OrderStatus> OrderStatus { get; } = DatabaseContext.Entities.OrderStatuses.Local;
+        public ObservableCollection<OrderStatus> OrderStatus { get; } = DatabaseContext.Entities.OrderStatuses.Local.ToObservableCollection();
 
         [ObservableProperty]
-        private OrderStatus _orderStatusSelectedItem = DatabaseContext.Entities.OrderStatuses.Local.First();
+        private OrderStatus _orderStatusSelectedItem = DatabaseContext.Entities.OrderStatuses.Local.ToObservableCollection().First();
 
         [ObservableProperty]
-        private Order _orderSelectedItem;
+        private Order? _orderSelectedItem;
 
         [ObservableProperty]
         private string? _search;
+
+        public ListOrderPageVM()
+        {
+            if (Statuses.FirstOrDefault(x => x.Name == "Все") == null)
+                Statuses.Insert(0, new OrderStatus() { Name = "Все" });
+
+            StatusSelectedItem = Statuses.First();
+        }
+
+        /// <summary>
+        /// Команда сортировка заказов
+        /// </summary>
+        [RelayCommand]
+        public void OrderSorted()
+        {
+            ViewProductsInOrder.Filter = (obj) =>
+            {
+                Order? order = obj as Order;
+
+                return _statusSelectedItem == Statuses.First()
+                      || order!.OrderStatus == _statusSelectedItem;
+            };
+        }
 
         /// <summary>
         /// Команда поиска по товарам
@@ -68,7 +106,7 @@ namespace KazanNewShop.ViewModel
         {
             OrderSelectedItem.OrderStatus = OrderStatusSelectedItem;
 
-           
+
             DatabaseContext.Entities.SaveChanges();
         }
 
@@ -76,8 +114,9 @@ namespace KazanNewShop.ViewModel
         /// Оформление заказа
         /// </summary>
         [RelayCommand]
-        public void MakeOrder()
+        public void MakeOrder(Order selectOrder)
         {
+            DatabaseContext.Entities.SaveChanges();
         }
 
         /// <summary>

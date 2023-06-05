@@ -49,6 +49,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*" />
                                     <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
 
@@ -63,7 +64,7 @@
                                     CornerRadius="10">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60*" />
+                                            <ColumnDefinition Width="40*" />
                                             <ColumnDefinition Width="2.6*" />
                                         </Grid.ColumnDefinitions>
 
@@ -85,7 +86,7 @@
                                                 Foreground="#FFFFFF"
                                                 Icon="Search" />
                                             <Border.InputBindings>
-                                                <MouseBinding Command="{Binding ProductSearchCommand}" Gesture="LeftClick" />
+                                                <MouseBinding Command="{Binding DataContext.ProductSearchCommand, ElementName=Root}" Gesture="LeftClick" />
                                             </Border.InputBindings>
                                             <Border.Style>
                                                 <Style TargetType="Border">
@@ -101,9 +102,21 @@
                                     </Grid>
                                 </Border>
 
+                                <ComboBox
+                                    Grid.Column="2"
+                                    Margin="10,0,5,0"
+                                    ItemsSource="{Binding DataContext.Statuses, ElementName=Root}"
+                                    SelectedItem="{Binding StatusSelectedItem, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
                                 <Grid
                                     Grid.RowSpan="2"
-                                    Grid.Column="2"
+                                    Grid.Column="3"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
 
@@ -144,10 +157,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border
-                        Padding="5"
+                        Padding="10"
                         HorizontalAlignment="Stretch"
                         Background="#1D1E27"
-                        CornerRadius="15"
+                        CornerRadius="7"
                         TextBlock.Foreground="#ded8d7">
 
                         <Grid HorizontalAlignment="Stretch">
@@ -155,50 +168,106 @@
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <ListBox
-                                Grid.Row="0"
-                                Grid.ColumnSpan="2"
-                                d:ItemsSource="{d:SampleData ItemCount=2}"
-                                ItemsSource="{Binding DataContext.Products, ElementName=Root, Converter={StaticResource CollectionItemsCountConverter}}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="10,0,0,10" Orientation="Horizontal">
+                            <StackPanel Grid.Row="0" Grid.ColumnSpan="4">
 
-                                            <Image
-                                                Grid.RowSpan="2"
-                                                Width="30"
-                                                Height="30"
-                                                Margin="0,0,10,0"
-                                                HorizontalAlignment="Center"
-                                                Source="{Binding Product.MainPhoto, TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
-                                                Stretch="Fill">
-                                                <Image.Clip>
-                                                    <RectangleGeometry
-                                                        RadiusX="5"
-                                                        RadiusY="5"
-                                                        Rect="0,0,30,30" />
-                                                </Image.Clip>
-                                            </Image>
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    FontSize="14"
+                                    Text="Первые продукты:" />
 
-                                            <TextBlock
-                                                MaxWidth="400"
-                                                Text="{Binding Name, StringFormat='{}Название: {0}'}"
-                                                TextWrapping="Wrap" />
+                                <Border
+                                    BorderBrush="Aqua"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
+                                    <ItemsControl d:ItemsSource="{d:SampleData ItemCount=2}" ItemsSource="{Binding ProductListOrders, Converter={StaticResource CollectionItemsCountConverter}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel
+                                                    Margin="10"
+                                                    DataContext="{Binding Product}"
+                                                    Orientation="Horizontal">
 
-                                            <TextBlock Margin="10,0,0,0" Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
+                                                    <Image
+                                                        Grid.RowSpan="2"
+                                                        Width="30"
+                                                        Height="30"
+                                                        Margin="0,0,10,0"
+                                                        HorizontalAlignment="Center"
+                                                        Source="{Binding MainPhoto, TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
+                                                        Stretch="Fill">
+                                                        <Image.Clip>
+                                                            <RectangleGeometry
+                                                                RadiusX="5"
+                                                                RadiusY="5"
+                                                                Rect="0,0,30,30" />
+                                                        </Image.Clip>
+                                                    </Image>
 
-                                            <TextBlock Margin="10,0,0,0" Text="{Binding Cost, StringFormat='{}Стоимость: {0}'}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                                    <TextBlock
+                                                        MaxWidth="400"
+                                                        Text="{Binding Name, StringFormat='{}Название: {0}'}"
+                                                        TextWrapping="Wrap" />
+
+                                                    <TextBlock Margin="10,0,0,0" Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
+
+                                                    <TextBlock Margin="10,0,0,0" Text="{Binding Cost, StringFormat='{}Стоимость: {0}'}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Orientation="Vertical">
+                                <TextBlock
+                                    Margin="10,10,0,10"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Text="{Binding AllCost, StringFormat='{}Цена: {0:f2}'}" />
+
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Text="{Binding Count, StringFormat='{}Количество: {0:f2}'}" />
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.RowSpan="2"
+                                Orientation="Vertical">
+
+                                <TextBlock
+                                    Margin="10,20,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="13"
+                                    Foreground="Red"
+                                    Text="{Binding TotalDiscount, StringFormat='{}Общая скидка: -{0:f2}'}" />
+
+                                <TextBlock
+                                    Margin="10,10,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    FontWeight="Bold"
+                                    Foreground="LightGreen"
+                                    Text="{Binding TotalCost, StringFormat='{}Общая стоимость: {0:f2}'}" />
+                            </StackPanel>
+
 
                             <Button
                                 Grid.Row="1"
@@ -211,69 +280,45 @@
                                 Content="Все товары..." />
 
                             <Grid
-                                Grid.RowSpan="2"
+                                Grid.Row="1"
                                 Grid.Column="2"
                                 Grid.ColumnSpan="2">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-
-                                <StackPanel Grid.RowSpan="2" DataContext="{Binding DataContext.ProductListOrder, ElementName=Root}">
-                                    <TextBlock
-                                        Margin="0,20,0,10"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding AllCost, StringFormat='{}Цена: {0}'}" />
-
-                                    <TextBlock
-                                        Margin="0,20,0,10"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
-                                </StackPanel>
-
-                                <Grid
-                                    Grid.Row="2"
-                                    Grid.RowSpan="2"
-                                    Margin="0,0,0,10"
-                                    VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <ComboBox
-                                        Grid.Column="0"
-                                        Margin="10,10,5,0"
-                                        VerticalAlignment="Top"
-                                        ItemsSource="{Binding OrderStatus}"
-                                        SelectedItem="{Binding DataContext.OrderStatusSelectedItem, UpdateSourceTrigger=PropertyChanged, ElementName=Root}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-
-                                    <Border
-                                        Grid.Row="3"
-                                        Grid.Column="3"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Background="#272837"
-                                        CornerRadius="10">
-
-                                        <Button Command="{Binding DataContext.MakeOrderCommand, ElementName=Root}" CommandParameter="{Binding .}">
-                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                <TextBlock FontSize="14" Text="Оформить" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Border>
-                                </Grid>
                             </Grid>
+
+                            <Border
+                                Grid.Row="2"
+                                Grid.Column="3"
+                                Margin="0,10,0,10"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="#272837"
+                                CornerRadius="10">
+
+                                <Button Command="{Binding DataContext.MakeOrderCommand, ElementName=Root}" CommandParameter="{Binding .}">
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock FontSize="14" Text="Оформить" />
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+
+                            <ComboBox
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Grid.ColumnSpan="2"
+                                Margin="10,10,5,0"
+                                VerticalAlignment="Top"
+                                ItemsSource="{Binding DataContext.OrderStatus, UpdateSourceTrigger=PropertyChanged, ElementName=Root}"
+                                SelectedItem="{Binding OrderStatus}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -309,21 +354,5 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Border
-            Grid.Row="3"
-            Margin="10"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="#272837"
-            CornerRadius="10">
-            <Border.InputBindings>
-                <MouseBinding Command="{Binding DataContext.CretingOrderCommand, ElementName=Root}" Gesture="LeftClick" />
-            </Border.InputBindings>
-            <Button>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock FontSize="14" Text="Оформить заказ" />
-                </StackPanel>
-            </Button>
-        </Border>
     </Grid>
 </ui:UiPage>

@@ -32,45 +32,57 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="0,0,0,10" Text="{Binding DataContext.CurrentOrder.ID, ElementName=Root, StringFormat='{}Номер заказа: {0}'}" />
+            <TextBlock
+                Margin="0,0,0,10"
+                FontSize="16"
+                Text="{Binding DataContext.CurrentOrder.ID, ElementName=Root, StringFormat='{}Номер заказа: {0}'}" />
 
-            <ListBox
+            <ItemsControl
                 Grid.Row="1"
                 Grid.ColumnSpan="3"
                 d:ItemsSource="{d:SampleData ItemCount=5}"
-                ItemsSource="{Binding DataContext.Products, ElementName=Root}">
-                <ListBox.ItemTemplate>
+                ItemsSource="{Binding DataContext.Products, ElementName=Root}"
+                ScrollViewer.CanContentScroll="False">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer CanContentScroll="false">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="10,0,0,10" Orientation="Horizontal">
+                        <Grid>
+                            <StackPanel Margin="10,0,0,10" Orientation="Horizontal">
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0,0,10,0"
+                                    HorizontalAlignment="Center"
+                                    Source="{Binding MainPhoto, TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
+                                    Stretch="Fill">
+                                    <Image.Clip>
+                                        <RectangleGeometry
+                                            RadiusX="5"
+                                            RadiusY="5"
+                                            Rect="0,0,40,40" />
+                                    </Image.Clip>
+                                </Image>
 
-                            <Image
-                                Grid.RowSpan="2"
-                                Width="40"
-                                Height="40"
-                                Margin="0,0,10,0"
-                                HorizontalAlignment="Center"
-                                Source="{Binding Product.MainPhoto, TargetNullValue=.\.\Resources\Images\iconforNullValueProduct.png}"
-                                Stretch="Fill">
-                                <Image.Clip>
-                                    <RectangleGeometry
-                                        RadiusX="5"
-                                        RadiusY="5"
-                                        Rect="0,0,40,40" />
-                                </Image.Clip>
-                            </Image>
+                                <TextBlock
+                                    MaxWidth="400"
+                                    Text="{Binding Name, StringFormat='{}Название: {0}'}"
+                                    TextWrapping="Wrap" />
 
-                            <TextBlock
-                                MaxWidth="400"
-                                Text="{Binding Name, StringFormat='{}Название: {0}'}"
-                                TextWrapping="Wrap" />
+                                <TextBlock Margin="10,0,0,0" Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
 
-                            <TextBlock Margin="10,0,0,0" Text="{Binding Count, StringFormat='{}Количество: {0}'}" />
-
-                            <TextBlock Margin="10,0,0,0" Text="{Binding Cost, StringFormat='{}Стоимость: {0}'}" />
-                        </StackPanel>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding Cost, StringFormat='{}Стоимость: {0}'}" />
+                            </StackPanel>
+                        </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </Grid>
 </ui:UiWindow>
