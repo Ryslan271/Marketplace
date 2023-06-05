@@ -178,8 +178,31 @@ namespace KazanNewShop.View.Windows
         /// <summary>
         /// Создание окна сообщения
         /// </summary>
+        public static void CreatingDialogMessageBoxWithOk(string message, string title)
+        {
+            var messageBox = new Wpf.Ui.Controls.MessageBox
+            {
+                Content = message,
+                Title = title,
+                FontSize = 16,
+                FontWeight = FontWeights.Medium
+            };
+            var okButton = new System.Windows.Controls.Button
+            {
+                Content = "Ок",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Width = 200
+            };
+            messageBox.Footer = okButton;
+            okButton.Click += (_, _) => messageBox.Close();
+            messageBox.ShowDialog();
+        }
+
+        /// <summary>
+        /// Создание окна сообщения
+        /// </summary>
         /// <returns>Wpf.Ui.Controls.MessageBox</returns>
-        private static Wpf.Ui.Controls.MessageBox CreatingDialogMessageBox() =>
+        public static Wpf.Ui.Controls.MessageBox CreatingDialogMessageBox() =>
             new Wpf.Ui.Controls.MessageBox
             {
                 Content = "Хотите ли вы сохранить изменения",

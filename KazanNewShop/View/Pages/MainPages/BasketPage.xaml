@@ -372,9 +372,11 @@
                 </Border.InputBindings>
                 <Button>
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-
                         <TextBlock FontSize="14" Text="Создать заказ" />
                     </StackPanel>
+                    <Button.InputBindings>
+                        <MouseBinding Command="{Binding DataContext.CreatingOrderCommand, ElementName=Root}" Gesture="LeftClick" />
+                    </Button.InputBindings>
                 </Button>
             </Border>
         </StackPanel>

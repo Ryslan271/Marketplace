@@ -9,6 +9,8 @@ using KazanNewShop.ViewModel;
 using KazanNewShop.Database.Models;
 using System.Linq;
 using System.Windows.Shapes;
+using KazanNewShop.ViewModel.WindowsVM;
+using System.Collections.Generic;
 
 namespace KazanNewShop.View.Windows
 {
@@ -17,11 +19,24 @@ namespace KazanNewShop.View.Windows
     /// </summary>
     public partial class AddSelectorAddress : UiWindow
     {
-        public AddSelectorAddress()
+        public static AddSelectorAddress Instance { get; private set; } = null!;
+
+        public Order CurrentOrder;
+
+        public AddSelectorAddress(Order currentOrder, List<ProductListOrder> localListProductListOrder)
         {
             InitializeComponent();
+
+            CurrentOrder = currentOrder;
+
+            Instance = this;
+
+            Instance.DataContext = new AddSelectorAddressVM(currentOrder, localListProductListOrder);
         }
 
+        /// <summary>
+        /// Отрисовка карты при загрузки
+        /// </summary>
         private void mapView_Loaded(object sender, RoutedEventArgs e)
         {
             GMaps.Instance.Mode = AccessMode.ServerAndCache;
@@ -29,12 +44,13 @@ namespace KazanNewShop.View.Windows
             gMapControl1.MinZoom = 10;
             gMapControl1.MaxZoom = 25;
             gMapControl1.Zoom = 12;
-            gMapControl1.Position = new PointLatLng(55.786419471, 49.121932983);
             gMapControl1.MouseWheelZoomType = MouseWheelZoomType.MousePositionAndCenter;
             gMapControl1.CanDragMap = true;
             gMapControl1.DragButton = MouseButton.Left;
             gMapControl1.ShowCenter = false;
             gMapControl1.ShowTileGridLines = false;
+
+            PositioningChangeGmap(55.7892148521873, 49.1186121009394);
 
             foreach (PointOfIssue item in DatabaseContext.Entities.PointOfIssues.ToList())
             {
@@ -45,6 +61,14 @@ namespace KazanNewShop.View.Windows
 
                 gMapControl1.Markers.Add(gMapMarker);
             }
+        }
+
+        /// <summary>
+        /// Позиционирование карты
+        /// </summary>
+        public void PositioningChangeGmap(double lat, double lot)
+        {
+            gMapControl1.Position = new PointLatLng(lat, lot);
         }
 
         /// <summary>

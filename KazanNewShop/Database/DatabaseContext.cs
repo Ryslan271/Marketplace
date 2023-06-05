@@ -219,9 +219,7 @@ public partial class DatabaseContext : DbContext
 
             entity.ToTable("ProductListOrder");
 
-            entity.Property(e => e.IdProduct)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID_Product");
+            entity.Property(e => e.IdProduct).HasColumnName("ID_Product");
             entity.Property(e => e.IdOrder).HasColumnName("ID_Order");
 
             entity.HasOne(d => d.Order).WithMany(p => p.ProductListOrders)

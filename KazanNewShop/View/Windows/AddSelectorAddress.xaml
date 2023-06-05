@@ -7,16 +7,13 @@
     xmlns:local="clr-namespace:KazanNewShop.ViewModel"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root"
     Width="800"
     Height="450"
     ExtendsContentIntoTitleBar="True"
     WindowCornerPreference="RoundSmall"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
-    <Window.DataContext>
-        <local:AddSelectorAddressVM />
-    </Window.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -29,39 +26,173 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ui:TitleBar Title="Выбор точки выдачи" />
+        <ui:TitleBar Title="Оформление заказа" Grid.ColumnSpan="2" />
 
         <gmaps:GMapControl
             x:Name="gMapControl1"
             Grid.Row="1"
+            Margin="10,0,10,10"
             Loaded="mapView_Loaded" />
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-            <Border>
-                <Border.Style>
-                    <Style TargetType="Border" />
-                </Border.Style>
+            <StackPanel>
+                <TextBlock
+                    Margin="10,0,0,5"
+                    DockPanel.Dock="Left"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Точки выдачи:" />
+
+                <ComboBox
+                    Grid.Column="0"
+                    Margin="10,0,5,0"
+                    ItemsSource="{Binding DataContext.PointOfIssues, ElementName=Root}"
+                    SelectedItem="{Binding DataContext.SelectedItem, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <Border
+                Grid.Row="1"
+                Margin="0,20,0,0"
+                BorderBrush="DarkGray"
+                BorderThickness="2"
+                CornerRadius="10"
+                DataContext="{Binding DataContext.CurrentOrder, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
+
+                <StackPanel>
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Background="#272837"
+                        BorderBrush="Black"
+                        CornerRadius="10">
+                        <Border.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.CreatingOrderCommand, ElementName=Root}" Gesture="LeftClick" />
+                        </Border.InputBindings>
+                        <Button HorizontalAlignment="Center" Background="#272837">
+                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Background="#272837"
+                                    FontSize="14"
+                                    Text="Оформить заказ" />
+                            </StackPanel>
+                            <Button.InputBindings>
+                                <MouseBinding Command="{Binding DataContext.CreatingOrderCommand, ElementName=Root}" Gesture="LeftClick" />
+                            </Button.InputBindings>
+                        </Button>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#79B208" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
+                    <Separator BorderBrush="#272837" />
+
+                    <DockPanel>
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            DockPanel.Dock="Left"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="Ваша корзина:" />
+
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Right"
+                            DockPanel.Dock="Right"
+                            FontSize="12"
+                            Text="{Binding DataContext.CurrentOrder.Count, ElementName=Root, StringFormat='{} {0:f0} товаров'}" />
+
+                    </DockPanel>
+
+                    <TextBlock
+                        Margin="10,10,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{Binding DataContext.CurrentOrder.AllCost, ElementName=Root, StringFormat='{}Стоимость: {0:f2}'}" />
+
+                    <TextBlock
+                        Margin="10,10,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{Binding DataContext.CurrentOrder.TotalCost, ElementName=Root, StringFormat='{} {0:f2}'}" />
+
+                    <TextBlock
+                        Margin="10,10,0,5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        Foreground="Red"
+                        Text="{Binding DataContext.CurrentOrder.TotalDiscount, ElementName=Root, StringFormat='{}Общая скидка: -{0:f2}'}" />
+
+                    <Separator BorderBrush="#272837" />
+
+                    <TextBlock
+                        Margin="10,10,0,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="LightGreen"
+                        Text="{Binding DataContext.CurrentOrder.TotalCost, ElementName=Root, StringFormat='{}Общая стоимость: {0:f2}'}" />
+                </StackPanel>
             </Border>
-        </StackPanel>
+        </Grid>
 
         <Border
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="1"
             Margin="10"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
             Background="#272837"
+            BorderBrush="Black"
             CornerRadius="10">
             <Border.InputBindings>
-                <MouseBinding Command="{Binding DataContext.CreatingOrderCommand, ElementName=Root}" Gesture="LeftClick" />
+                <MouseBinding Command="{Binding DataContext.CancelOrderCommand, ElementName=Root}" Gesture="LeftClick" />
             </Border.InputBindings>
-            <Button>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-
-                    <TextBlock FontSize="14" Text="Создать заказ" />
+            <Button HorizontalAlignment="Center" Background="#272837">
+                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Background="#272837"
+                        FontSize="14"
+                        Text="Отменить заказ" />
                 </StackPanel>
+                <Button.InputBindings>
+                    <MouseBinding Command="{Binding DataContext.CancelOrderCommand, ElementName=Root}" Gesture="LeftClick" />
+                </Button.InputBindings>
             </Button>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#79B208" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
         </Border>
     </Grid>
 </ui:UiWindow>

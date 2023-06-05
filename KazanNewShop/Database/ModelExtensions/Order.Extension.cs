@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KazanNewShop.Database.Models
 {
@@ -16,7 +13,7 @@ namespace KazanNewShop.Database.Models
             get
             {
                 _count = ProductListOrders.Count();
-                    
+
                 return _count;
             }
             set
@@ -35,9 +32,29 @@ namespace KazanNewShop.Database.Models
 
                 return _allCost;
             }
-            set
+        }
+
+        private decimal? _totalCost;
+        [NotMapped]
+        public decimal? TotalCost
+        {
+            get
             {
-                _allCost = value;
+                _totalCost = ProductListOrders.Select(p => p.Product.Cost - (p.Product.Cost * (p.Product.Discount * Convert.ToDecimal(0.01)))).Sum();
+
+                return _totalCost;
+            }
+        }
+
+        private decimal? _totalDiscount;
+        [NotMapped]
+        public decimal? TotalDiscount
+        {
+            get
+            {
+                _totalDiscount = ProductListOrders.Select(p => p.Product.Cost * (p.Product.Discount * Convert.ToDecimal(0.01))).Sum();
+
+                return _totalDiscount;
             }
         }
     }

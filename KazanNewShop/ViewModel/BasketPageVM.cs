@@ -4,6 +4,7 @@ using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.View.Windows;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -133,25 +134,28 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void CreatingOrder()
         {
-            //Order order = new Order()
-            //{
-            //    Client = App.CurrentUser!.Client!,
-                
-            //};
+            List<ProductListOrder> localListProductListOrder = new();
 
-            //foreach (var item in DatabaseContext.Entities.Baskets.Local.FirstOrDefault(b => b == App.CurrentUser!.Client!.Baskets.First())!.ProductLists)
-            //{
-            //    DatabaseContext.Entities.ProductListOrders.Local.Add
-            //        (
-            //            new ProductListOrder()
-            //            {
-            //                Cost = item.Product.CostWithDiscount,
-            //                Count = item.Product.Count,
-            //                Product = item.Product,
-            //                Order = order
-            //            }
-            //        );
-            //}
+            Order order = new()
+            {
+                Client = App.CurrentUser!.Client!,
+            };
+
+            foreach (var item in DatabaseContext.Entities.Baskets.Local.FirstOrDefault(b => b == App.CurrentUser!.Client!.Baskets.First())!.ProductLists)
+            {
+                localListProductListOrder.Add
+                    (
+                        new ProductListOrder()
+                        {
+                            Cost = item.Product.CostWithDiscount,
+                            Count = item.Product.Count,
+                            Product = item.Product,
+                            Order = order
+                        }
+                    );
+            }
+
+            new AddSelectorAddress(order, localListProductListOrder).ShowDialog();
         }
     }
 }
