@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
+using KazanNewShop.View.Pages.MainPages;
 using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -147,10 +148,19 @@ namespace KazanNewShop.ViewModel.PageVM
         [RelayCommand]
         public void OpenBasket()
         {
-            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser.Client) != true)
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser!.Client) != true)
                 CreateBasket();
 
             NavigationWindow.Navigate(typeof(BasketPageVM));
+        }
+
+        // <summary>
+        /// Открытие всех заказов у клиента
+        /// </summary>
+        [RelayCommand]
+        public void OpenOrdersListForCLient()
+        {
+            NavigationWindow.Navigate(typeof(ListOrderPageForClientVM));
         }
 
         /// <summary>

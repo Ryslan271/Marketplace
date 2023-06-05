@@ -36,6 +36,7 @@ namespace KazanNewShop.Database
             Entities.Statuses.Load();
             Entities.PointOfIssues.Load();
             Entities.ProductListOrders.Load();
+            Entities.TypeReturns.Load();
 
             LoadingFlag = true;
         }

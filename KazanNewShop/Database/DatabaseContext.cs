@@ -42,6 +42,8 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<Status> Statuses { get; set; }
 
+    public virtual DbSet<TypeReturn> TypeReturns { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -112,6 +114,7 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.IdClient).HasColumnName("ID_Client");
             entity.Property(e => e.IdPointOfIssue).HasColumnName("ID_PointOfIssue");
             entity.Property(e => e.IdStatus).HasColumnName("ID_Status");
+            entity.Property(e => e.IdTypeReturn).HasColumnName("ID_TypeReturn");
 
             entity.HasOne(d => d.Client).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.IdClient)
@@ -127,6 +130,10 @@ public partial class DatabaseContext : DbContext
                 .HasForeignKey(d => d.IdStatus)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_OrderStatus");
+
+            entity.HasOne(d => d.TypeReturn).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.IdTypeReturn)
+                .HasConstraintName("FK_Order_TypeReturn");
         });
 
         modelBuilder.Entity<OrderStatus>(entity =>
@@ -253,6 +260,14 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TypeReturn>(entity =>
+        {
+            entity.ToTable("TypeReturn");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(150);
         });
 
         modelBuilder.Entity<User>(entity =>

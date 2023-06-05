@@ -11,7 +11,7 @@ using System.Windows.Data;
 
 namespace KazanNewShop.ViewModel.PageVM
 {
-    public partial class ListOrderPageVM : ObservableValidator
+    public partial class ListOrderPageForClientVM : ObservableValidator
     {
         // список заказов
         public ICollectionView ViewProductsInOrder { get; }
@@ -19,14 +19,14 @@ namespace KazanNewShop.ViewModel.PageVM
             (
                 DatabaseContext.Entities.ProductListOrders.Local
                 .ToObservableCollection()
-                .Where(p => p.Product.Salesman == App.CurrentUser!.Salesman)
+                .Where(p => p.Order.Client == App.CurrentUser!.Client)
                 .Select(p => p.Order)
                 .Distinct()
             );
 
 
-        private OrderStatus? _statusSelectedItem;
-        public OrderStatus? StatusSelectedItem
+        private TypeReturn? _statusSelectedItem;
+        public TypeReturn? StatusSelectedItem
         {
             get => _statusSelectedItem;
             set
@@ -35,10 +35,10 @@ namespace KazanNewShop.ViewModel.PageVM
                 OrderSorted();
             }
         }
-        public List<OrderStatus> Statuses { get; } = DatabaseContext.Entities.OrderStatuses.Local.ToList();
+        public List<TypeReturn> TypeReturnsForSort { get; } = DatabaseContext.Entities.TypeReturns.ToList();
 
         // список статусов заказа
-        public ObservableCollection<OrderStatus> OrderStatus { get; } = DatabaseContext.Entities.OrderStatuses.Local.ToObservableCollection();
+        public ObservableCollection<TypeReturn> TypeReturns { get; } = DatabaseContext.Entities.TypeReturns.Local.ToObservableCollection();
 
         [ObservableProperty]
         private OrderStatus _orderStatusSelectedItem = DatabaseContext.Entities.OrderStatuses.Local.ToObservableCollection().First();
@@ -49,12 +49,12 @@ namespace KazanNewShop.ViewModel.PageVM
         [ObservableProperty]
         private string? _search;
 
-        public ListOrderPageVM()
+        public ListOrderPageForClientVM()
         {
-            if (Statuses.FirstOrDefault(x => x.Name == "Все") == null)
-                Statuses.Insert(0, new OrderStatus() { Name = "Все" });
+            if (TypeReturnsForSort.FirstOrDefault(x => x.Name == "Все") == null)
+                TypeReturnsForSort.Insert(0, new TypeReturn() { Name = "Все" });
 
-            StatusSelectedItem = Statuses.First();
+            StatusSelectedItem = TypeReturnsForSort.First();
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace KazanNewShop.ViewModel.PageVM
             {
                 Order? order = obj as Order;
 
-                return _statusSelectedItem == Statuses.First()
-                      || order!.OrderStatus == _statusSelectedItem;
+                return _statusSelectedItem == TypeReturnsForSort.First()
+                      || order!.TypeReturn == _statusSelectedItem;
             };
         }
 
@@ -102,10 +102,12 @@ namespace KazanNewShop.ViewModel.PageVM
         /// Оформление заказа
         /// </summary>
         [RelayCommand]
-        public void MakeOrder(Order selectOrder)
+        public void ChangeTypeReturnInOrder(Order selectOrder)
         {
-            DatabaseContext.Entities.SaveChanges();
+            if (selectOrder.IdTypeReturn != null)
+                selectOrder.OrderStatus = DatabaseContext.Entities.OrderStatuses.Local.Last();
 
+            DatabaseContext.Entities.SaveChanges();
 
             DatabaseContext.LoadEntitesForMarketplace();
         }
@@ -122,6 +124,6 @@ namespace KazanNewShop.ViewModel.PageVM
         /// </summary>
         [RelayCommand]
         public void OpenProductList() =>
-             NavigationWindow.Navigate(typeof(NavigationSelecmanPageMarketplaceVM));
+             NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
     }
 }

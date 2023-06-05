@@ -46,6 +46,7 @@ namespace KazanNewShop.View.Windows
                 {typeof(BasketPageVM) , typeof(BasketPage)},
                 {typeof(OrderPageVM) , typeof(OrderPage)},
                 {typeof(ListOrderPageVM) , typeof(ListOrderPage)},
+                {typeof(ListOrderPageForClientVM) , typeof(ListOrderPageForClient)},
             };
 
         public NavigationWindow()
