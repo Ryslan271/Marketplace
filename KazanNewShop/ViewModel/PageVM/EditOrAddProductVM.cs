@@ -334,7 +334,7 @@ namespace KazanNewShop.ViewModel.PageVM
 
             NavigationWindow.IssuingImage();
 
-            NavigationSelecmanPageMarketplaceVM.Instance.ViewProducts.Refresh();
+            NavigationEmployeePageMarketplaceVM.Instance.ViewProducts.Refresh();
 
             CloseWindow();
         }

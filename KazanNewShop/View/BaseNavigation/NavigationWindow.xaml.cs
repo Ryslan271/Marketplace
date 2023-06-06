@@ -47,6 +47,8 @@ namespace KazanNewShop.View.Windows
                 {typeof(OrderPageVM) , typeof(OrderPage)},
                 {typeof(ListOrderPageVM) , typeof(ListOrderPage)},
                 {typeof(ListOrderPageForClientVM) , typeof(ListOrderPageForClient)},
+                {typeof(NavigationEmployeePageMarketplaceVM) , typeof(NavigationEmployeePageMarketplace)},
+                {typeof(ListOrderForEmployeePageVM) , typeof(ListOrderForEmployeePage)},
             };
 
         public NavigationWindow()

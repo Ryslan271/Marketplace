@@ -25,12 +25,12 @@ namespace KazanNewShop.ViewModel.WindowsVM
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _login = "asd";
+        private string? _login = "zxc";
 
         [Required(ErrorMessage = "Заполните все поля")]
         [ObservableProperty]
         [NotifyDataErrorInfo]
-        private string? _password = "asd";
+        private string? _password = "zxc";
 
         [RelayCommand]
         private void Authorized()
@@ -50,10 +50,10 @@ namespace KazanNewShop.ViewModel.WindowsVM
 
             if (App.CurrentUser.Client is not null)
                 NavigationWindow.TransitionProductList(typeof(NavigationPageMarketplaceVM));
-            else if (App.CurrentUser.Salesmen is not null)
-                NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
+            else if (App.CurrentUser.Employee is not null)
+                NavigationWindow.TransitionProductList(typeof(NavigationEmployeePageMarketplaceVM));
             else
-                return;
+                NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
 
             CloseWindow();
         }

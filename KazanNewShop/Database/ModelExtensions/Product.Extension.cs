@@ -1,15 +1,9 @@
 ﻿using KazanNewShop.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media;
-using Brush = System.Drawing.Brush;
-using Color = System.Windows.Media.Color;
 
 namespace KazanNewShop.Database.Models
 {
@@ -106,6 +100,27 @@ namespace KazanNewShop.Database.Models
             set
             {
                 _isEnableButtomPlus = value;
+            }
+        }
+
+        private Brush _colorForStatus = Brushes.LightGreen;
+        [NotMapped]
+        public Brush ColorForStatus
+        {
+            get
+            {
+                if (Status!.Id == 2)
+                    _colorForStatus = Brushes.LightSalmon;
+                else if (Status!.Id == 3)
+                    _colorForStatus = Brushes.DarkRed;
+                else if (Status!.Id == 1)
+                    _colorForStatus = Brushes.LightGreen;
+
+                return _colorForStatus;
+            }
+            set
+            {
+                _colorForStatus = value;
             }
         }
     }
