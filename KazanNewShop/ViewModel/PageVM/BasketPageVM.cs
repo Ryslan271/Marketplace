@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.PageVM;
 using System;
@@ -19,12 +20,17 @@ namespace KazanNewShop.ViewModel
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
                 .First(b => b.Client == App.CurrentUser!.Client).ProductLists);
 
+        // Иконка клиента
+        [ObservableProperty]
+        private byte[] _clientPhoto = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
+
         [ObservableProperty]
         private string? _name;
 
         // Общая стоимость корзины
         public decimal? AllCostBasket => TotalCostCalculation();
 
+        // строка поиска
         [ObservableProperty]
         private string? _search;
 
@@ -158,5 +164,22 @@ namespace KazanNewShop.ViewModel
 
             new AddSelectorAddress(order, localListProductListOrder).ShowDialog();
         }
+
+        // <summary>
+        /// Открытие всех заказов у клиента
+        /// </summary>
+        [RelayCommand]
+        public void OpenOrdersListForCLient()
+        {
+            NavigationWindow.Navigate(typeof(ListOrderPageForClientVM));
+        }
+
+
+        /// <summary>
+        /// Открытие окна пользователя 
+        /// </summary>
+        [RelayCommand]
+        private static void OpenPersonalPage() =>
+            new PersonalPageWindow().ShowDialog();
     }
 }

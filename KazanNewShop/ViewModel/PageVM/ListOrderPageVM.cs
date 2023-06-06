@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +24,10 @@ namespace KazanNewShop.ViewModel.PageVM
                 .Select(p => p.Order)
                 .Distinct()
             );
+
+        // Иконка клиента
+        [ObservableProperty]
+        private byte[] _clientPhoto = App.CurrentUser!.Salesman!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Salesman!.ProfilePhoto!;
 
 
         private OrderStatus? _statusSelectedItem;
@@ -116,6 +121,14 @@ namespace KazanNewShop.ViewModel.PageVM
         [RelayCommand]
         public void OrderProductList(Order SelectOrder) =>
             new OrderProductList(SelectOrder).Show();
+
+
+        /// <summary>
+        /// Открытие окна пользователя 
+        /// </summary>
+        [RelayCommand]
+        private static void OpenPersonalPage() =>
+            new PersonalSalesmanPageWindow().ShowDialog();
 
         /// <summary>
         /// Открытие все товары

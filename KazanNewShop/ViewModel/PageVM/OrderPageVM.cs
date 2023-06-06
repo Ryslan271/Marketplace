@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,14 @@ namespace KazanNewShop.ViewModel.PageVM
             = CollectionViewSource.GetDefaultView(DatabaseContext.Entities.Baskets.Local
                 .First(b => b.Client == App.CurrentUser!.Client).ProductLists);
 
+        // строка поиска
         [ObservableProperty]
         private string? _search;
+
+        // Иконка клиента
+        [ObservableProperty]
+        private byte[] _clientPhoto = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
+
 
         /// <summary>
         /// Команда поиска по товарам
@@ -69,6 +76,13 @@ namespace KazanNewShop.ViewModel.PageVM
         {
 
         }
+
+        /// <summary>
+        /// Открытие окна пользователя 
+        /// </summary>
+        [RelayCommand]
+        private static void OpenPersonalPage() =>
+            new PersonalPageWindow().ShowDialog();
 
         /// <summary>
         /// Открытие корзины

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
+using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,6 +37,10 @@ namespace KazanNewShop.ViewModel.PageVM
             }
         }
         public List<TypeReturn> TypeReturnsForSort { get; } = DatabaseContext.Entities.TypeReturns.ToList();
+
+        // Иконка клиента
+        [ObservableProperty]
+        private byte[] _clientPhoto = App.CurrentUser!.Client!.ProfilePhoto! == null ? CommonMethods.MainForProfileClientNullPhoto : App.CurrentUser.Client!.ProfilePhoto!;
 
         // список статусов заказа
         public ObservableCollection<TypeReturn> TypeReturns { get; } = DatabaseContext.Entities.TypeReturns.Local.ToObservableCollection();
@@ -118,6 +123,27 @@ namespace KazanNewShop.ViewModel.PageVM
         [RelayCommand]
         public void OrderProductList(Order SelectOrder) =>
             new OrderProductList(SelectOrder).Show();
+
+        /// <summary>
+        /// Открытие корзины
+        /// </summary>
+        [RelayCommand]
+        public void OpenBasket()
+        {
+            if (DatabaseContext.Entities.Baskets.Local.Any(b => b.Client == App.CurrentUser!.Client) != true)
+                CreateBasket();
+
+            NavigationWindow.Navigate(typeof(BasketPageVM));
+        }
+
+        /// <summary>
+        /// Создание новой корзины
+        /// </summary>
+        private static void CreateBasket() =>
+            DatabaseContext.Entities.Baskets.Local.Add(new Basket()
+            {
+                Client = App.CurrentUser!.Client!
+            });
 
         /// <summary>
         /// Открытие все товары

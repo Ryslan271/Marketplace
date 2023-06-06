@@ -22,8 +22,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
 
         <Border
+            Grid.ColumnSpan="2"
             Margin="6"
             BorderBrush="#ded8d7"
             BorderThickness="0,0,0,1"
@@ -112,21 +117,18 @@
                                     VerticalAlignment="Center">
 
                                     <Border
-                                        x:Name="ShopBasketBtn"
-                                        Padding="6"
+                                        Grid.Row="0"
+                                        Margin="0,0,0,10"
+                                        Padding="10"
                                         HorizontalAlignment="Center"
-                                        CornerRadius="10"
+                                        Background="#272837"
+                                        CornerRadius="100"
                                         Style="{StaticResource BorderShopBasket}">
                                         <Border.InputBindings>
-                                            <MouseBinding Command="{Binding OpenProductsListCommand}" Gesture="LeftClick" />
+                                            <MouseBinding Command="{Binding DataContext.OpenPersonalPageCommand, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" Gesture="LeftClick" />
                                         </Border.InputBindings>
                                         <StackPanel>
-                                            <fa:ImageAwesome
-                                                Width="20"
-                                                Foreground="#ded8d7"
-                                                Icon="ListAlt" />
-
-                                            <TextBlock FontSize="14" Text="Список продуктов" />
+                                            <Image Width="30" Source="{Binding DataContext.ClientPhoto, ElementName=Root}" />
                                         </StackPanel>
                                     </Border>
                                 </Grid>
@@ -136,8 +138,92 @@
                 </Border>
             </Grid>
         </Border>
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Padding="6"
+                    HorizontalAlignment="Stretch"
+                    CornerRadius="10">
+                    <Border.InputBindings>
+                        <MouseBinding Command="{Binding OpenProductsListCommand}" Gesture="LeftClick" />
+                    </Border.InputBindings>
+                    <StackPanel
+                        Margin="10,5"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Width="25"
+                            Foreground="#ded8d7"
+                            Icon="ListAlt" />
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            FontSize="15"
+                            Foreground="#ded8d7"
+                            Text="Товары" />
+                    </StackPanel>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#ded8d7" />
+                                    <Setter Property="BorderThickness" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="6"
+                    HorizontalAlignment="Left"
+                    CornerRadius="10">
+                    <Border.InputBindings>
+                        <MouseBinding Command="{Binding DataContext.OpenOrdersListForCLientCommand, ElementName=Root}" Gesture="LeftClick" />
+                    </Border.InputBindings>
+                    <StackPanel
+                        Margin="10,5"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Width="25"
+                            Foreground="#ded8d7"
+                            Icon="ShoppingBag" />
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="15"
+                            Foreground="#ded8d7"
+                            Text="Мои заказы" />
+                    </StackPanel>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#ded8d7" />
+                                    <Setter Property="BorderThickness" Value="0.5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </Grid>
+        </Border>
+
         <ListView
-            Grid.Row="2"
+            Grid.Row="1"
+            Grid.RowSpan="2"
             d:ItemsSource="{d:SampleData ItemCount=100}"
             Background="Transparent"
             BorderBrush="Transparent"
