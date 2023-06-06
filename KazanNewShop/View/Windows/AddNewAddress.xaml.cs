@@ -1,9 +1,6 @@
 ﻿using GMap.NET;
-using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.ViewModel.WindowsVM;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,23 +10,19 @@ using Wpf.Ui.Controls;
 namespace KazanNewShop.View.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для AddSelector.xaml
+    /// Логика взаимодействия для AddNewAddress.xaml
     /// </summary>
-    public partial class AddSelectorAddress : UiWindow
+    public partial class AddNewAddress : UiWindow
     {
-        public static AddSelectorAddress Instance { get; private set; } = null!;
+        public static AddNewAddress Instance { get; private set; } = null!;
 
-        public Order CurrentOrder;
-
-        public AddSelectorAddress(Order currentOrder, List<ProductListOrder> localListProductListOrder)
+        public AddNewAddress()
         {
             InitializeComponent();
 
-            CurrentOrder = currentOrder;
-
             Instance = this;
 
-            Instance.DataContext = new AddSelectorAddressVM(currentOrder, localListProductListOrder);
+            Instance.DataContext = new AddNewAddressVM();
         }
 
         /// <summary>
@@ -49,24 +42,14 @@ namespace KazanNewShop.View.Windows
             gMapControl1.ShowTileGridLines = false;
 
             PositioningChangeGmap(55.7892148521873, 49.1186121009394);
-
-            foreach (PointOfIssue item in DatabaseContext.Entities.PointOfIssues.ToList())
-            {
-                GMap.NET.WindowsPresentation.GMapMarker gMapMarker = new(new PointLatLng((double)item.Lat!, (double)item.Lot!))
-                {
-                    Shape = InitUIElement(item)
-                };
-
-                gMapControl1.Markers.Add(gMapMarker);
-            }
         }
 
         /// <summary>
         /// Позиционирование карты
         /// </summary>
-        public void PositioningChangeGmap(double lat, double lot)
+        public static void PositioningChangeGmap(double lat, double lot)
         {
-            gMapControl1.Position = new PointLatLng(lat, lot);
+            Instance.gMapControl1.Position = new PointLatLng(lat, lot);
         }
 
         /// <summary>
@@ -74,7 +57,7 @@ namespace KazanNewShop.View.Windows
         /// </summary>
         /// <param name="item">Текст</param>
         /// <returns>StackPanel</returns>
-        private StackPanel InitUIElement(PointOfIssue item)
+        public static StackPanel InitUIElement(PointOfIssue item)
         {
             Border border = new()
             {
@@ -101,12 +84,18 @@ namespace KazanNewShop.View.Windows
                        {
                            MouseAction = MouseAction.LeftClick
                        },
-                       Command = ((AddSelectorAddressVM)DataContext).SelectorAddressPointCommand,
+                       Command = ((AddSelectorAddressVM)Instance.DataContext).SelectorAddressPointCommand,
                        CommandParameter = item
                    }
                );
 
             return stackPanel;
+        }
+
+        private void gMapControl1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            double X = mapexplr.FromLocalToLatLng(e.X, e.Y).Lng;
+            double Y = mapexplr.FromLocalToLatLng(e.X, e.Y).Lat;
         }
     }
 }

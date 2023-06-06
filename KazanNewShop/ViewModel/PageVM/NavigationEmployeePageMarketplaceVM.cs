@@ -217,5 +217,15 @@ namespace KazanNewShop.ViewModel.PageVM
         {
             new EditOrAddProduct(SelectedItem, "Редактирование").Show();
         }
+
+
+        /// <summary>
+        /// Открытие окна создание нового пункта выдачи 
+        /// </summary>
+        [RelayCommand]
+        public void CreatedPointOfAddress()
+        {
+            new AddNewAddress().ShowDialog();
+        }
     }
 }

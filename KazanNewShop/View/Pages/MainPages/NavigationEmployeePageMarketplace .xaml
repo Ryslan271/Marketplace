@@ -260,7 +260,7 @@
                     HorizontalAlignment="Left"
                     CornerRadius="10">
                     <Border.InputBindings>
-                        <MouseBinding Command="{Binding DataContext.OpenOrdersListCommand, ElementName=Root}" Gesture="LeftClick" />
+                        <MouseBinding Command="{Binding DataContext.CreatedPointOfAddressCommand, ElementName=Root}" Gesture="LeftClick" />
                     </Border.InputBindings>
                     <StackPanel
                         Margin="10,5"

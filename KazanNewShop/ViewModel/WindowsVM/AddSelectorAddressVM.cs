@@ -6,8 +6,6 @@ using KazanNewShop.View.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace KazanNewShop.ViewModel.WindowsVM
 {
@@ -53,7 +51,7 @@ namespace KazanNewShop.ViewModel.WindowsVM
             AddSelectorAddress.Instance.PositioningChangeGmap(Convert.ToDouble(item.Lat), Convert.ToDouble(item.Lot));
 
         [RelayCommand]
-        private void SelectorAddressPoint(PointOfIssue item) 
+        private void SelectorAddressPoint(PointOfIssue item)
         {
             AddSelectorAddress.Instance.PositioningChangeGmap(Convert.ToDouble(item.Lat), Convert.ToDouble(item.Lot));
 
@@ -62,7 +60,7 @@ namespace KazanNewShop.ViewModel.WindowsVM
 
         [RelayCommand]
         private void CreatingOrder()
-        {   
+        {
             if (SelectedItem != null)
             {
                 CurrentOrder!.PointOfIssue = SelectedItem!;
