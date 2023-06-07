@@ -5,6 +5,7 @@ using KazanNewShop.Database.Models;
 using KazanNewShop.Services;
 using KazanNewShop.View.Windows;
 using KazanNewShop.ViewModel.Base;
+using KazanNewShop.ViewModel.PageVM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace KazanNewShop.ViewModel.PageVM
+namespace KazanNewShop.ViewModel.WindowsVM
 {
     public partial class EditOrAddProductVM : WindowViewModelBase
     {
@@ -143,6 +144,22 @@ namespace KazanNewShop.ViewModel.PageVM
         [ObservableProperty]
         private List<Ellipse> _ellipses = new();
 
+        // Список статусов товара
+        [ObservableProperty]
+        private IEnumerable<Status> _statusOrders = DatabaseContext.Entities.Statuses.Local.ToObservableCollection();
+
+        // Выбранный статус для товара
+        [ObservableProperty]
+        private Status? _statusOrdersItem;
+        public Status SelecteStatusOrdersItem
+        {
+            get => _statusOrdersItem;
+            set
+            {
+                _statusOrdersItem = value;
+            }
+        }
+
         // Список категорий
         public IEnumerable<Category> Category { get; } = DatabaseContext.Entities.Categories.Local.ToObservableCollection();
 
@@ -155,6 +172,8 @@ namespace KazanNewShop.ViewModel.PageVM
         public EditOrAddProductVM(Product product, string title)
         {
             CurrentProduct = product;
+
+            SelecteStatusOrdersItem = CurrentProduct.Status == null ? _statusOrders.First(s => s.Id == 2) : CurrentProduct.Status;
 
             Images ??= DatabaseContext.Entities.PhotoProducts.Local
                 .ToObservableCollection().Where(p => p.Product == CurrentProduct).Select(p => p.Photo).ToList()!;
@@ -327,6 +346,7 @@ namespace KazanNewShop.ViewModel.PageVM
             }
 
             CurrentProduct.Salesman = App.CurrentUser!.Salesman;
+            CurrentProduct.Status = SelecteStatusOrdersItem;
 
             CurrentProduct.IdStatus = 1; // изменить на 2
 

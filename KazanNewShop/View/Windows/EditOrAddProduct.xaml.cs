@@ -1,5 +1,5 @@
 ﻿using KazanNewShop.Database.Models;
-using KazanNewShop.ViewModel.PageVM;
+using KazanNewShop.ViewModel.WindowsVM;
 using Wpf.Ui.Controls;
 
 namespace KazanNewShop.View.Windows

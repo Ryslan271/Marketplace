@@ -176,16 +176,16 @@
                 </Border>
 
                 <Border
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Padding="6"
                     HorizontalAlignment="Left"
                     CornerRadius="10">
                     <Border.InputBindings>
-                        <MouseBinding Command="{Binding DataContext.OpenProductListCommand, ElementName=Root}" Gesture="LeftClick" />
+                        <MouseBinding Command="{Binding DataContext.OpenScheduleShoppingCommand, ElementName=Root}" Gesture="LeftClick" />
                     </Border.InputBindings>
                     <StackPanel
                         Margin="10,5"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Orientation="Horizontal">
                         <fa:ImageAwesome
                             Width="25"
@@ -194,10 +194,9 @@
 
                         <TextBlock
                             Margin="10,0,0,0"
-                            HorizontalAlignment="Center"
                             FontSize="15"
                             Foreground="#ded8d7"
-                            Text="Диаграмма" />
+                            Text="Продажи" />
                     </StackPanel>
                     <Border.Style>
                         <Style TargetType="Border">

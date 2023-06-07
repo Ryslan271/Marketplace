@@ -136,5 +136,14 @@ namespace KazanNewShop.ViewModel.PageVM
         {
             new AddNewAddress().ShowDialog();
         }
+
+        /// <summary>
+        /// Открытие диграммы проданных товаров
+        /// </summary>
+        [RelayCommand]
+        public void OpenScheduleShopping()
+        {
+            NavigationWindow.Navigate(typeof(GoodsShoppingSchedulePageVM));
+        }
     }
 }

@@ -1,61 +1,127 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.VisualElements;
+using CommunityToolkit.Mvvm.Input;
+using KazanNewShop.Database;
+using KazanNewShop.View.Windows;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Drawing;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
-using LiveChartsCore.SkiaSharpView.VisualElements;
 
 namespace KazanNewShop.ViewModel.PageVM
 {
     public partial class GoodsShoppingSchedulePageVM : ObservableValidator
     {
+        private readonly Random _r = new();
+        private static List<(string?, double?)> s_initialData = new();
+
+        private string _diagramListSelectedItem;
+        public string DiagramListSelectedItem 
+        {
+            get => _diagramListSelectedItem; 
+            set 
+            {
+                _diagramListSelectedItem = value;
+            } 
+        }
+       
+        public List<string> DiagramList => _diagramList;
+        private List<string> _diagramList 
+            = new() 
+            {
+                "График",
+                "Диграмма столбцы",
+                "Диграмма круги"
+            };
+
+        [ObservableProperty]
+        private ISeries[]? _series;
+
+        [ObservableProperty]
+        private Axis[] _xAxes = { new Axis { SeparatorsPaint = new SolidColorPaint(new SKColor(220, 220, 220)) } };
+
+        [ObservableProperty]
+        private Axis[] _yAxes = { new Axis { IsVisible = false } };
+
         public GoodsShoppingSchedulePageVM()
         {
-            // you could convert any IEnumerable to a pie series collection
-            var data = new double[] { 2, 4, 1, 4, 3 };
+            DiagramListSelectedItem = DiagramList.First();
 
-            // Series = data.AsLiveChartsPieSeries(); this could be enough in some cases 
-            // but you can customize the series properties using the following overload: 
+            s_initialData.Clear();
 
-            Series = data.AsLiveChartsPieSeries((value, series) =>
-            {
-                // here you can configure the series assigned to each value.
-                series.Name = $"Series for value {value}";
-                series.DataLabelsPaint = new SolidColorPaint(new SKColor(30, 30, 30));
-                series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer;
-                series.DataLabelsFormatter = p => $"{p.PrimaryValue} / {p.StackedValue!.Total} ({p.StackedValue.Share:P2})";
-            });
+            foreach (var salesman in DatabaseContext.Entities.Salesmen.Local)
+                s_initialData.Add
+                ((
+                    salesman.NameCompany,
+                    DatabaseContext.Entities.ProductListOrders.Local.Where(p => p.Product.Salesman == salesman).Count()
+                ));
 
-            Series = new ISeries[]
-            {
-                 new PieSeries<double> { Values = new double[] { 2 }, Name = "Slice 1" },
-                 new PieSeries<double> { Values = new double[] { 4 }, Name = "Slice 2" },
-                 new PieSeries<double> { Values = new double[] { 1 }, Name = "Slice 3" },
-                 new PieSeries<double> { Values = new double[] { 4 }, Name = "Slice 4" },
-                 new PieSeries<double> { Values = new double[] { 3 }, Name = "Slice 5" }
-            };
+            FillSeries();
         }
 
-        public IEnumerable<ISeries> Series { get; set; }
+        public void FillSeries()
+        {
+            _series =
+            s_initialData
+                .Select(x => new RowSeries<ObservableValue>
+                {
+                    Values = new[] { new ObservableValue(x.Item2) },
+                    Name = x.Item1,
+                    Stroke = null,
+                    MaxBarWidth = 25,
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(245, 245, 245)),
+                    DataLabelsPosition = DataLabelsPosition.End,
+                    DataLabelsTranslate = new LvcPoint(-1, 0),
+                    DataLabelsFormatter = point => $"{point.Context.Series.Name} {point.PrimaryValue}"
+                })
+                .OrderByDescending(x => ((ObservableValue[])x.Values!)[0].Value)
+                .ToArray();
+        }
 
-        public LabelVisual Title { get; set; } =
-            new LabelVisual
+        public void RandomIncrement()
+        {
+            foreach (var item in Series)
             {
-                Text = "My chart title",
-                TextSize = 25,
-                Padding = new LiveChartsCore.Drawing.Padding(15),
-                Paint = new SolidColorPaint(SKColors.DarkSlateGray)
-            };
+                if (item.Values is null) continue;
+
+                var i = ((ObservableValue[])item.Values)[0];
+                i.Value += _r.Next(0, 100);
+            }
+
+            Series = Series.OrderByDescending(x => ((ObservableValue[])x.Values!)[0].Value).ToArray();
+        }
+
+        /// <summary>
+        /// Открытие окна создание нового пункта выдачи 
+        /// </summary>
+        [RelayCommand]
+        public void CreatedPointOfAddress()
+        {
+            new AddNewAddress().ShowDialog();
+        }
+
+        /// <summary>
+        /// Открытие списка всех заказов
+        /// </summary>
+        [RelayCommand]
+        public void OpenOrdersList()
+        {
+            NavigationWindow.Navigate(typeof(ListOrderForEmployeePageVM));
+        }
+
+        /// <summary>
+        /// Открытие списка всех товаров
+        /// </summary>
+        [RelayCommand]
+        public void OpenNavigationEmployee()
+        {
+            NavigationWindow.Navigate(typeof(NavigationEmployeePageMarketplaceVM));
+        }
+
     }
 }
