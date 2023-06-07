@@ -79,6 +79,7 @@
             <TextBlock Margin="0,0,0,5" Text="Номер карты" />
             <TextBox
                 x:Name="NumberOfCreditCard"
+                MaxLength="16"
                 Style="{StaticResource TextBoxCustomStyle}"
                 Text="{Binding DataContext.NumberOfCreditCard, ElementName=Root, UpdateSourceTrigger=PropertyChanged}" />
 

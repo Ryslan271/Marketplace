@@ -127,5 +127,14 @@ namespace KazanNewShop.ViewModel.PageVM
         [RelayCommand]
         public void OpenProductList() =>
              NavigationWindow.Navigate(typeof(NavigationEmployeePageMarketplaceVM));
+
+        /// <summary>
+        /// Открытие окна создание нового пункта выдачи 
+        /// </summary>
+        [RelayCommand]
+        public void CreatedPointOfAddress()
+        {
+            new AddNewAddress().ShowDialog();
+        }
     }
 }

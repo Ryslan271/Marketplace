@@ -1,6 +1,9 @@
 ﻿using GMap.NET;
+using KazanNewShop.Database;
 using KazanNewShop.Database.Models;
 using KazanNewShop.ViewModel.WindowsVM;
+using System;
+using System.Data.Entity;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -53,6 +56,33 @@ namespace KazanNewShop.View.Windows
         }
 
         /// <summary>
+        /// Создание PointOfAddress
+        /// </summary>
+        public static void CreatingPointOfAddress(double Lat, double Lot, string Name)
+        {
+            PositioningChangeGmap(Convert.ToDouble(Lat!), Convert.ToDouble(Lot!));
+
+            PointOfIssue pointOfIssue = new()
+            {
+                Lat = Convert.ToDecimal(Lat!),
+                Lot = Convert.ToDecimal(Lot!),
+                Name = Name
+            };
+
+            GMap.NET.WindowsPresentation.GMapMarker gMapMarker = new(new PointLatLng(Convert.ToDouble(Lat!), Convert.ToDouble(Lot!)))
+            {
+                Shape = InitUIElement(pointOfIssue)
+            };
+
+            Instance.gMapControl1.Markers.Add(gMapMarker);
+
+            DatabaseContext.Entities.PointOfIssues.Local.Add(pointOfIssue);
+
+            DatabaseContext.Entities.SaveChanges();
+            DatabaseContext.Entities.PointOfIssues.Load();
+        }
+
+        /// <summary>
         /// Рисовка маркера
         /// </summary>
         /// <param name="item">Текст</param>
@@ -84,7 +114,6 @@ namespace KazanNewShop.View.Windows
                        {
                            MouseAction = MouseAction.LeftClick
                        },
-                       Command = ((AddSelectorAddressVM)Instance.DataContext).SelectorAddressPointCommand,
                        CommandParameter = item
                    }
                );
@@ -94,8 +123,20 @@ namespace KazanNewShop.View.Windows
 
         private void gMapControl1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            double X = mapexplr.FromLocalToLatLng(e.X, e.Y).Lng;
-            double Y = mapexplr.FromLocalToLatLng(e.X, e.Y).Lat;
+            Point p = e.GetPosition(gMapControl1);
+
+            GMap.NET.WindowsPresentation.GMapControl gmap = (sender as GMap.NET.WindowsPresentation.GMapControl)!;
+
+            if (gmap == null)
+                return;
+            
+            // Получаем координаты места, на которое был произведен щелчок мыши
+            PointLatLng point = gmap.FromLocalToLatLng((int)p.X, (int)p.Y);
+            double lat = point.Lat;
+            double lng = point.Lng;
+
+            AddNewAddressVM.Instance.Lat = lat.ToString();
+            AddNewAddressVM.Instance.Lot = lng.ToString();
         }
     }
 }

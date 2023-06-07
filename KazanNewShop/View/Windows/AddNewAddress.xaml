@@ -110,6 +110,7 @@
                             Text="Адресс: " />
 
                         <TextBox
+                            x:Name="Name"
                             MaxWidth="130"
                             Margin="0,0,10,0"
                             HorizontalAlignment="Right"
@@ -130,6 +131,7 @@
                             Text="Широта" />
 
                         <TextBox
+                            x:Name="Lat"
                             Margin="10,10,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -148,6 +150,7 @@
                             Text="Долгота: " />
 
                         <TextBox
+                            x:Name="Lot"
                             Margin="10,10,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
