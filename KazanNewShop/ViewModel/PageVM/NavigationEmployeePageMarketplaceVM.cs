@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using KazanNewShop.View.Pages.MainPages;
 
 namespace KazanNewShop.ViewModel.PageVM
 {
@@ -226,6 +227,15 @@ namespace KazanNewShop.ViewModel.PageVM
         public void CreatedPointOfAddress()
         {
             new AddNewAddress().ShowDialog();
+        }
+
+        /// <summary>
+        /// Открытие диграммы проданных товаров
+        /// </summary>
+        [RelayCommand]
+        public void OpenScheduleShopping()
+        {
+            NavigationWindow.Navigate(typeof(GoodsShoppingSchedulePageVM));
         }
     }
 }
