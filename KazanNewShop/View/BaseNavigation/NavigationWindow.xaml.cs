@@ -50,6 +50,7 @@ namespace KazanNewShop.View.Windows
                 {typeof(NavigationEmployeePageMarketplaceVM) , typeof(NavigationEmployeePageMarketplace)},
                 {typeof(ListOrderForEmployeePageVM) , typeof(ListOrderForEmployeePage)},
                 {typeof(GoodsShoppingSchedulePageVM) , typeof(GoodsShoppingSchedulePage)},
+                {typeof(ProductShoppingSchedulePageVM) , typeof(ProductShoppingSchedulePage)},
             };
 
         public NavigationWindow()

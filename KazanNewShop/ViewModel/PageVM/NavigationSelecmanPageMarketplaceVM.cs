@@ -182,6 +182,15 @@ namespace KazanNewShop.ViewModel.PageVM
         }
 
         /// <summary>
+        /// Открытие графика продаж
+        /// </summary>
+        [RelayCommand]
+        public void OpenSchedul()
+        {
+            NavigationWindow.Navigate(typeof(ProductShoppingSchedulePageVM));
+        }
+
+        /// <summary>
         /// Создание заказа
         /// </summary>
         [RelayCommand]

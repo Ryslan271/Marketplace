@@ -242,7 +242,7 @@
                     HorizontalAlignment="Left"
                     CornerRadius="10">
                     <Border.InputBindings>
-                        <MouseBinding Command="{Binding DataContext.OpenOrdersListCommand, ElementName=Root}" Gesture="LeftClick" />
+                        <MouseBinding Command="{Binding DataContext.OpenSchedulCommand, ElementName=Root}" Gesture="LeftClick" />
                     </Border.InputBindings>
                     <StackPanel
                         Margin="10,5"
@@ -251,13 +251,13 @@
                         <fa:ImageAwesome
                             Width="25"
                             Foreground="#ded8d7"
-                            Icon="BarChart" />
+                            Icon="AreaChart" />
 
                         <TextBlock
                             Margin="10,0,0,0"
                             FontSize="15"
                             Foreground="#ded8d7"
-                            Text="Диаграмма" />
+                            Text="Продажи" />
                     </StackPanel>
                     <Border.Style>
                         <Style TargetType="Border">
