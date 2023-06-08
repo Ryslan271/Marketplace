@@ -141,8 +141,16 @@ namespace KazanNewShop.ViewModel.WindowsVM
         private Category? _cetegorySelectedItem;
 
         // Кружки для списка картинок
-        [ObservableProperty]
         private List<Ellipse> _ellipses = new();
+        public List<Ellipse> Ellipses
+        {
+            get => _ellipses;
+            set
+            {
+                _ellipses = value;
+                OnPropertyChanged();
+            }
+        }
 
         // Список статусов товара
         [ObservableProperty]
@@ -319,6 +327,57 @@ namespace KazanNewShop.ViewModel.WindowsVM
             if (CurrentProduct.Category.Id == 0)
                 return;
 
+            AttachImageProduct();
+
+            RemoveImageProduct();
+
+            CurrentProduct.Salesman = App.CurrentUser!.Salesman;
+            CurrentProduct.Status = SelecteStatusOrdersItem;
+
+            CurrentProduct.IdStatus = 1; // изменить на 2
+
+            DatabaseContext.Entities.SaveChanges();
+
+            NavigationWindow.IssuingImage();
+
+            UpdateViewProducts();
+
+            CloseWindow();
+        }
+
+        /// <summary>
+        /// Обновление списка товаров на основании роли пользователя
+        /// </summary>
+        private static void UpdateViewProducts()
+        {
+            if (App.CurrentUser!.Salesman != null)
+                NavigationSelecmanPageMarketplaceVM.Instance.ViewProducts.Refresh();
+            else
+                NavigationEmployeePageMarketplaceVM.Instance.ViewProducts.Refresh();
+        }
+
+        /// <summary>
+        /// Удаление фото для товара
+        /// </summary>
+        private void RemoveImageProduct()
+        {
+            foreach (var image in ImagesIsRemoved)
+            {
+                if (DatabaseContext.Entities.PhotoProducts.Local.Select(p => p.Photo).Contains(image) == false)
+                    continue;
+
+                DatabaseContext.Entities.PhotoProducts.Local.Remove
+                   (
+                       DatabaseContext.Entities.PhotoProducts.Local.First(p => p.Photo == image)
+                   );
+            }
+        }
+
+        /// <summary>
+        /// Добавление фото товару
+        /// </summary>
+        private void AttachImageProduct()
+        {
             foreach (var image in Images)
             {
                 if (DatabaseContext.Entities.PhotoProducts.Local.Select(p => p.Photo).Contains(image) == true)
@@ -333,31 +392,8 @@ namespace KazanNewShop.ViewModel.WindowsVM
                         }
                     );
             }
-
-            foreach (var image in ImagesIsRemoved)
-            {
-                if (DatabaseContext.Entities.PhotoProducts.Local.Select(p => p.Photo).Contains(image) == false)
-                    continue;
-
-                DatabaseContext.Entities.PhotoProducts.Local.Remove
-                   (
-                       DatabaseContext.Entities.PhotoProducts.Local.First(p => p.Photo == image)
-                   );
-            }
-
-            CurrentProduct.Salesman = App.CurrentUser!.Salesman;
-            CurrentProduct.Status = SelecteStatusOrdersItem;
-
-            CurrentProduct.IdStatus = 1; // изменить на 2
-
-            DatabaseContext.Entities.SaveChanges();
-
-            NavigationWindow.IssuingImage();
-
-            NavigationEmployeePageMarketplaceVM.Instance.ViewProducts.Refresh();
-
-            CloseWindow();
         }
+
         private bool CanSaveChanges() => HasErrors == false;
     }
 }

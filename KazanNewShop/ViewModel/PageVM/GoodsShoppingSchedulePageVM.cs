@@ -21,24 +21,7 @@ namespace KazanNewShop.ViewModel.PageVM
         private static List<(string?, double?)> s_initialData = new();
 
         private string _diagramListSelectedItem;
-        public string DiagramListSelectedItem 
-        {
-            get => _diagramListSelectedItem; 
-            set 
-            {
-                _diagramListSelectedItem = value;
-            } 
-        }
-       
-        public List<string> DiagramList => _diagramList;
-        private List<string> _diagramList 
-            = new() 
-            {
-                "График",
-                "Диграмма столбцы",
-                "Диграмма круги"
-            };
-
+      
         [ObservableProperty]
         private ISeries[]? _series;
 
@@ -50,8 +33,6 @@ namespace KazanNewShop.ViewModel.PageVM
 
         public GoodsShoppingSchedulePageVM()
         {
-            DiagramListSelectedItem = DiagramList.First();
-
             s_initialData.Clear();
 
             foreach (var salesman in DatabaseContext.Entities.Salesmen.Local)
@@ -85,7 +66,7 @@ namespace KazanNewShop.ViewModel.PageVM
 
         public void RandomIncrement()
         {
-            foreach (var item in Series)
+            foreach (var item in _series)
             {
                 if (item.Values is null) continue;
 
@@ -93,7 +74,7 @@ namespace KazanNewShop.ViewModel.PageVM
                 i.Value += _r.Next(0, 100);
             }
 
-            Series = Series.OrderByDescending(x => ((ObservableValue[])x.Values!)[0].Value).ToArray();
+            _series = _series.OrderByDescending(x => ((ObservableValue[])x.Values!)[0].Value).ToArray();
         }
 
         /// <summary>

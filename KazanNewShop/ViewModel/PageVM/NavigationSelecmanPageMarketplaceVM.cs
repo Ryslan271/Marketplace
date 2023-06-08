@@ -56,7 +56,8 @@ namespace KazanNewShop.ViewModel.PageVM
         public ICollectionView ViewProducts { get; set; }
             = CollectionViewSource.GetDefaultView
                 (
-                    DatabaseContext.Entities.Products.Local.ToObservableCollection().Where(p => p.IdStatus == 1 && p.Removed == false)
+                    DatabaseContext.Entities.Products.Local.ToObservableCollection()
+                    .Where(p => (p.IdStatus == 1 && p.Removed == false) || (p.Removed == false && p.Salesman == App.CurrentUser!.Salesman))
                 );
 
         [ObservableProperty]

@@ -297,7 +297,8 @@
             <ComboBox
                 Margin="0,0,25,0"
                 ItemsSource="{Binding DataContext.StatusOrders, ElementName=Root}"
-                SelectedItem="{Binding DataContext.SelecteStatusOrdersItem, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
+                SelectedItem="{Binding DataContext.SelecteStatusOrdersItem, ElementName=Root, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding DataContext.CurrentProduct.VisibilyStatusProduct, ElementName=Root}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />

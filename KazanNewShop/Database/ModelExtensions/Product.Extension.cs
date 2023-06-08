@@ -57,6 +57,22 @@ namespace KazanNewShop.Database.Models
             }
         }
 
+        private Visibility _visibilyStatusProduct;
+        [NotMapped]
+        public Visibility VisibilyStatusProduct
+        {
+            get
+            {
+                _visibilyStatusProduct = App.CurrentUser!.Employee != null ? Visibility.Visible : Visibility.Collapsed;
+
+                return _visibilyStatusProduct;
+            }
+            set
+            {
+                _visibilyStatusProduct = value;
+            }
+        }
+
         private Visibility _visibilyButtonProductNotInCart;
         [NotMapped]
         public Visibility VisibilyButtonProductNotInCart

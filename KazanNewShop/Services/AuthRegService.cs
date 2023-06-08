@@ -69,6 +69,8 @@ namespace KazanNewShop.Services
 
             DatabaseContext.Entities.Clients.Local.Add(client);
 
+            App.CurrentUser!.Client = client;
+
             DatabaseContext.Entities.SaveChanges();
         }
 
@@ -83,6 +85,8 @@ namespace KazanNewShop.Services
             };
 
             DatabaseContext.Entities.Salesmen.Local.Add(salesman);
+
+            App.CurrentUser!.Salesman = salesman;
 
             DatabaseContext.Entities.SaveChanges();
         }
