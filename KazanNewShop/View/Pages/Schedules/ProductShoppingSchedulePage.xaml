@@ -50,6 +50,11 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Border
@@ -71,6 +76,7 @@
 
                         <TextBlock
                             Margin="10,0,0,0"
+                            VerticalAlignment="Center"
                             FontSize="15"
                             Foreground="#ded8d7"
                             Text="Мой кабинет" />
@@ -97,7 +103,7 @@
                     </Border.InputBindings>
                     <StackPanel
                         Margin="10,5"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Stretch"
                         Orientation="Horizontal">
                         <fa:ImageAwesome
                             Width="25"
@@ -106,6 +112,7 @@
 
                         <TextBlock
                             Margin="10,0,0,0"
+                            VerticalAlignment="Center"
                             FontSize="15"
                             Foreground="#ded8d7"
                             Text="Все товары" />
@@ -142,6 +149,7 @@
 
                         <TextBlock
                             Margin="10,0,0,0"
+                            VerticalAlignment="Center"
                             FontSize="15"
                             Foreground="#ded8d7"
                             Text="Заказы" />

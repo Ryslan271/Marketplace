@@ -21,11 +21,6 @@ namespace KazanNewShop.ViewModel.WindowsVM
         [NotifyDataErrorInfo]
         private string _description = null!;
 
-        [Required(ErrorMessage = "Заполните все поля")]
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        private DateTime _dateOnMarketplace;
-
         [RelayCommand]
         private void Filled()
         {
@@ -34,7 +29,7 @@ namespace KazanNewShop.ViewModel.WindowsVM
             if (HasErrors)
                 return;
 
-            AuthRegService.FillSalesmanData(Description!, DateOnMarketplace, CompanyName!);
+            AuthRegService.FillSalesmanData(Description!, CompanyName!);
 
             NavigationWindow.TransitionProductList(typeof(NavigationSelecmanPageMarketplaceVM));
         }

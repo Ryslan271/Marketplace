@@ -60,7 +60,7 @@ namespace KazanNewShop.ViewModel.WindowsVM
 
             DatabaseContext.Entities.SaveChanges();
 
-            NavigationPageMarketplaceVM.Instance.ClientPhoto = App.CurrentUser.Salesman!.ProfilePhoto!;
+            NavigationSelecmanPageMarketplaceVM.Instance.SalesmanPhoto = App.CurrentUser.Salesman!.ProfilePhoto!;
 
             CloseWindow();
         }

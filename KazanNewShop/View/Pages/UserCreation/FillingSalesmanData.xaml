@@ -42,14 +42,6 @@
                 Style="{StaticResource TextBoxCustomStyle}"
                 Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Margin="0,0,0,5" Text="Дата регистрации в Marketplace" />
-
-            <DatePicker
-                x:Name="DateOnMarketplace"
-                Margin="0,0,0,20"
-                DisplayDateStart="1/01/2000"
-                Text="{Binding DateOnMarketplace, UpdateSourceTrigger=PropertyChanged}" />
-
             <TextBlock Margin="0,0,0,5" Text="Описание магазина " />
 
             <TextBox

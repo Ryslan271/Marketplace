@@ -74,11 +74,11 @@ namespace KazanNewShop.Services
             DatabaseContext.Entities.SaveChanges();
         }
 
-        public static void FillSalesmanData(string description, DateTime dateOnMarketplace, string companyName)
+        public static void FillSalesmanData(string description, string companyName)
         {
             Salesman salesman = new()
             {
-                DateOnMarketplace = dateOnMarketplace,
+                DateOnMarketplace = DateTime.Now,
                 NameCompany = companyName,
                 Description = description,
                 User = App.CurrentUser

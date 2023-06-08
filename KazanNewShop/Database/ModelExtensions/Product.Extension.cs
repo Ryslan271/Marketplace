@@ -79,7 +79,7 @@ namespace KazanNewShop.Database.Models
         {
             get
             {
-                _visibilyButtonProductNotInCart = CountInBasket == 0 ? Visibility.Visible : Visibility.Collapsed;
+                _visibilyButtonProductNotInCart = CountInBasket == 0 && (App.CurrentUser!.Salesmen == null || App.CurrentUser!.Salesmen!.Count == 0) ? Visibility.Visible : Visibility.Collapsed;
 
                 return _visibilyButtonProductNotInCart;
             }

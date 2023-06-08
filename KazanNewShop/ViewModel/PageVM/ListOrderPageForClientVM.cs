@@ -151,5 +151,12 @@ namespace KazanNewShop.ViewModel.PageVM
         [RelayCommand]
         public void OpenProductList() =>
              NavigationWindow.Navigate(typeof(NavigationPageMarketplaceVM));
+
+        /// <summary>
+        /// Открытие все товары
+        /// </summary>
+        [RelayCommand]
+        public void OpenPersonalPage() =>
+             new PersonalPageWindow().Show();
     }
 }

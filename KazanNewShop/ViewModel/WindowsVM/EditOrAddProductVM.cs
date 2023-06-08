@@ -334,7 +334,7 @@ namespace KazanNewShop.ViewModel.WindowsVM
             CurrentProduct.Salesman = App.CurrentUser!.Salesman;
             CurrentProduct.Status = SelecteStatusOrdersItem;
 
-            CurrentProduct.IdStatus = 1; // изменить на 2
+            CurrentProduct.IdStatus = 2;
 
             DatabaseContext.Entities.SaveChanges();
 
