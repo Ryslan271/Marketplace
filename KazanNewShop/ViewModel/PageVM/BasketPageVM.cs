@@ -141,6 +141,9 @@ namespace KazanNewShop.ViewModel
         [RelayCommand]
         public void CreatingOrder()
         {
+            if (DatabaseContext.Entities.Baskets.Local.First(b => b == App.CurrentUser!.Client!.Baskets.First()).ProductLists.Count == 0)
+                return;
+
             List<ProductListOrder> localListProductListOrder = new();
 
             Order order = new()
